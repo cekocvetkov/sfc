@@ -6,7 +6,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="fixed bottom-0 left-0 w-full py-10 text-center flex flex-col gap-y-3">
+    <footer className="fixed bottom-0 left-0 w-full py-10 text-center hidden flex-col gap-y-3 md:flex">
       <div className="flex justify-center gap-x-4 ">
         <Link aria-label="LinkedIn Link" href="https://linkedin.com/in/tsvetkov-tsvetan">
           <IoLogoLinkedin size={24} />
@@ -16,7 +16,6 @@ function Footer() {
         </Link>
       </div>
       <p className=" text-primary-text-color"> Copyright &copy; {currentYear} Tsvetan Tsvetkov</p>
-      <div> newBlurUrl = blurHashToDataURL(blurDataURL)</div>
     </footer>
   );
 }
