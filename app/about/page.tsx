@@ -39,8 +39,12 @@ function About() {
       <div className="flex flex-col gap-y-4 text-sm md:mr-[-20%]">
         <div className="flex gap-y-5 gap-x-10">
           <div className="flex flex-col gap-y-4">
-            <div>Name: Tsvetan Tsvetkov</div>
-            <div>Hobbies: &nbsp;🎸 🏀 ⚽ 📚 💻</div>
+            <div className="flex">
+              <div>Name:</div> <div className="pl-1">Tsvetan Tsvetkov</div>
+            </div>
+            <div className="flex">
+              <div>Hobbies: </div> <div className="pl-1">&nbsp;🎸 🏀 ⚽ 📚 💻</div>
+            </div>
           </div>
           <div className="flex flex-col gap-y-4">
             <div>Born in: Bulgaria 🇧🇬</div>
