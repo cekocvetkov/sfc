@@ -1,4 +1,3 @@
-import Link from "next/link";
 import React from "react";
 import { colorScheme, isColorTooSimilar } from "../utls/color-utils";
 import { formatDate } from "../utls/date-utils";
@@ -24,6 +23,7 @@ async function Articles() {
       {articles.map((article: ArticleModel) => {
         return (
           <ArticleLink
+            key={article.metadata.slug}
             params={{
               color: getRandomColor(),
               date: formatDate(article.metadata.date),
