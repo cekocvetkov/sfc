@@ -11,7 +11,6 @@ export async function generateStaticParams() {
 async function Article({ params }: { params: { slug: string } }) {
   console.log(`Article with slug '${params.slug}' opened`);
   const article = await getMdxArticleBySlug(params.slug);
-  console.log(article);
 
   return (
     <article className="prose text-primary-text-color text-base prose-invert overflow-auto scrollbar-hide">

@@ -42,8 +42,12 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
+.post-item {
+  transition: background-color 0.3s ease; /* Added transition for smooth color change */
+}
+
 .post-item:hover {
-  background-color: var(--accent-color) !important;
+  background-color: rgba(68, 85, 68, 0.7) !important;
 }
 
 .about-rectangle {
