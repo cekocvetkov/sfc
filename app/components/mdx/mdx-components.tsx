@@ -10,9 +10,13 @@ export const MdxComponents = {
   Image: (props: any) => <Image {...props} />,
 };
 
+/** @type {import('rehype-pretty-code').Options} */
+const rehypePrettyCodeOptions = {
+  theme: "vitesse-dark",
+};
 export const MdxOptions = {
   mdxOptions: {
     remarkPlugins: [],
-    rehypePlugins: [[rehypePrettyCode, { theme: "vitesse-dark" }]],
+    rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]],
   },
 };
