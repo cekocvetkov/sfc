@@ -10,7 +10,7 @@ interface TagItem {
   count?: number;
   active?: boolean;
 }
-async function Search() {
+function Search() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
