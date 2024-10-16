@@ -1,4 +1,4 @@
-import { MdxComponents } from "@/app/components/mdx/mdx-components";
+import { MdxComponents, MdxOptions } from "@/app/components/mdx/mdx-components";
 import { getMdxArticleBySlug, getSortedArticlesData } from "@/app/utls/articles";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import React from "react";
@@ -14,7 +14,7 @@ async function Article({ params }: { params: { slug: string } }) {
 
   return (
     <article className="prose text-primary-text-color text-base prose-invert overflow-auto scrollbar-hide">
-      <MDXRemote source={article.content} components={MdxComponents} />
+      <MDXRemote source={article.content} components={MdxComponents} options={MdxOptions} />
     </article>
   );
 }
