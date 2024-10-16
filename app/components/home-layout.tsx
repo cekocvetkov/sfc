@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Nav from "./nav";
 import Articles from "./articles";
 import Footer from "./footer";
@@ -13,7 +13,9 @@ function HomeLayout({ children }: { children: React.ReactNode }) {
             {children}
           </section>
           <section className="flex w-full sticky bottom-0 md:relative md:basis-[25%]">
-            <Articles></Articles>
+            <Suspense>
+              <Articles></Articles>
+            </Suspense>
           </section>
         </div>
       </div>
