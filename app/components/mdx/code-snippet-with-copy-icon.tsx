@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 
-function CodeSnippetWithCopyIcon(props) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+function CodeSnippetWithCopyIcon(props: any) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
