@@ -3,7 +3,7 @@ import React from "react";
 
 function Navigation() {
   return (
-    <nav className="h-1/4 mt-0 md:mt-14 mt flex items-center justify-between ">
+    <nav className="min-h-[25%] mt-0 md:mt-14 mt flex items-center justify-between ">
       <div>
         <Link href="/" className="">
           home
