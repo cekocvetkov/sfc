@@ -22,7 +22,7 @@ function CodeSnippetWithCopyIcon(props: any) {
         className="!bg-code-snippet-background-color 
         [&::-webkit-scrollbar]:h-2
       [&::-webkit-scrollbar-track]:bg-[#a37c64]
-        [&::-webkit-scrollbar-thumb]:rounded-sm
+        [&::-webkit-scrollbar-thumb]:rounded-[15%]
       [&::-webkit-scrollbar-thumb]:bg-[#784F35]"
         {...props}
       />
