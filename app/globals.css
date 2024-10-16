@@ -31,6 +31,12 @@ body {
   }
 }
 
+a.active {
+  background-color: var(--accent-color) !important;
+  border: 1px solid var(--primary-text-color);
+  border-width: thin;
+}
+
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
