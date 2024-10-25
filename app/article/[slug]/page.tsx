@@ -1,4 +1,5 @@
 import { MdxComponents, MdxOptions } from "@/app/components/mdx/mdx-components";
+import Tags from "@/app/components/tags";
 import { getMdxArticleBySlug, getSortedArticlesData } from "@/app/utls/articles";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import React from "react";
@@ -14,6 +15,8 @@ async function Article({ params }: { params: { slug: string } }) {
 
   return (
     <article className="prose text-primary-text-color text-base prose-invert overflow-auto scrollbar-hide transition-transform ease-in-out duration-[0.2s]">
+      <Tags tags={article.metadata.tags}></Tags>
+
       {/* @ts-expect-error: Should expect string */}
       <MDXRemote source={article.content} components={MdxComponents} options={MdxOptions} />
     </article>

@@ -1,9 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
 import matter from "gray-matter";
-// import { remark } from "remark";
-// import html from "remark-html";
-// import { metadata } from "../layout";
 
 export interface ArticleMetadata {
   title: string;
@@ -16,7 +13,11 @@ export interface ArticleModel {
   content: string;
   metadata: ArticleMetadata;
 }
-
+export interface TagItem {
+  tag?: string;
+  count?: number;
+  active?: boolean;
+}
 const articlesDirectory = path.join(process.cwd(), "articles");
 
 export async function getMdxArticleBySlug(slug: string) {
@@ -65,23 +66,18 @@ export async function getSortedArticlesData(): Promise<ArticleModel[]> {
   });
 }
 
-// export const getArticleData = async (fileName: string) => {
-//   const fullPath = path.join(articlesDirectory, `${fileName}.mdx`);
-//   const fileContents = await fs.readFile(fullPath, "utf8");
-//   const matterResult = matter(fileContents);
-//   const content = matterResult.content;
-//   // Use remark to convert markdown into HTML string
-//   const processedContent = await remark().use(html).process(matterResult.content);
-//   const contentHtml = processedContent.toString();
+export function getAllTags(articles: Array<ArticleModel>) {
+  const tagsMap = new Map<string, TagItem>();
 
-//   return {
-//     fileName,
-//     contentHtml,
-//     content,
-//     ...matterResult.data,
-//   };
-// };
+  articles.forEach((article: ArticleModel) => {
+    article.metadata.tags?.forEach((tag) => {
+      if (!tagsMap.has(tag)) {
+        tagsMap.set(tag, { tag, active: false, count: 1 });
+      } else {
+        tagsMap.get(tag)!.count! += 1;
+      }
+    });
+  });
 
-export const getTagArticlesMap = (): Record<string, ArticleModel[]> => {
-  return {};
-};
+  return Array.from(tagsMap.values());
+}

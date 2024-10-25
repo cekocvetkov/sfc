@@ -1,8 +1,8 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { TagItem } from "./page";
 import { useDebouncedCallback } from "use-debounce";
+import { TagItem } from "../utls/articles";
 
 interface TagsProps {
   allTags: TagItem[];
