@@ -41,12 +41,14 @@ function SearchForm({ allTags }: TagsProps) {
   }
   useEffect(() => {
     const tagParams = tagsParamValue?.split(",");
-    allTags.forEach((t) => {
-      if (tagParams!.includes(t.tag!)) {
-        t.active = true;
-      }
+    const updatedTags = allTags.map((t) => {
+      // Create a new object for each tag
+      return {
+        ...t,
+        active: tagParams!.includes(t.tag!), // Set active based on tagParams
+      };
     });
-    setCurrentTags(allTags);
+    setCurrentTags(updatedTags); // Update state with the new array
   }, []);
   return (
     <div className="flex flex-col flex-grow justify-center">
