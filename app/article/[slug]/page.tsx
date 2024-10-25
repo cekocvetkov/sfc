@@ -13,7 +13,7 @@ async function Article({ params }: { params: { slug: string } }) {
   const article = await getMdxArticleBySlug(params.slug);
 
   return (
-    <article className="prose text-primary-text-color text-base prose-invert overflow-auto scrollbar-hide">
+    <article className="prose text-primary-text-color text-base prose-invert overflow-auto scrollbar-hide transition-transform ease-in-out duration-[0.2s]">
       {/* @ts-expect-error: Should expect string */}
       <MDXRemote source={article.content} components={MdxComponents} options={MdxOptions} />
     </article>

@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 
-import HomeLayout from "./components/home-layout";
+import { getSortedArticlesData } from "./utls/articles";
+import Articles from "./components/articles";
+import Footer from "./components/footer";
+import Nav from "./components/nav";
+import { Suspense } from "react";
 
 const inter = Montserrat({
   weight: "200",
@@ -14,15 +18,33 @@ export const metadata: Metadata = {
   description: "Tsvetan Tsvetkov's software crafting journal",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const articles = await getSortedArticlesData();
+
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased m-0 p-0 h-screen w-screen overflow-hidden bg-background-color text-primary-text-color`}>
-        <HomeLayout>{children}</HomeLayout>
+        <div className="h-[100%] flex flex-col items-start justify-start md:mt-[-200px] md:h-auto md:flex-co md:fixed md:inset-0  md:items-center md:justify-center">
+          <div className="h-[100%] flex flex-col w-full md:flex-row md:w-[1056px] md:h-[620px] md:border-[0.1px] md:border-border-color">
+            <section
+              id="content"
+              className="flex-grow overflow-x-hidden scrollbar-hide w-full basis-[100%] h-[70%] px-5 md:max-w-[75%] md:h-[100%] md:pl-32 md:pr-32 transition-transform ease-in-out duration-[0.2s]"
+            >
+              <Nav></Nav>
+              {children}
+            </section>
+            <section id="second-column" className="flex w-full sticky bottom-0 md:relative md:basis-[25%] transition-transform ease-in-out duration-[0.2s]">
+              <Suspense>
+                <Articles initialArticles={articles}></Articles>
+              </Suspense>
+            </section>
+          </div>
+        </div>
+        <Footer></Footer>
       </body>
     </html>
   );

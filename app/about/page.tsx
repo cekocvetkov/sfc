@@ -4,7 +4,7 @@ import React from "react";
 
 function About() {
   return (
-    <div className="flex flex-col gap-y-6 overflow-y-auto overflow-x-hidden md:overflow-y-visible md:overflow-x-visible flex-grow ">
+    <div className="flex flex-col gap-y-6 overflow-y-auto overflow-x-hidden scrollbar-hide md:overflow-y-visible md:overflow-x-visible flex-grow ">
       <div className="block">
         <div className="float-left pr-4">
           <Image

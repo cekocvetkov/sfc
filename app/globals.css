@@ -10,6 +10,7 @@
   --tags-color: #d97833;
   --border-color: rgba(182, 109, 56, 0.5);
   --code-snippet-background-color: #3c3c3c;
+  --transition-duration: 0.2s;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -63,6 +64,25 @@ a.active {
   border: 1.4px var(--border-color) solid;
 }
 
+/* Show - Hide Navigation and articles on scroll */
+.hide-posts {
+  -webkit-transform: translateY(100%);
+  transform: translateY(100%);
+  transition: transform var(--transition-duration) ease-in-out;
+}
+.move-body {
+  transition: margin-bottom 0.2s linear;
+  margin-bottom: -150px;
+}
+
+.hide-header {
+  -webkit-transform: translateY(-100%);
+  transform: translateY(-100%);
+  transition: transform var(--transition-duration) ease-in-out;
+}
+.show-header {
+  background-image: radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0) 100%);
+}
 /* Loading Spinner */
 .loadingWrapper {
   display: flex;

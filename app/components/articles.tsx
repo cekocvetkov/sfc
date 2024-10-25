@@ -1,20 +1,25 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { colorScheme, isColorTooSimilar } from "../utls/color-utils";
 import { formatDate } from "../utls/date-utils";
 import { ArticleModel } from "../utls/articles";
 import ArticleLink from "./article-link";
 import { useSearchParams } from "next/navigation";
-import { getArticles } from "../search/server-action";
 let previousColor = "";
 
-function Articles() {
-  const [articles, setArticles] = useState<ArticleModel[]>([]);
+interface ArticlesProps {
+  initialArticles: ArticleModel[];
+}
+
+function Articles({ initialArticles }: ArticlesProps) {
+  // const [articles] = useState<ArticleModel[]>(initialArticles);
   const searchParams = useSearchParams();
   const searchString = searchParams.get("search");
   const tagsString = searchParams.get("tags");
   const tags = tagsString?.split(",");
+
+  const filteredArticles = initialArticles.filter((article) => article.metadata.title.toLowerCase().includes(searchString?.toLowerCase() || ""));
 
   // Function to generate a random index within the colorScheme array
   const getRandomColor = () => {
@@ -28,16 +33,9 @@ function Articles() {
   };
   getRandomColor();
 
-  useEffect(() => {
-    const initArticlesView = async function () {
-      const articles = await getArticles();
-      setArticles(articles);
-    };
-    initArticlesView();
-  }, []);
   return (
     <div className="flex w-full scrollbar-hide overflow-x-auto h-[151px] md:h-full md:flex-col md:max-w-[180px] md:border-x-[0.1px] md:border-border-color md:overflow-y-auto ">
-      {articles
+      {filteredArticles
         .filter((article: ArticleModel) => {
           // First check if there's a search string match
           const matchesSearch = article.metadata.title.toLowerCase().includes(searchString?.toLowerCase() || "");
