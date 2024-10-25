@@ -7,17 +7,17 @@ function Tags({ tags }: { tags: string[] }) {
 
   const [currentTags, setCurrentTags] = useState<string[]>([]);
 
-  function onClick(tag: any) {
+  function onClick(tag: string) {
     if (currentTags.includes(tag)) {
       const indexOfTag = currentTags.indexOf(tag);
       const newCurrentTags = [...currentTags.slice(0, indexOfTag), ...currentTags.slice(indexOfTag + 1)];
       setCurrentTags(newCurrentTags);
-      router.push(`/search?tags=${newCurrentTags}`);
+      router.push(`/search?tags=${encodeURIComponent(newCurrentTags.join(","))}`);
       return;
     }
-    const newCurrentTags = new Set([...currentTags, tag]);
-    setCurrentTags([...newCurrentTags]);
-    router.push(`/search?tags=${[...newCurrentTags]}`);
+    const newCurrentTags = Array.from(new Set([...currentTags, tag])); // Convert Set to Array using Array.from
+    setCurrentTags(newCurrentTags);
+    router.push(`/search?tags=${encodeURIComponent(newCurrentTags.join(","))}`); // Use the array directly
   }
 
   function isActive(tag: string) {
