@@ -30,7 +30,7 @@ function Tags({ tags }: { tags: string[] }) {
         <></>
       ) : (
         tags?.map((tag) => (
-          <a onClick={() => onClick(tag)} className={`hover:bg-accent-color no-underline p-1 mb-1 bg-tags-color table ${isActive(tag) ? "active" : ""}`} key={tag}>
+          <a onClick={() => onClick(tag)} className={`cursor-pointer hover:bg-accent-color no-underline p-1 mb-1 bg-tags-color table ${isActive(tag) ? "active" : ""}`} key={tag}>
             {tag}
           </a>
         ))
