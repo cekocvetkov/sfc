@@ -11,15 +11,13 @@ const useScrollDirection = () => {
       console.log(lastScrollTopRef.current);
       console.log(`isMobile: ${isMobile.current}`);
       const contentBody = document.querySelector("#content")!;
-      console.log(contentBody);
       const header = document.querySelector("#header")!;
-      console.log(header);
       const secondColumn = document.querySelector("#second-column")!;
 
       const currentScrollTop = contentBody.scrollTop;
-
-      // Skip scroll animations effects if it's just for a little space
-      if (isMobile.current && Math.abs(contentBody.scrollHeight - window.outerHeight) < 200) {
+      console.log(`${currentScrollTop} x ${lastScrollTopRef.current}`);
+      // Skip scroll animations effects for the first 200 pixels of scroll
+      if (isMobile.current && currentScrollTop < 400) {
         return;
       }
 

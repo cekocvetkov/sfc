@@ -6,7 +6,7 @@ async function Search() {
   const tags = getAllTags(articles);
 
   return (
-    <div className="md:relative md:top-[174px] md:bottom-0 md:left-5 md:right-5">
+    <div className="top-[25%] relative md:top-[28%] md:left-[4%] md:right-5">
       <SearchForm allTags={tags}></SearchForm>
     </div>
   );
