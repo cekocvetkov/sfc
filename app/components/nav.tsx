@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import useScrollDirection from "../hooks/UseScrollDirection";
 import { usePathname } from "next/navigation";
-import ScrollToTop from "./ScrollToTop";
+// import ScrollToTop from "./ScrollToTop";
 
 function Navigation() {
   useScrollDirection();
