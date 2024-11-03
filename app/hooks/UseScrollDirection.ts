@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import useMobile from "./IsMobile";
+import { usePathname } from "next/navigation";
 const useScrollDirection = () => {
   const isMobile = useMobile();
+  const pathName = usePathname();
   const [scrollDirection, setScrollDirection] = useState("top");
   const lastScrollTopRef = useRef(0);
 
@@ -16,8 +18,13 @@ const useScrollDirection = () => {
 
       const currentScrollTop = contentBody.scrollTop;
       console.log(`${currentScrollTop} x ${lastScrollTopRef.current}`);
-      // Skip scroll animations effects for the first 200 pixels of scroll
-      if (isMobile.current && currentScrollTop < 400) {
+      // Skip scroll animations effects for the first 400 pixels of scroll
+      // if (isMobile.current && currentScrollTop < 400) {
+      //   return;
+      // }
+
+      // Skip scroll animations effects for about-me page
+      if (pathName.includes('/about')) {
         return;
       }
 
@@ -53,7 +60,8 @@ const useScrollDirection = () => {
       }
       if (isMobile.current) {
         if (currentScrollTop + window.outerHeight >= contentBody.scrollHeight) {
-          lastScrollTopRef.current = contentBody.scrollHeight;
+          //This line makes the posts show if one has scrolled to the bottom.
+          // lastScrollTopRef.current = contentBody.scrollHeight;
         } else {
           lastScrollTopRef.current = currentScrollTop <= 0 ? 0 : currentScrollTop;
         }
