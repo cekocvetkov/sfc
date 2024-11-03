@@ -12,9 +12,6 @@ const useScrollDirection = () => {
   useEffect(() => {
     console.log("Setting up scroll listener...");
     const handleScroll = () => {
-      console.log('Scroll direction - '+scrollDirection.current)
-      console.log(lastScrollTopRef.current);
-      console.log(`isMobile: ${isMobile.current}`);
       const contentBody = document.querySelector("#content")!;
       const header = document.querySelector("#header")!;
       const secondColumn = document.querySelector("#second-column")!;
@@ -72,8 +69,6 @@ const useScrollDirection = () => {
         lastScrollTopRef.current = currentScrollTop <= 0 ? 0 : currentScrollTop;
       }
     };
-    console.log(
-      "!@#!@#!@# "+lastScrollTopRef.current)
     
     document.addEventListener("scroll", handleScroll, {
       passive: true,
@@ -86,10 +81,19 @@ const useScrollDirection = () => {
 
   useEffect(() => {
     const contentBody = document.querySelector("#content")!;
-    if(!window.location.hash) {
-      //Scroll to top if url doesn't have hash (linked headers in article)
+    const locationHash = window.location.hash;
+    if(!locationHash) {
+      // Scroll to top if url doesn't have hash (linked headers in article)
       contentBody.scroll({ top: 0, behavior: "smooth" });
-    }    
+    } else {
+      // Scroll to element if exits and hide header
+      const el = document.querySelector(locationHash)!;
+      if(el){
+        const header = document.querySelector("#header")!
+        header.classList.remove("show-header");
+        header.classList.add("hide-header");
+      }
+    }
   }, [router]);
 
   return scrollDirection;
