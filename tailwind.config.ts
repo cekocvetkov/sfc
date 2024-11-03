@@ -13,6 +13,7 @@ const config: Config = {
       colors: {
         "background-color": "var(--background-color)",
         "accent-color": "var(--accent-color)",
+        "accent-color-darker": "var(--accent-color-darker)",
         "primary-text-color": "var(--primary-text-color)",
         "secondary-text-color": "var(--secondary-text-color)",
         "tags-color": "var(--tags-color)",

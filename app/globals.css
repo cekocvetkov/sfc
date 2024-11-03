@@ -5,6 +5,7 @@
 :root {
   --background-color: #323232;
   --accent-color: #445544;
+  --accent-color-darker: rgba(68, 85, 68, 0.7);
   --primary-text-color: #faf9f6;
   --secondary-text-color: #e58c4c;
   --tags-color: #d97833;
@@ -34,8 +35,7 @@ body {
 
 a.active {
   background-color: var(--accent-color) !important;
-  border: 1px solid var(--primary-text-color);
-  border-width: thin;
+  outline: 1px solid var(--primary-text-color);
 }
 
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
@@ -54,7 +54,7 @@ a.active {
 }
 
 .post-item:hover {
-  background-color: rgba(68, 85, 68, 0.7) !important;
+  background-color: var(--accent-color-darker) !important;
 }
 
 .about-rectangle {

@@ -70,7 +70,7 @@ function SearchForm({ allTags }: TagsProps) {
           <></>
         ) : (
           currentTags.map((tagItem: TagItem) => (
-            <a onClick={() => handleTagClick(tagItem!.tag!)} className={`p-1 bg-tags-color table ${tagItem!.active ? "active" : ""}`} key={tagItem.tag}>
+            <a onClick={() => handleTagClick(tagItem!.tag!)} className={`cursor-pointer hover:bg-accent-color-darker p-1 bg-tags-color table ${tagItem!.active ? "active" : ""}`} key={tagItem.tag}>
               {tagItem.tag} ({tagItem.count})
             </a>
           ))
