@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import useMobile from "./IsMobile";
 import { usePathname } from "next/navigation";
 const useScrollDirection = () => {
