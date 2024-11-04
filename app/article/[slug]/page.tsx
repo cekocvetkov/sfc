@@ -4,6 +4,7 @@ import { getMdxArticleBySlug, getSortedArticlesData } from "@/app/utls/articles"
 import { MDXRemote } from "next-mdx-remote/rsc";
 import React from "react";
 import { notFound } from "next/navigation";
+import { BASE_URL } from "@/app/utls/constants";
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   try {
@@ -11,7 +12,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     return {
       openGraph: {
         title: article.metadata.title,
-        images: [article.metadata.image],
+        images: [`${BASE_URL}/images/${article.metadata.image}`],
       },
     };
   } catch (error) {
