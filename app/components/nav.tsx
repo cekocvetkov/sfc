@@ -6,9 +6,7 @@ import { usePathname } from "next/navigation";
 
 function Navigation() {
   useScrollDirection();
-
   const pathName = usePathname();
-  console.log(pathName);
   const isActive = (href: string) => pathName === href;
 
   return (

@@ -10,14 +10,14 @@ const useScrollDirection = () => {
   const lastScrollTopRef = useRef(0);
 
   useEffect(() => {
-    console.log("Setting up scroll listener...");
+    // console.log("Setting up scroll listener...");
     const handleScroll = () => {
       const contentBody = document.querySelector("#content")!;
       const header = document.querySelector("#header")!;
       const secondColumn = document.querySelector("#second-column")!;
 
       const currentScrollTop = contentBody.scrollTop;
-      console.log(`${currentScrollTop} x ${lastScrollTopRef.current}`);
+      // console.log(`${currentScrollTop} x ${lastScrollTopRef.current}`);
       // Skip scroll animations effects for the first 400 pixels of scroll
       // if (isMobile.current && currentScrollTop < 400) {
       //   return;
