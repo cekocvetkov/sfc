@@ -1,28 +1,28 @@
 
 import { getSortedArticlesData } from "./utls/articles";
+import { BASE_URL } from "./utls/constants";
 
 export default async function sitemap() {
-    const baseUrl="https://tsvetan-tsvetkov.com"
     const articles = await getSortedArticlesData();
 
     const articlePosts = articles.map((a => {
         return {
-            url: `${baseUrl}/article/${a.metadata.slug}`,
+            url: `${BASE_URL}/article/${a.metadata.slug}`,
             lastModified: new Date(a.metadata.date)
         }
     }))
 
     return [
         {
-            url: baseUrl,
+            url: BASE_URL,
             lastModified: new Date()
         },
         {
-            url: `${baseUrl}/about`,
+            url: `${BASE_URL}/about`,
             lastModified: new Date()
         },
         {
-            url: `${baseUrl}/search`,
+            url: `${BASE_URL}/search`,
             lastModified: new Date()
         },
         ... articlePosts
