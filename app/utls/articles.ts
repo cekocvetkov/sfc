@@ -7,6 +7,7 @@ export interface ArticleMetadata {
   date: string;
   slug: string;
   tags: string[];
+  image: string;
 }
 
 export interface ArticleModel {
@@ -28,7 +29,7 @@ export async function getMdxArticleBySlug(slug: string) {
   // Use gray-matter to parse the post metadata section
   const matterResult = matter(fileContents);
 
-  const article: ArticleModel = { content: matterResult.content, metadata: { title: matterResult.data.title, date: matterResult.data.date, tags: matterResult.data.tags, slug: slug } };
+  const article: ArticleModel = { content: matterResult.content, metadata: { title: matterResult.data.title, date: matterResult.data.date, tags: matterResult.data.tags, slug: slug, image: matterResult.data.image } };
 
   return article;
 }
@@ -52,7 +53,7 @@ export async function getSortedArticlesData(): Promise<ArticleModel[]> {
 
       const article: ArticleModel = {
         content: matterResult.content,
-        metadata: { title: matterResult.data.title, date: matterResult.data.date, tags: matterResult.data.tags, slug: fileNameWithoutMdx },
+        metadata: { title: matterResult.data.title, date: matterResult.data.date, tags: matterResult.data.tags, slug: fileNameWithoutMdx, image: matterResult.data.image },
       };
       // Combine the data with the id
       return article;

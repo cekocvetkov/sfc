@@ -5,6 +5,20 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import React from "react";
 import { notFound } from "next/navigation";
 
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  try {
+    const article = await getMdxArticleBySlug(params.slug);
+    return {
+      openGraph: {
+        title: article.metadata.title,
+        images: [article.metadata.image],
+      },
+    };
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function generateStaticParams() {
   return (await getSortedArticlesData()).map((article) => ({
     slug: article.metadata.slug,

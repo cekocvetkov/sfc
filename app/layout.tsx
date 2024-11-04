@@ -7,6 +7,7 @@ import Articles from "./components/articles";
 import Footer from "./components/footer";
 import Nav from "./components/nav";
 import { Suspense } from "react";
+import { BASE_URL } from "./utls/constants";
 
 const inter = Montserrat({
   weight: "200",
@@ -14,8 +15,13 @@ const inter = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Software Crafting Chronicles",
+  title: { default: "Software Crafting Chronicles", template: "%s | Tsvetan Tsvetkov's software crafting journal" },
   description: "Tsvetan Tsvetkov's software crafting journal",
+  metadataBase: new URL(BASE_URL),
+  openGraph: {
+    description: "Tsvetan Tsvetkov's software crafting journal: A software journal that contains findings and information I encounter during my hobby projects or work.",
+    images: ["/images/home-page.png"],
+  },
 };
 
 export default async function RootLayout({
