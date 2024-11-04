@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   openGraph: {
     description: "Tsvetan Tsvetkov's software crafting journal: A software journal that contains findings and information I encounter during my hobby projects or work.",
-    images: ["/images/home-page.png"],
+    images: [`${BASE_URL}/images/home-page.png`],
   },
 };
 
