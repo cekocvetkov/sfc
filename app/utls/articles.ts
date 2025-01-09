@@ -8,6 +8,7 @@ export interface ArticleMetadata {
   slug: string;
   tags: string[];
   image: string;
+  published?: boolean;
 }
 
 export interface ArticleModel {
@@ -29,7 +30,17 @@ export async function getMdxArticleBySlug(slug: string) {
   // Use gray-matter to parse the post metadata section
   const matterResult = matter(fileContents);
 
-  const article: ArticleModel = { content: matterResult.content, metadata: { title: matterResult.data.title, date: matterResult.data.date, tags: matterResult.data.tags, slug: slug, image: matterResult.data.image } };
+  const article: ArticleModel = {
+    content: matterResult.content,
+    metadata: {
+      title: matterResult.data.title,
+      date: matterResult.data.date,
+      tags: matterResult.data.tags,
+      slug: slug,
+      image: matterResult.data.image,
+      published: matterResult.data.published ? matterResult.data.published : false,
+    },
+  };
 
   return article;
 }
@@ -53,18 +64,27 @@ export async function getSortedArticlesData(): Promise<ArticleModel[]> {
 
       const article: ArticleModel = {
         content: matterResult.content,
-        metadata: { title: matterResult.data.title, date: matterResult.data.date, tags: matterResult.data.tags, slug: fileNameWithoutMdx, image: matterResult.data.image },
+        metadata: {
+          title: matterResult.data.title,
+          date: matterResult.data.date,
+          tags: matterResult.data.tags,
+          slug: fileNameWithoutMdx,
+          image: matterResult.data.image,
+          published: matterResult.data.published ? matterResult.data.published : false,
+        },
       };
       // Combine the data with the id
       return article;
     })
   );
   // Sort articles by date
-  return allArticlesData.sort((a, b) => {
-    const dateA = new Date(a.metadata.date);
-    const dateB = new Date(b.metadata.date);
-    return dateB.getTime() - dateA.getTime();
-  });
+  return allArticlesData
+    .filter((a) => a.metadata.published === true)
+    .sort((a, b) => {
+      const dateA = new Date(a.metadata.date);
+      const dateB = new Date(b.metadata.date);
+      return dateB.getTime() - dateA.getTime();
+    });
 }
 
 export function getAllTags(articles: Array<ArticleModel>) {

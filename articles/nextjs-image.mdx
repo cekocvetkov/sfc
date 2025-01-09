@@ -1,0 +1,226 @@
+---
+title: "Mastering the Next.js Image Component: The Basics"
+date: "2025-01-08"
+tags: ["nextjs", "image", "frontend"]
+image: "bike.png"
+published: true
+---
+
+# Mastering the Next.js Image Component: The Basics
+
+<Image
+  alt="Article Header"
+  src={"/images/nextjs-image/nextjs-image-header.png"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+/>
+<small className="w-full h-2 flex justify-center" style={{ marginBottom: "-2rem", marginTop: "-2rem" }}>
+  you can also read this article in Medium -> click [here](https://medium.com/@c.y.cvetkov/mastering-the-next-js-image-component-the-basics-7588dfea78c8)
+</small>
+## A Developer’s Cheatsheet
+
+Tired of always forgetting how to style and adjust the Next.js Image component in your layout?
+Full-width, adjust to parent’s container height, fixed height and width… it can get confusing.
+
+Here a summary of the most common use cases, focusing on the practical side of things, which will allow developers to spend less time worrying about the images and more time building a great website.
+
+### 1. Fixed width and height
+
+Alright, let’s start with the easy one. Simple use case: Two images 300x300 next to each other:
+
+```tsx
+// in a Next.js Component using tailwind
+
+<div className="w-full flex justify-center items-center">
+  <Image src={"/car.jpg"} alt={"Car"} width={300} height={300} />
+  <Image src={"/plane.jpg"} alt={"Plane"} width={300} height={300} />
+</div>
+```
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/nextjs-image/first.png"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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
+"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+/>
+
+Very nice looking and easy. You can use this, for example, where in a section,
+multiple images with fixed size are aligned next to each other.
+Get some hover effects, overlay text, bring the opacity down and have something like this:
+(Now is the right time to say that I use [Tailwind CSS](https://tailwindcss.com/) in all my examples)
+
+```tsx
+// Example of two images next to each other
+// with darker opacity and text
+<div className="w-full flex justify-center items-center gap-x-10">
+  <div className="relative">
+    <Image src={"/car.jpg"} alt={"Car"} className="opacity-30" width={300} height={300} />
+    <div className="absolute top-20 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold tracking-widest">TRAVEL</div>
+  </div>
+  <div className="relative">
+    <Image src={"/plane.jpg"} alt={"Plane"} className="opacity-30" width={300} height={300} />
+    <div className="absolute top-20 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold tracking-wider">HIGH</div>
+  </div>
+</div>
+```
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/nextjs-image/two.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+/>
+
+Now you know how to quickly get this in your website with the code snippet above.
+
+### 2. Dynamic image size
+
+When `width` and `height` are unknown. We can use `fill` —
+
+`<Image src={“/car.jpg”} alt={“Car”} fill objectFit=”cover” />`
+
+This needs the parent to have position set to `relative`, `fixed` or `absolute`, though AND
+the parent component must have `width` and `height` set, because with `fill` — the image just fills the parent element.
+
+Working example:
+
+```tsx
+// only fill - no width and height
+
+<div className="relative w-1/4 h-[30vh] flex self-center">
+  <Image src={"/car.jpg"} alt={"Car"} fill objectFit="cover" />
+</div>
+```
+
+**BUT**, If we need two images next to each other, each one of them should have a parent with set position,
+`width` and `height` . Otherwise they will stack up on each other and only one will be visible,
+because `fill` automatically sets the Image position to `absolute` :
+
+```tsx
+// two images
+
+<div className="w-full flex justify-center items-center gap-x-10">
+  <div className="relative w-72 h-96">
+    <Image src={"/car.jpg"} alt={"Car"} fill objectFit="cover" />
+  </div>
+  <div className="relative w-72 h-96">
+    <Image src={"/plane.jpg"} alt={"Plane"} fill objectFit="cover" />
+  </div>
+</div>
+```
+
+### 3. Static image import
+
+Another way to **not** specify `width` and `height` is to statically import an image.
+This is similar to the previous code snippet but without the `fill` attribute
+
+```tsx
+import Image from "next/image";
+import Car from "../public/car.jpg";
+import Plane from "../public/plane.jpg";
+export default async function Home() {
+  return (
+    <div className="w-full flex justify-center items-center gap-x-10">
+      <div className="relative w-72 h-96">
+        <Image src={Car} alt={"Car"} />
+      </div>
+      <div className="relative w-72 h-96">
+        <Image src={Plane} alt={"Plane"} />
+      </div>
+    </div>
+  );
+}
+```
+
+### 4. Blur placeholder
+
+If we use static import like the previous example, we only need one attribute for this cool effect: `placeholder="blur"`
+
+```tsx
+import Image from "next/image";
+import Car from "../public/car.jpg";
+import Plane from "../public/plane.jpg";
+export default async function Home() {
+  return (
+    <div className="w-full flex justify-center items-center gap-x-10">
+      <div className="relative w-72 h-96">
+        <Image src={Car} alt={"Car"} placeholder="blur" />
+      </div>
+      <div className="relative w-72 h-96">
+        <Image src={Plane} alt={"Plane"} placeholder="blur" />
+      </div>
+    </div>
+  );
+}
+```
+
+<div className="flex justify-between">
+    <div>
+        <Image
+        alt="Blurred Images"
+        src={"/images/nextjs-image/blur.webp"}
+        placeholder="blur"
+        blurDataURL="data:image/webp;base64,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"
+        width={250}
+        height={400}
+        objectFit="cover"
+        />
+    </div>
+    <div>
+
+        <Image
+        alt="Not Blurred"
+        src={"/images/nextjs-image/notblur.webp"}
+        placeholder="blur"
+        blurDataURL="data:image/webp;base64,UklGRo4JAABXRUJQVlA4WAoAAAAgAAAANgMAVAIASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggoAcAAPCRAJ0BKjcDVQI+7XaxVqmnJCOgCIkwHYlpbuFmv0SgJM519LXiuj+1fyBtAv/+7e5Gl50+wBacjfU1ATK3N9TUBMoPuu4K6EldN671qvELjfU3qqvEL9wF27Qw0jV+8ZnYcxz8G6PdIYI1sG0Orc0lDlbvSwaz5HSLb/RaM+c0a86J9OsEzzFgyaqHXYRUkqP+1yka0nAW6IlwlvipBoTLoEEpGrf6okURWBjrxWV3weiU/a9pMfH0gN+R849oTACa+lBEcLmYqJev6D4fPhI1nn+q3bce0j/XhLfCe7BDWrOVY0FoPqnFuzD9FO9MhV23HtDIAgWHoflx9WOoOjOrN9hhNxhBG9DG2c27SN/SFp9Dyu249owbHgdWRHu5Hf+E/iQDNA5y+qtQQSYnAce0Xj8fj8fkBsfkBsgMBukwqMfQzG3nGiUUiBTLpD/eUcPmR1W7bj2jB2FzPkpdV+A1GR9ZI+CZcLBBFeq3lvMsu0yjkVu3ZX7XtF4/IDY8DbFIsIwNKjFoycXy9iTFgHD8/zREpxUjRHI6rdvoipGs+UtIeyAajI+Tqi5p0vln91Tce0Xlx4k9ae2zz/Vby861/I8Vnd90Z3cj3Y3eEytzrqWuxqfdtx7B01qQtPka1uA49pNVGfo8x2qx08/K7kd+VvupsFu4DTce0V/bRe8fjjvj8fdB86jRE6gsiPdwEuAnukLjfW2VzQrjAIjRbuIOl23HuaOoz2kBpbke7gMX6VVy/RS431NQE+Mf9rkQzrlT7RePxx3xx3x+PAsgGL9Z5sdv2LxC431NUdQ/SskxdB86jPP61u21wVSL9Z5jqDMWYrMvELjfU1BkGdOsU5sVSFyBv6a0sdQWQDF+s8x1j/PFNL+CLc31NQEyt2C8EDUMai8mvx4GxQndwGL9Z5jqDWXStxdZl4hcb6moCZW6IVu4FFvnkY7R+PA2leov5x0wbjrMvELjfU1ATK3N9VWirf1ShslnI6MicW5vqagJlbm+pqAmVu0H5BjXigOcSr2CHOe1rGvELjfU1ATK3N9TUBMrc32sHaVDY2/r1h2ZeIXG+pqAmVub6moCmItzfWHZmCpBcdZl4hcb6moCZW5vqaMxISAf26Ckj3HWevi8QuN9TUBMrc31NQEyzP9LawGO8NuQGUAqjZAe46zLxC431NQEytzgxbLr93j2i8eCGFgtHxc2zmLjfU1ATK3N9TUBPN20LZox+dRntKabR8CzfU1ATK3N9TUBMrbYPHTm1uPZox9sBC8tvigFxvqagJlbm+pqAmWh7NGPx+Px+QXr9QWjGEvZl4hcb6moCZW5vqW+WPx+Px+QYYs9QAgx4vhKMleIXG+pqAmVyqOk+q3aP+XDE1hiXM0AKzjQfBFub6moCZW53/Pxkr0Nlr87z8jgezjE0UZXWZeIXG+pqEMHl/l9OjlarnFTN8B7E8LGjYXiFxvqagJlbm+pqAmWft9TUBMs/msf/6FxvqagJlbnBr6FwTAOYkSVvTnHMapzFyVFDJXiFxvqagLsHsXW5vqgEem5bsgm7QwzCNELjfU1ATK3N9S0AAD+8CL9z59qfS1A9v1QYbHjvRMYswnn9siT95AyuI/x6G4Z1XeNI0ZejEEy2hTnTzLiCm+l5E1lXeL1nZqYL+Jc5+EFliD8kuk0O+oND6XWy0rbHWyAxo8iCTRIqtpET3SJjCIqtfjqoamI5StFe2kto2MtQsqICN5ky8m09scjwZjYInlo6C91RGrDTYy6CCOBL/ToC3vcQLSKmZgzWsukXWwkEP5Yw94BAWWFWK9LKzCzi0IGedgUkSycFWStzBdHVeXm6T2EelWzMFfJwiRol8eqzsb5V0fS+e6ck6Ox+g0R3bD1zWNoVV3Ycm8Wln+VWZal6YVJiSBlvHlunPsN4MIPl+WvpnKt+48YOWtaXiU9PSyThGptGA3jtqpwcERgEcJdWswRxgohPIpvzeRUMtEF2vNtG31x0+todTk4bi475BKgkAwsbYkBFRlerizx5Cso3ZDKdH5hBEdBd/KXzi6sHqMwjWQfnBWuMWkecCZ3dgULxYBEtWF3BVSQIQxuUGIaDZ0BAPGCXT7WdBAUfc0cPvllPJ7mz2BFtnT1R7F0D635T+AJenZ2+M5t2AqT4o+RS+VxMACVcLCLqWIsRul/k58WPgxTgonyuqr9tYAI1D2orGe8ptIVYXfdw2maFtb39mBG5/0+MAAX8iwQ+4DpsoghSOrljxkINqqembwAA24KjTIqP58189LyW28Z52AACPmRDr8Zs+7bUiUPCAAtEcG+9x0ZmUhRAAAzggAAAKUWsRQAzUoAAA8QS3dzufeTVeQLmFnt357BV3WLg5VggABtOyZ2W+TaX5em/MMfJwgADHnie6BUsqlSiNVHKtRJLh066WcVtMAAHS/IzVnyFUWfu0GWuk1NawgAev/shwbH52+lMFAAJ2Y28G5UnC44ogCAmZlXZ9tvDE0xDr+R6lgC/Do1e62e506z2ktQggDysTykZatsPjDhBNalu8KIAHJgwgwlFBK2Zoa1wAVGMsDOARQCdeZmcIQ5HBPu+0LuxWM6uUydl3vWL7oF2tngAAAA"
+        width={250}
+        height={400}
+        objectFit="cover"
+        />
+    </div>
+
+</div>
+
+if we don’t use the static import, we must specify a **blurDataURL**:
+
+```tsx
+import Image from "next/image";
+export default async function Home() {
+  return (
+    <div className="relative w-72 h-96">
+      <Image src={"/car.jpg"} alt={"Car"} fill placeholder="blur" blurDataURL="data:image/jpeg;base64,YOUR_IMAGE_BASE64_ENCHODED" />
+    </div>
+  );
+}
+```
+
+This will also work with a static export! One must set the images to unoptimized in the Nextjs configuration though.
+This means that our website won’t take advantage of the Image Optimization that Nextjs provides but will still show the blur effect.
+We can still optimize our Images with Nextjs static export, but this is a topic for another time! Here the configuration
+
+```ts
+const nextConfig: NextConfig = {
+  output: "export",
+  images: {
+    unoptimized: true,
+  },
+};
+```
+
+### Conclusion
+
+The Next.js Image component can be very powerful and do a lot with a minimal setup.
+By mastering its basics and understanding common use cases, developers can optimize their workflow and code faster.
+I myself needed some time to start using it seamlessly in my projects, so keep experimenting and building — your users will thank you for it!
+
+<div className="h-10 w-2"></div>
