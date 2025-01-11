@@ -1,0 +1,212 @@
+---
+title: "YOLOv11 Instance Segmentation with OpenCV and Java (Part 1)"
+date: "2025-01-11"
+tags: ["java", "opencv", "yolo", "python"]
+published: true
+---
+
+# YOLOv11 Instance Segmentation with OpenCV and Java (Part 1)
+
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  alt="Image of author"
+  src={"/images/yolov11-seg/bike-seg.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "335px", objectFit: "cover" }}
+/>
+<small className="w-full h-2 flex justify-center" style={{ marginBottom: "-2rem", marginTop: "-2rem" }}>
+  you can also read this article in Medium -> click [here](https://medium.com/@c.y.cvetkov/yolov11-instance-segmentation-with-opencv-and-java-part-1-8180afb52313)
+</small>
+<br />
+
+In this article, we will look at instance segmentation using YOLOv11.
+
+Instance segmentation goes a step further than object detection and involves identifying individual objects in an image and segmenting them from the rest of the image.
+
+YOLO (You Only Look Once) is one of the most famous object detection systems. It achieves very high speed and accuracy and is one of the easiest ways to get into object detection. The documentation is absolutely perfect, everything is very well explained with lots of examples. It also has a big community of researchers, developers, and enthusiasts who share various improvements and contribute to the project.
+
+I started playing around with YOLO through Python. The integration is so smooth and I was really impressed by how fast one can start experimenting with instance segmentation. Inference can be done literally in 4 lines:
+
+```python
+from ultralytics import YOLO
+# Load the YOLOv11 model
+model = YOLO("yolo11n-seg.pt")
+# Run predictions
+results = model.predict('/path/to/image.jpg')
+# Display results
+results[0].show()
+```
+
+And here the result:
+
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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LxC431NQEytzfU1ATZCY+jTH7cFcHPRi/W3x5jqCyAYv1nmOn6boCZW5vqagJlbm+pqAmVub6moCZW5xwMPZAKrkzzHUFkAxfrb5UfS7b/c31NQEytzfU1ATK3N9TUBMrc31NPMOx0LfV9bNs28dqaDNZ+c32+pqAmVub6moCZW5vqagJlbm+pqAmVtrqUFf8yYVPqJDQ/VWxLIEytzfU1ATK3N9TUBMrc31NQEytzfU1ATYwQV/xtutxksy8QuN9TUBMrc31NQEytzfU1ATK3N9TUDOO0XBuOsy8QuN9TUBMrc31NQEytzfU1ATK3N9TUBMrfGyV4hcb6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pqAmVub6moCYQ/wHW5vqagJlbm+pqAmVub6moCZW5vqagJlbm+pp//D9ggD3RuzbLRwXYCFxvqagJlbm+pqAmVub6moCZW5vqagJlbm46+S9sdQMIDeAcbaEWHr9zfU1ATK3N9TUBMrc31NQEytzfU1ATK211GzMdpfN8eY6gsgJasldAH1mXiFxvqagJlbm+pqAmVub6moCZW5uOsXJZToIq/HOL1O4+fyag4N0BMrc31NQEytzfU1ATK3N9TUBMrcvms9op2O+SEhkRaXIR1u0K6AmVub6moCZW5vqagJlbm+pqAmVtrsQXb/hc0SJHdNf/5rYsB9k1ATK3N9TUBMrc31NQEytzfU1ATC1mNZn2AlmUvt1wH8qFO85zSlC431NQEy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"
+  alt="Image of author"
+  src={"/images/yolov11-seg/python-bike-seg.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "235px", objectFit: "cover" }}
+/>
+As a Java developer, I also wanted to immediately try this in a simple Java project, but the process there wasn’t that straightforward. Especially understanding the post-processing of the inference outputs
+cost me a lot of time, so I thought it was worth sharing with people who may also struggle with this.
+
+So to start we need a simple Java gradle or Maven project and add the OpenCV dependency in build.gradle:
+
+```
+plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
+}
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.openpnp:opencv:4.9.0-0'
+    ...
+```
+
+here is also the maven dependency to add in your pom.xml if you use maven:
+
+```
+<dependency>
+    <groupId>org.openpnp</groupId>
+    <artifactId>opencv</artifactId>
+    <version>4.9.0-0</version>
+</dependency>
+```
+
+Let’s set up some basics next, before moving to the segmentation part. I usually start by just reading and showing an image with OpenCV to make sure we got the setup correctly. We’ll load the OpenCV library, then read an image from our resources folder (in my example I have a single image image there — `bike.jpg`) and show it using OpenCV HighGui:
+
+```java
+package org.tutorial;
+import nu.pattern.OpenCV;
+import org.opencv.core.Mat;
+import org.opencv.highgui.HighGui;
+import org.opencv.imgcodecs.Imgcodecs;
+
+public class InstanceSegmentation {
+    private static final String IMAGE_NAME = "bike.jpg";
+
+    public static void main(String[] args) {
+        OpenCV.loadLocally();
+
+        String imagePath = ResourceUtils.getResourcePath(IMAGE_NAME);
+
+        Mat image = Imgcodecs.imread(imagePath);
+
+        HighGui.imshow( "Image", image );
+        HighGui.waitKey(0);
+
+        HighGui.destroyAllWindows();
+        System.exit(0);
+    }
+}
+```
+
+I like to prepare some util classes when working with the file system.
+It allows me to then focus on the object detection and not think about where to
+load the images or models from. Here is my `ResourceUtils.java` helper:
+
+```java
+import java.net.URL;
+
+public class ResourceUtils {
+    public static String getResourcePath(String resourceName){
+        URL resourceUrl = App.class.getClassLoader().getResource( resourceName );
+        if(resourceUrl == null){
+            throw new RuntimeException("Resource with name "+resourceName+ "not found");
+        }
+        String resourcePath = resourceUrl.getPath();
+        if(resourcePath.isEmpty()) {
+            throw new RuntimeException("Error on getting path from resource URL");
+        }
+        return resourcePath;
+    }
+}
+```
+
+Alright, now that we have OpenCV in place and we can read and show images, we get to the more interesting part.
+
+We’ll use the OpenCV [Deep Neural Network module](https://docs.opencv.org/3.4/d6/d0f/group__dnn.html) which is a perfect starting point for any beginner to get into deep-learning-based computer vision
+and experiment a bit. Models trained in frameworks like PyTorch or TensorFlow must be converted to the ONNX (Open Neural Network Exchange)
+format in order to be used directly with the OpenCV DNN module. And that’s what we’re going to do next. Luckily the conversion of a YOLO Model to .onnx is very
+simple. You can do it with the [YOLO CLI or with Python](https://docs.ultralytics.com/modes/export/).
+We’ll use the [YOLO11-seg](https://docs.ultralytics.com/tasks/segment/) model which is the latest version available at the time of writing.
+I recommend using Python through [Google Colab](https://colab.research.google.com/) for this. Just create a new notebook and add the following code cell:
+
+```python
+!pip install ultralytics
+from ultralytics import YOLO
+model = YOLO("yolo11n-seg.pt")
+success = model.export(format="onnx")
+```
+
+YOLO models, including previous versions, are trained on the COCO (Common Objects in Context) dataset by default.
+This dataset is widely used in the computer vision community for object detection tasks and has 80 classes, including Person, Car, Bicycle, Dog, Cat, and many more.
+
+After this, just download the `yolov11n-seg.onnx` model and save it to your resources folder in the Java project.
+
+Our next steps will be
+
+1. Prepare the input image for the model
+2. Load the model
+3. Run the inference
+4. Extract the segmentation information from the results
+5. Visualize the results
+
+We start by preparing the image for the YOLOv11 model. This step includes the resizing ([IMG_SIZE is 640px for this YOLO model](https://docs.ultralytics.com/models/yolo11/#__tabbed_1_2))
+
+```java
+// this step includes swap BGR to RGB
+Mat inputBlob = Dnn.blobFromImage(image, 1.0 / 255.0,
+                new Size(IMG_SIZE, IMG_SIZE),
+                // Here we supply the spatial size that the Convolutional Neural Network expects.
+                new Scalar(new double[]{0.0, 0.0, 0.0}),
+                true, false);
+```
+
+The last two boolean flags are:
+
+**swapRB**: flag which indicates that swapping first and last channels in a 3-channel image is necessary (in OpenCV, the default image format is BGR instead of the more common RGB, that’s why we set this flag to true)
+
+**crop**: flag which indicates whether the image will be cropped after resizing or not.
+
+The next step is to load our model and set our image blob as an input to the network:
+
+```java
+String modelPath = ResourceUtils.getResourcePath(MODEL_NAME);
+Net net = Dnn.readNetFromONNX(modelPath);
+net.setInput(inputBlob);
+```
+
+Now it’s time to feed the input data through the network and get the output predictions:
+
+```java
+List<String> outNames = net.getUnconnectedOutLayersNames();
+List<Mat> outputsList = new ArrayList<>();
+net.forward(outputsList, outNames);
+```
+
+`net.getUnconnectedOutLayersNames()` returns the names of the output layers of the network. In most deep learning models, the last layer(s) give the final predictions, and this function allows you to get the names of those layers to use them for further processing.
+
+`outputsList` will hold the results (the actual outputs) after performing the forward pass on the model.
+
+`net.forward` is used to run the forward pass through the network. It calculates the outputs by processing the input data with the layers of the model.
+
+Now it is time for post-processing — geting the relevant information from the outputs. This is kind of the tricky part and we we’ll have a look at it in great detail in **Part 2** of this series, which is coming soon!
+
+### Conclusion
+
+Java is not yet there when it comes to rapidly experimenting with object detection and instance segmentation, but hopefully this series will help you get a grasp of what is now possible in this ecosystem with the help of OpenCV.
+
+Hope you have managed to follow along until now. Stay tuned as we tackle this in the next part!
+
+<div className="h-10 w-2"></div>
