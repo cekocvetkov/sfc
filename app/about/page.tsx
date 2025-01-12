@@ -70,26 +70,26 @@ function About() {
             <div className="font-extrabold"> Favourite Technologies:</div>
           </div>
           <div className="flex flex-wrap gap-y-2 pb-8 md:pb-0 md:flex-row gap-x-[5.9px] md:pl-1">
-            <Image src={"/images/java-original.svg"} title="NodeJS" alt="NodeJS" width={20} height={18} />
-            <Image src={"/images/javascript-original.svg"} title="NodeJS" alt="NextJS" width={18} height={18} />
-            <Image src={"/images/typescript-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/css3-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/nodejs-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/angular-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/react-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/nextjs-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/quarkus-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/spring-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/postgresql-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/rabbitmq-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/docker-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/kubernetes-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/helm-original.svg"} title="NodeJS" alt="React" width={18} height={18} style={{ height: "18px", backgroundColor: "white" }} />
-            <Image src={"/images/argocd-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/amazonwebservices-plain-wordmark.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/azure-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
-            <Image src={"/images/github-original.svg"} title="NodeJS" alt="React" width={18} height={18} style={{ height: "18px", backgroundColor: "white" }} />
-            <Image src={"/images/githubactions-original.svg"} title="NodeJS" alt="React" width={18} height={18} />
+            <Image src={"/images/java-original.svg"} title="Java" alt="Java" width={20} height={18} />
+            <Image src={"/images/javascript-original.svg"} title="JavaScript" alt="JavaScript" width={18} height={18} />
+            <Image src={"/images/typescript-original.svg"} title="TypeScript" alt="TypeScript" width={18} height={18} />
+            <Image src={"/images/css3-original.svg"} title="CSS3" alt="CSS3" width={18} height={18} />
+            <Image src={"/images/nodejs-original.svg"} title="NodeJS" alt="NodeJS" width={18} height={18} />
+            <Image src={"/images/angular-original.svg"} title="Angular" alt="Angular" width={18} height={18} />
+            <Image src={"/images/react-original.svg"} title="React" alt="React" width={18} height={18} />
+            <Image src={"/images/nextjs-original.svg"} title="NextJS" alt="NextJS" width={18} height={18} />
+            <Image src={"/images/quarkus-original.svg"} title="Quarkus" alt="Quarkus" width={18} height={18} />
+            <Image src={"/images/spring-original.svg"} title="Spring" alt="Spring" width={18} height={18} />
+            <Image src={"/images/postgresql-original.svg"} title="PostgreSQL" alt="PostgreSQL" width={18} height={18} />
+            <Image src={"/images/rabbitmq-original.svg"} title="RabbitMQ" alt="RabbitMQ" width={18} height={18} />
+            <Image src={"/images/docker-original.svg"} title="Docker" alt="Docker" width={18} height={18} />
+            <Image src={"/images/kubernetes-original.svg"} title="Kubernetes" alt="Kubernetes" width={18} height={18} />
+            <Image src={"/images/helm-original.svg"} title="Helm" alt="Helm" width={18} height={18} style={{ height: "18px", backgroundColor: "white" }} />
+            <Image src={"/images/argocd-original.svg"} title="ArgoCD" alt="ArgoCD" width={18} height={18} />
+            <Image src={"/images/amazonwebservices-plain-wordmark.svg"} title="Amazon Web Services (AWS)" alt="Amazon Web Services (AWS)" width={18} height={18} />
+            <Image src={"/images/azure-original.svg"} title="Microsoft Azure" alt="Microsoft Azure" width={18} height={18} />
+            <Image src={"/images/github-original.svg"} title="GitHub" alt="GitHub" width={18} height={18} style={{ height: "18px", backgroundColor: "white" }} />
+            <Image src={"/images/githubactions-original.svg"} title="GitHub Actions" alt="GitHub Actions" width={18} height={18} />
           </div>
         </div>
       </div>
