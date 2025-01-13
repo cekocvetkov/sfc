@@ -39,7 +39,11 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <script data-goatcounter="https://tsvetkov.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+      <Script
+        defer
+        src="/umami.js"
+        data-website-id="ae5e8a60-bb8f-42f9-a85c-7af013ca8a81"
+      />
       <body className={`${inter.className} antialiased m-0 p-0 h-screen w-screen overflow-hidden bg-background-color text-primary-text-color`}>
         <div className="h-[100%] flex flex-col items-start justify-start md:mt-[-200px] md:h-auto md:flex-co md:fixed md:inset-0  md:items-center md:justify-center">
           <div className="h-[100%] flex flex-col w-full md:flex-row md:w-[1056px] md:h-[620px] md:border-[0.1px] md:border-border-color">
