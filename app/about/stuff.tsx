@@ -11,12 +11,12 @@ function Stuff() {
         <div className="flex flex-col gap-x-2 md:gap-x-0 lg:gap-x-2">
           <div className=" min-w-24 sm:min-w-max">Hobbies: </div>
           <div className="flex text-secondary-text-color">
-            <Image src={"/images/icons/guitar.svg"} title="Java" alt="Java" width={18} height={18} />
-            <Image src={"/images/icons/music.svg"} title="Java" alt="Java" width={18} height={18} />
-            <Image src={"/images/icons/football.svg"} title="Java" alt="Java" width={18} height={18} />
-            <Image src={"/images/icons/basketball.svg"} title="Java" alt="Java" width={18} height={18} />
-            <Image src={"/images/icons/book.svg"} title="Java" alt="Java" width={18} height={18} />
-            <Image src={"/images/icons/laptop.svg"} title="Java" alt="Java" width={18} height={18} />
+            <Image src={"/images/icons/guitar.svg"} title="Guitar" alt="Guitar" width={18} height={18} />
+            <Image src={"/images/icons/music.svg"} title="Music" alt="Music" width={18} height={18} />
+            <Image src={"/images/icons/football.svg"} title="Football" alt="Football" width={18} height={18} />
+            <Image src={"/images/icons/basketball.svg"} title="Basketball" alt="Basketball" width={18} height={18} />
+            <Image src={"/images/icons/book.svg"} title="Book" alt="Book" width={18} height={18} />
+            <Image src={"/images/icons/laptop.svg"} title="Laptop" alt="Laptop" width={18} height={18} />
           </div>
         </div>
       </div>
