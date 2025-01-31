@@ -9,7 +9,7 @@ const useMobile = () => {
     } else {
       isMobile.current = false;
     }
-    console.log("Mobile View? - " + isMobile.current);
+    // console.log("Mobile View? - " + isMobile.current);
   }, []);
 
   return isMobile;
