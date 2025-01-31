@@ -35,7 +35,7 @@ async function Article({ params }: { params: { slug: string } }) {
   if (!article) return notFound();
 
   return (
-    <article className="prose text-primary-text-color text-base prose-invert overflow-auto overflow-x-hidden scrollbar-hide transition-transform ease-in-out duration-[0.2s]">
+    <article className="min-w-full prose text-primary-text-color text-base prose-invert overflow-auto overflow-x-hidden scrollbar-hide transition-transform ease-in-out duration-[0.2s]">
       <Tags tags={article.metadata.tags}></Tags>
 
       {/* @ts-expect-error: Should expect string */}

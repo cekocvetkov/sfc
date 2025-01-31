@@ -3,7 +3,7 @@ import React from "react";
 export default function Home() {
   return (
     // <div className="top-[35%] relative md:top-[174px] md:bottom-0 md:left-5 md:right-5">
-    <div className="top-[35%] relative md:top-[28%] md:left-[4%] md:right-5">
+    <div className="top-[35%] relative md:top-[32%] md:left-[4%] md:right-5">
       <main className="flex flex-col flex-grow justify-center">
         <h1 className="text-2xl">software crafting chronicles</h1>
         <div className="flex text-2xl text-secondary-text-color justify-center">
