@@ -1,98 +1,398 @@
 ---
-title: "Quarkus Integration Tests With S3 Bucket Testcontainer"
-date: "2024-03-02"
+title: "Quarkus Integration Tests for S3 Bucket with LocalStack and Testcontainers"
+date: "2025-02-05"
 tags: ["quarkus", "s3", "aws", "java", "testcontainers"]
+published: true
+image: "localstack-testcontainers/localstack.webp"
 ---
 
-# Quarkus Integration Tests With S3 Bucket Testcontainer
+# Quarkus Integration Tests for S3 Bucket with LocalStack and Testcontainers
 
-Contentzz servus, hallo das bin ich
+<Image
+  alt="Article Header"
+  src={"/images/localstack-testcontainers/localstack.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+/>
 
-```js {4} showLineNumbers
-function zeko(param) {
-  console.log("am I right");
+In this article, we'll have a look at a practical example of Integration Tests for uploading an image into S3 Bucket with the help of LocalStack and Testcontainers.
+Uploading an image to an S3 bucket is a very common task in real-life applications nowadays. Imagine - for example, your users need to add a profile picture, add some images in a blog article… or if you want to use Machine Learning to detect objects on the uploaded image then, do Instance Segmentation, or just some image processing using OpenCV -  the first step of the way is always to be able to upload an image.
+
+### Prerequisites:
+
+You need to have docker, java, and a code editor (I use IntelliJ) installed on your machine to follow along 👍
+
+## Create a Quarkus Java Application
+
+Let's start by creating a Quarkus Java Application for our example. Go to [code.quarkus.dev](https://code.quarkus.io/):
+
+1. Name your project
+2. Choose Gradle as Build Tool (optional, if you want to follow along. Maven would of course also work)
+3. Preferably - Java 21
+4. Add the Amazon S3 and the Quarkus Rest dependencies (we'll add more later).
+
+<Image
+  alt="Article Header"
+  src={"/images/localstack-testcontainers/quarkus-dev.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,UklGRmoJAABXRUJQVlA4WAoAAAAgAAAANgMACQIASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggfAcAAHCKAJ0BKjcDCgI+7W6wVimlJCOgURjZMB2JaW7hY/7MbvOk+VrDdk0f6n/GRsE//62ZjWPcz5AAw3lnT4AfSeZBVLpzFo3mAH0nmQWf0yqd0+Fsc+ulNOsL0ZwhPesqbHhWNOwfIOIstS3Tmws3cJOYsIL3kLG9kF0m97Av6ysSWZsRErT2humWjNHxuf55Vygb2CMXShiGN7LukysgZZjhEeMDh8qjPi4Ik0cswpp0S02oI7i0mRh9nSZl8c2SRRxv5p5PoOnFoG6dbU5O2zUhb06xunhWNyMXSPgYxqdNADe2oeZvHWTwd9eveXT/1H7ILpN71OTenMU3S6lPPeRKJ5sjsrFrsmMTneECiQEG2SZWob3C2QXSb3m1xRZPPeBjtaaZFxB6nJvTtXdjj3paIGiMjFGb8Ze8hY3sgrFxpBr57wLz3kjI+zRkcPepyb1IEAtF1+FEFyr7HgXoqEp3qS95A8afcVLTTIuJ12e4zFNNMi1/THNNIWN7LsOPykkTwY3xtTk+m54RaakPmmRvz5piuvdn/HrOusFh57UJmu1+pybpXoQXIsS7jGmRcaQp43sfbERRZTrjRx17sy1G2ZwPsJI1QZpAWjOWx9fhQ+B09kqIhEMyW1Y4osnnvAvPeYk0gKHXuygWT3GfyCDYyLijHV3Gj6+dpyG+tNKDdNKaafcINfPeBee8C73Xuy4dFoB2MqaUoYkaoM0f1VLvFYJ/YSmiwYXW1ALRhrSxBFk73XuvehfL3RbmLeoV3rjWM4rTQPHzsuJ0Le9nJGI1C8nnvAvPeBehM9m6JC23ijWLTmNGcogu0rO89nJPGcgv8Cw4ERGlzhbAvQmew7ar7s5yzpeLTmLTpy9q0j2Bwh2U6r64x6Axm9kyLjpebCQ+mx8AfSeZBVL61UfneOknfB/ssurpN8LN2Ryh18seM/Hh4B9J5kFUunMW5zAhhqonghD7mALg+2ls9vrFHYuGEz8APpPMgql03SrrnJrcJdo67+W/FolPT1BQql05i05i05pRKUyzH0lIh822qPph8zpR4mfcg05i05i05i05nnYft/xWCmqwGUZ6pG5WD+d0nmNwwmfgB9J5kFUm+d/4x/+LCDwmy3qQJO3CClOwfIEtOYtOYtOYtN3YttJVXrcCsdl/3+HpS1pN0VEKpOOk8yCqXTmLTmdbWJUepv/3tp7luSZVl3SbUAe3JsH0nmQVS6cxac0ljMvoqSmEJGtMcaZs+ML6dYdIeqXTmLTmLTdl2Qo9rj3SbqtZly8FhRTWosdxnomTPwA+k8yCplvIb6ENSIHyTYZY/+oSxKAFh/EVMWnMWnMWnWF46k3znqz59F0nmyb51UC4CAA7sFpzYPpPMgoO4KaI5qqrpOXrM6bUxadCxfO58QAwPpPMgqsO1TkC62XVfkVQ7K4xHLtDo7G9OpIxacxacxdoJonS0nmXyPGMvdyU++Punxt+IKtlNOYtOZbSINLowAD+6cL3ysOF75JZaYiHVDsf+ZYK0r0gMwG26WmPniuCO0tauSnoYkIjlz9BG0MVtd93BOOi0IgwLWOedZVexOEUUGuemJX9+FbAayeTBIzU0FEMvLUjokbz5YCPuhOEqo1sI/cGGPC6ndAWl45FjvFJtOSOY4AGZVdZuQY2wiXAd61+JKVrUid6je0pTInJHWmEmISd7AcidwlflgUmaI8XK+iiRortPBAAg1mRM5OL4CtNdRRwYRkEJDIaLObQ70yzVL/Htb6IN1IDbk6gdd6bQHE/3Dc3j2S4VNgy6c1C3bX0zViKGApuonmYFvg3kIoOffexTz+3iAaUEiGzgEzM9L8xzTgu3DezxdvgEod771/JIerMKzZzOg/WAh5q7m1tvVDd1JzaqB8ynoNHAqWqv1kQKJ8aAXQDhMEGodc2YTEZMoRljkz2fuTYWOLdA5ij+1SL3oP0o+YSt0G0gGr16G2WIHfSDtroEW9HENVvRZeUhM+gM1vz/uFO9kha+eCFsFyZYWAZi4j6Wv2VufYStlWJTIhqxilVmIGqerRNQRRhvapYjAwNBgFEjcbSNBAAI0dwLy8BuHieL0jqc138GSzOQoodnrE9u1/deAAaUPAGnpzgqbBgU2/vLFNoCVSv8c97YIAeAhj5M49UxJNCTae/F6JNXbbKwAAMmA96kg0OtuuqjT9P6bhCgAAHScvcNnkwLqWJ8zHVDPoshAAHe6m1XGAb5BTtN3A7m8YtoQAChv4jrJFOMepFwAAR5y+ac/AS3yJ/2Ia2UNvNp6oAADDK9+lefKsSf9nFBAgAGGOjJzVJdSOcixVQrkJsMgAAI9YXKSokL21G5I9dXnMqVZfAAbydpoTNHkkJkiZ8jB0LTBPkAEdHmTTLON2e4Nfqa4jiT7LVkQSEwSfLFP01mIAR00nJZYpKgC9j6QO352o14NwzESHqbsn7eYCR/UZ5vrunIXv1hNVF0/UAchcqY6eAz8wv1mQRgY2/zxvbsaWDwtlsemKK44FPAM2ScqoBZ87BADjnrFj+ehQhwWSjdguqABVeCctHlHHWWOIA"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+/>
+
+To showcase the testing with Testcontainers we first need some code. I'm thinking - let's create a minimal setup, that can still help us understand the most important parts:
+
+1. Create a REST Endpoint to upload an image
+2. Save the image in our S3 Bucket
+3. List all the images in the S3 Bucket
+
+This should be enough to have something to test and to be able to debug our functionality along the way easily.
+
+I'll start by cleaning up our project a bit, to keep things minimal - a couple of the pre-generated folders and
+files from the Quarkus starter won't be needed for this tutorial - let's delete them so that they are not in the way.
+I'm talking about the `src/native-test`, `src/main/docker` folders and the pre-generated `Resources` and `Resource Tests` in the `main` packages.
+Our project structure should look like this (with your project name, of course):
+
+<Image
+  alt="Project structure"
+  src={"/images/localstack-testcontainers/structure.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+/>
+
+## AWS S3 Bucket Configuration
+
+We need to add one more dependency to our project at this stage: the `url-connection-client` library
+
+```bash
+implementation 'software.amazon.awssdk:url-connection-client'
+```
+
+Now go to `/src/main/resources` and add the following content to the `application.properties` file.
+
+```properties
+quarkus.s3.devservices.enabled=false
+quarkus.s3.path-style-access=true
+quarkus.s3.endpoint-override=http://localhost:4566
+quarkus.s3.aws.region=us-west-1
+bucket.name=s3-dev-bucket
+```
+
+### Explanation:
+
+`devservices.enabled=false` : we set this so that quarkus-amazon-s3 doesn't automatically start a LocalStack container in dev mode for us. We want to go about this with understanding, so we're going to set up LocalStack ourselves.
+
+`quarkus.s3.path-style-access`: Enable using path style access for accessing S3 objects instead of DNS style access. [(see docs for more details)](https://docs.quarkiverse.io/quarkus-amazon-services/dev/amazon-s3.html#quarkus-amazon-s3_quarkus-s3-path-style-access)
+
+`quarkus.s3.endpoint-override`: the endpoint with which the AWS SDK should communicate.
+
+The `region` and `bucket name` are self-explanatory. We only reference them here, but we're going to create them a bit later. It's worth mentioning here, that if we use LocalStack for local S3 Instance, the access key and secret access key are not required to be set. You'll need these if you run the application in production though.
+
+## Service for adding an image to the S3 Bucket
+
+Let’s create a new package called `service` and add a service class (`S3Service`) there with two methods: `uploadFileToS3` and `listS3Objects`.
+The second one we’re going to use to verify that the image upload was successful:
+
+```java
+package com.tsvetkov.service;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.logging.Logger;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
+import software.amazon.awssdk.services.s3.model.S3Object;
+
+import java.util.List;
+import java.util.UUID;
+
+@ApplicationScoped
+public class S3Service {
+    private static final Logger LOG = Logger.getLogger(S3Service.class);
+
+    @ConfigProperty(name = "bucket.name")
+    private String bucketName;
+
+    @Inject
+    private S3Client s3;
+
+    public PutObjectResponse uploadFileToS3(FileUpload file) {
+        LOG.info("Saving image in s3 bucket...");
+
+        return s3.putObject(PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(file.fileName()+"_"+ UUID.randomUUID())
+                        .contentType(file.contentType())
+                        .build(),
+                file.uploadedFile());
+    }
+
+    public List<S3Object> listS3Objects() {
+        return s3.listObjects(ListObjectsRequest.builder().bucket(bucketName).build()).contents();
+    }
+}
+
+```
+
+We’ll get to the `FileUpload` type in a second 👍
+
+## Create an Endpoint for uploading an image
+
+Create a new `UploadImageResourceand` let’s add the following code inside:
+
+```java
+package com.tsvetkov;
+
+import com.tsvetkov.service.S3Service;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import org.jboss.logging.Logger;
+import org.jboss.resteasy.reactive.RestForm;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
+import software.amazon.awssdk.services.s3.model.S3Object;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Path("/upload")
+public class UploadImageResource {
+    private static final Logger LOG = Logger.getLogger(UploadImageResource.class);
+
+    @Inject
+    S3Service s3Service;
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response multipart(@RestForm("image") FileUpload file) {
+        s3Service.uploadFileToS3(file);
+
+        List<S3Object> s3BucketObjectsList =  s3Service.listS3Objects();
+
+        List<String> objectNames = s3BucketObjectsList.stream()
+                .map(S3Object::key)
+                .toList();
+
+        LOG.info(objectNames);
+        return Response.ok(objectNames).build();
+    }
+
 }
 ```
 
-```js showLineNumbers
-export function formatDate(dateString: string) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-  let s: string = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+Note the new way to handle Multipart Form data from Quarkus ([see Quarkus documentation](https://quarkus.io/guides/rest#multipart)).
+This new method is really an improvement over the `@MultipartForm` annotation, that is now deprecated:
+
+> To handle HTTP requests that have `multipart/form-data` as their content type, you can use the regular [`@RestForm`](https://javadoc.io/doc/io.quarkus.resteasy.reactive/resteasy-reactive-common/3.17.7/org/jboss/resteasy/reactive/RestForm.html) annotation, but we have special types that allow you to access the parts as files or as entities.
+
+So the code is pretty straight forward ->
+
+1. Upload Image File to S3
+2. List all the objects in the bucket, to verify that we have successfully added the file
+
+## Create S3 Bucket locally
+
+Alright, now, before we start our application, we have to actually get LocalStack running and create an S3 bucket to which our application can connect.
+The easiest way is to use `awslocal` which is LocalStack’s wrapper around the AWS CLI and it simplifies the setup a lot. So here are the steps:
+
+1. Start a LocalStack docker container:
+
+   `localstack start -d`
+
+2. Connect to the container:
+
+   `docker exec -it localstack_main bash`
+
+3. Create the bucket with the LocalStack AWS CLI:
+
+   `awslocal s3api create-bucket - bucket s3-dev-bucket - region eu-west-1 - create-bucket-configuration LocationConstraint=eu-west-1`
+
+4. Verify that the bucket was created:
+
+   `awslocal s3api list-buckets`
+
+## Run Quarkus App
+
+Now, we can start our Quarkus application and check if everything works as expected. Just go to the terminal in the project folder and execute:
+`./gradlew quarkusDev`
+
+You can use Postman or any other API Platform to test our Endpoint:
+
+<Image
+  alt="Postmen Request"
+  src={"/images/localstack-testcontainers/postman.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+/>
+
+That should upload the image (in my example `bike2.jpg`) to our local S3 Bucket! You should see something similar to this in the console:
+
+```
+INFO  [com.tsv.service.S3Service] (executor-thread-2) Saving image in s3 bucket 's3-dev-bucket' ...
+INFO  [com.tsv.UploadImageResource] (executor-thread-2) [bike2.jpg_dc8960c7-a304-4c39-a61d-090a198e8072]
+```
+
+## Integration Tests with LocalStack and TestContainers
+
+Alright, now to the main part. Before we continue, make sure to have the following test (and Jackson — serialization support for Quarkus REST) dependencies in your `build.gradle`:
+
+```
+    implementation 'io.quarkus:quarkus-rest-jackson'
+    testImplementation "org.testcontainers:localstack"
+    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'io.rest-assured:rest-assured'
+```
+
+To create an Integration Test for our application that saves images to an S3 Bucket,
+we should start a LocalStack container and create an S3 Bucket before we run our tests.
+Luckily, Quarkus provides a very nice way to spin up services before the application starts — [QuarkusTestResource](https://quarkus.io/guides/getting-started-testing#quarkus-test-resource):
+
+> By simply annotating any test in the test suite with `@QuarkusTestResource`, Quarkus will run the corresponding `QuarkusTestResourceLifecycleManager` before any tests are run.
+
+Let’s create our `QuarkusTestResource` in `src/test/java` that should start a LocalStack container and create an S3 Bucket.
+
+```java
+package com.tsvetkov;
+
+import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
+import org.jboss.logging.Logger;
+import org.testcontainers.containers.Container;
+import org.testcontainers.containers.localstack.LocalStackContainer;
+import org.testcontainers.utility.DockerImageName;
+
+import java.io.IOException;
+import java.util.Map;
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.S3;
+
+public class LocalStackS3TestResource implements QuarkusTestResourceLifecycleManager {
+    private static final Logger LOG = Logger.getLogger(LocalStackS3TestResource.class);
+
+    private LocalStackContainer localStackContainer;
+    private static final String BUCKET_NAME = "s3-dev-bucket";
+
+    @Override
+    public Map<String, String> start() {
+        localStackContainer = new LocalStackContainer(DockerImageName.parse("localstack/localstack:3.7.2"))
+                .withServices(S3);
+        localStackContainer.start();
+
+        return Map.of();
+    }
+
+    private void createBucket() {
+        try {
+            localStackContainer.execInContainer("awslocal", "s3api", "create-bucket", "--bucket", BUCKET_NAME);
+            Container.ExecResult s3BucketsList = localStackContainer.execInContainer("awslocal", "s3api", "list-buckets");
+            assert s3BucketsList.getStdout().contains("\"Name\": \"test-bucket\"");
+            LOG.info("Successfully created a bucket with name 'test-bucket'");
+
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Something went wrong while executing awslocal CLI commands in the localstack container", e);
+        }
+    }
+
+    @Override
+    public void stop() {
+        localStackContainer.stop();
+    }
 }
 ```
 
-```tsx
-import styles from "./Home.module.css";
-function HomeComponent() {
-  return (
-    <div className={styles.home}>
-      <div className={styles.title}>software crafting chronicles</div>
-      <div className={styles.author}>TSVETAN TSVETKOV</div>
-    </div>
-  );
-}
+So what happens here — we create a Java class that implements the `QuarkusTestResourceLifecycleManager`
+and need to implement the `start()` and `stop()` methods. In the `start` method — we create a LocalStack container with S3 service and start it! Additionally,
+we connect to the container and execute some `awslocal` commands that help us create an S3 Bucket. I find this code easy to read and understand,
+so I’m not going to go into any more details here. Still, if you have any questions regarding this piece — write me a message and I’ll be happy to help!
 
-export default HomeComponent;
+Now to the actual test — let’s create an Integration Test in the `/src/test/java` package and add this code there:
+
+```java
+package com.tsvetkov;
+
+import io.quarkus.test.common.QuarkusTestResource;
+import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.common.mapper.TypeRef;
+import org.jboss.logging.Logger;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.List;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.*;
+
+@QuarkusTest
+@QuarkusTestResource(value = LocalStackS3TestResource.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class IntegrationTest {
+    private static final Logger LOG = Logger.getLogger(IntegrationTest.class);
+
+    @Test
+    public void saveImageToS3Bucket() {
+        File image = readImage();
+
+        List<String> savedImages = given()
+                .multiPart("image", image)
+                .when().post("/upload")
+                .then()
+                .statusCode(200)
+                .extract().body().as(new TypeRef<>() {
+                });
+
+        assertEquals(1, savedImages.size());
+        assertTrue(savedImages.getFirst().startsWith("bike2.jpg"));
+    }
+
+    private File readImage() {
+        URL imagefileUrl = getClass().getClassLoader().getResource("bike2.jpg");
+        assertNotNull(imagefileUrl);
+        try {
+            return new File(imagefileUrl.toURI());
+        } catch (URISyntaxException e) {
+            LOG.error("String could not be parsed as a URI reference", e);
+            throw new RuntimeException(e);
+        }
+    }
+}
 ```
 
-<br></br>Text
+Here, we first read an image from our `/src/test/resources` folder (in my case `bike2.jpg`) so make sure you have at least one image there!
+Then we use [RestAssured](https://rest-assured.io/), which is a great library for REST API Testing, to send a `Post` request containing our image file.
+We then have some assertions, which you can expand or adjust to your own use cases! And there we go:
 
-<br></br>Text
+<Image
+  alt="Passed Tests"
+  src={"/images/localstack-testcontainers/passed.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+/>
 
-<br></br>Text
+## Conclusion
 
-<br></br>Text
+I really hope you enjoyed this one, as I have tried to get into as many details as possible and make the article beginner-friendly too!
+Many developers can confirm that the topic from today (although simplified in the spirit of the tutorial) is actually a very common real-life scenario.
+Saving files in AWS S3 Buckets and integration tests with Testcontainers are a part of the technical stack of many companies and I hope that being able to play
+around with AWS Services locally can remove some of the stigma (and cost fear) that stops many developers from experimenting with this.
 
-<br></br>Text
-
-<br></br>
-Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>
-Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>Text
-
-<br></br>
+<div className="h-10 w-2"></div>
