@@ -25,7 +25,7 @@ function Tags({ tags }: { tags: string[] }) {
   }
 
   return (
-    <div className="hidden md:absolute text-sm mt-2 -ml-24 lg:-ml-32 ">
+    <div className="hidden md:block md:absolute text-sm mt-2 -ml-24 lg:-ml-32 ">
       {tags && tags.length == 0 ? (
         <></>
       ) : (

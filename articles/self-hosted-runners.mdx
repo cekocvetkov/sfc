@@ -1,82 +1,245 @@
 ---
-title: "Github Actions: Execute kubectl commands from a local cluster with the help of self-hosted runner"
-date: "2024-03-12"
-tags: ["github", "kubernetes"]
+title: "Github Actions: Execute kubectl commands from a local cluster with the help of self-hosted runner with RBAC"
+date: "2025-03-04"
+tags: ["github", "kubernetes", "self-hosted", "rbac"]
+published: true
+image: "self-hosted/main.webp"
 ---
 
-# Github Actions: Execute kubectl commands from a local cluster with the help of self-hosted runner more more more mre
+# Github Actions: Execute kubectl commands from a local cluster with the help of self-hosted runner with RBAC
 
-In this article, we will see how to setup self-hosted runner in Kubernetes for a github repository and run kubectl commands from a GitHub Actions pipeline on the same cluster where the self-hosted runner is running.
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  alt="Main image of article"
+  src={"/images/self-hosted/main.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "335px", objectFit: "cover" }}
+/>
+<small className="w-full h-2 flex justify-center" style={{ marginBottom: "-2rem", marginTop: "-2rem" }}>
+  you can also read this article in Medium -> click [here](https://medium.com/@c.y.cvetkov/yolov11-instance-segmentation-with-opencv-and-java-part-1-8180afb52313)
+</small>
+<br />
+
+In this article, we will see how to set up a self-hosted runner in Kubernetes for a GitHub repository and run kubectl commands from a GitHub Actions pipeline on the same cluster where the self-hosted runner is running.
 
 **What do we need to follow along:**
 
-1. Local Kubernetes cluster (You can use minikube or kind, or the Docker Desktop Kubernetes Solution, or whatever you like)
-2. Github Account (easy)
-3. Basic Kubernetes and Github Actions knowledge
+1. Local Kubernetes cluster (You can use [Minikube](https://minikube.sigs.k8s.io/docs/) or [kind](https://kind.sigs.k8s.io/), the [Docker Desktop Kubernetes Solution](https://docs.docker.com/desktop/features/kubernetes/),
+   [Rancher Desktop](https://rancherdesktop.io/) or whatever you like). I must say I've been impressed by Rancher Desktop lately.
+2. [kubectl](https://kubernetes.io/docs/reference/kubectl/) and [helm](https://helm.sh/docs/intro/install/)
+3. Github Account
+4. Basic Kubernetes and Github Actions knowledge
 
 **Alternatives:**
 
-Of course there’s another way to run kubectl commands from GitHub Actions.
-For example using a kubeconfig file. The kubeconfig file contains information about the cluster,
-including the API server endpoint, the cluster’s CA certificate, and the credentials for a user or service account. This is a way to authenticate and authorize kubectl to access a specific Kubernetes cluster. The best way to do this, is to add the kubeconfig file content as a secret in Github.
+There are, of course, other ways to run kubectl commands from GitHub Actions. For example, using a kubeconfig file. The kubeconfig file contains information about the cluster, including the API server endpoint, the cluster's CA certificate, and the credentials for a user or service account. This is a way to authenticate and authorize kubectl to access a specific Kubernetes cluster. The best way to do this is to add the kubeconfig file content as a secret in Github.
 
-Of course there’s another way to run kubectl commands from GitHub Actions.
-For example using a kubeconfig file. The kubeconfig file contains information about the cluster,
-including the API server endpoint, the cluster’s CA certificate, and the credentials for a user or service account. This is a way to authenticate and authorize kubectl to access a specific Kubernetes cluster. The best way to do this, is to add the kubeconfig file content as a secret in Github.
+However, when you use a self-hosted runner to execute kubectl commands from the GitHub Actions pipeline, they run on the same cluster where your applications are running. Additionally, self-hosted runners can provide more flexibility, reliability, and scalability for running complex and long-running tasks, like deploying your application on the same cluster, but with more control and visibility over the infrastructure
 
-Of course there’s another way to run kubectl commands from GitHub Actions.
-For example using a kubeconfig file. The kubeconfig file contains information about the cluster,
-including the API server endpoint, the cluster’s CA certificate, and the credentials for a user or service account. This is a way to authenticate and authorize kubectl to access a specific Kubernetes cluster. The best way to do this, is to add the kubeconfig file content as a secret in Github.
+**Goal:**
 
-### Zeko , right
+By the end of this article, you should be able to run kubectl commands in a self-hosted runner in your own cluster.
+We'll also set up Role-based access control (RBAC) to regulate the access to our cluster resources in our runners. In our example, we will only allow the "get" and "list" verbs on Pods.
 
-sS
+## 1. Install Actions Runner Controller (ARC)
 
-Of course there’s another way to run kubectl commands from GitHub Actions.
-For example using a kubeconfig file. The kubeconfig file contains information about the cluster,
-including the API server endpoint, the cluster’s CA certificate, and the credentials for a user or service account. This is a way to authenticate and authorize kubectl to access a specific Kubernetes cluster. The best way to do this, is to add the kubeconfig file content as a secret in Github.
+Execute the following command, which installs the Actions Runner Controller in the arc-systems namespace of your cluster:
 
-### Zeko 22222, right
+```bash
+helm install arc \
+    --namespace arc-systems \
+    --create-namespace \
+    oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller
+```
 
-sS
+## 2. Configure allowed actions
 
-Of course there’s another way to run kubectl commands from GitHub Actions.
-For example using a kubeconfig file. The kubeconfig file contains information about the cluster,
-including the API server endpoint, the cluster’s CA certificate, and the credentials for a user or service account. This is a way to authenticate and authorize kubectl to access a specific Kubernetes cluster. The best way to do this, is to add the kubeconfig file content as a secret in Github.
+We'll create an apps namespace where our "normal" apps should be deployed. We'll also create the arc-runners namespace manually. This is the namespace we're going to use for our self-hosted runners
 
-### Zeko 333333, right
+```bash
+kubectl create namespace apps
+kubectl create namespace arc-runners
+```
 
-sS
+We'll allow our runners certain actions only in this "**apps**" namespace.
 
-Of course there’s another way to run kubectl commands from GitHub Actions.
-For example using a kubeconfig file. The kubeconfig file contains information about the cluster,
-including the API server endpoint, the cluster’s CA certificate, and the credentials for a user or service account. This is a way to authenticate and authorize kubectl to access a specific Kubernetes cluster. The best way to do this, is to add the kubeconfig file content as a secret in Github.
+Now, let's set up some Kubernetes resources.
 
-<br></br>Text
+First, we'll create a [service account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/):
 
-<br></br>Text
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pod-reader-sa
+  namespace: arc-systems
+```
 
-<br></br>Text
+You can think of this as an ID Card for a Pod.
 
-<br></br>Text
+We already said that the goal is to be able to execute **only** "get" and "list" on pods in our cluster through our self-hosted runner -  We need to create a Role:
 
-<br></br>Text
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: apps
+  name: pod-reader
+rules:
+  - apiGroups: [""] # "" indicates the core API group
+    resources: ["pods"]
+    verbs: ["get", "list"]
+```
 
-<br></br>
-Text
+This is like a list of allowed actions: It allows you only to get pod details and list pods in the "apps" namespace. It does **not** allow, for example, "delete", "edit", "watch" etc.
 
-<br></br>Text
+Next, we need a Role Binding:
 
-<br></br>Text
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: bind-pod-reader
+  namespace: apps
+subjects:
+  - kind: ServiceAccount
+    name: pod-reader-sa
+    namespace: arc-systems
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+```
 
-<br></br>Text
+This is like assigning an ID card to a specific set of permissions.
 
-<br></br>Text
+Let's summarize this real quick - our goal is to allow our runners to execute only `kubectl get pods` and `kubectl get pod <POD_NAME>` in the "**apps**" namespace.
+So we created a **role** `pod-reader` that defines `list` and `get` as the only allowed actions, then we created a **Service Account**, which can hold **roles**,
+and then we assign the `pod-reader` role to the service account with a `RoleBinding`.
 
-<br></br>Text
+You can create the resources with the following:
 
-<br></br>Text
+```bash
+kubectl apply -f service-account.yaml
+kubectl apply -f role.yaml
+kubectl apply -f role-binding.yaml
+```
 
-<br></br>Text
+## 3. Authenticate ARC with personal access token (classic)
 
-<br></br>
+Go to Your Profile in Github -> `Settings -> Developer Settings -> Personal Access Tokens -> Tokens (classic)` and choose access token scopes for ARC runners (we'll use `repo` in our example)
+
+- Repository runners: `repo`
+- Organization runners: `admin:org`
+
+<Image
+  alt="Authenticate with personall access token (classic)"
+  src={"/images/self-hosted/repo-rights.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+  style={{ scale: "100%" }}
+/>
+
+Save this token someplace safe - we'll use it in the next sections.
+
+## 4. Create a GitHub repository
+
+Alright, this one is pretty straightforward - you can simply follow the [GitHub docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository) if you're having trouble here.
+
+## 5. Configure runners
+
+Now, let's configure a [Runner Scale Set](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/quickstart-for-actions-runner-controller#configuring-a-runner-scale-set)  - this will be a collection of self-hosted runners, designed to **autoscale**:
+Automatically increasing or decreasing the number of runner pods in a Kubernetes cluster based on the number of queued GitHub Actions jobs.
+
+Open your terminal and run the following command to install the runner scale set:
+
+```bash
+INSTALLATION_NAME="arc-runner-set"
+NAMESPACE="arc-runners"
+GITHUB_CONFIG_URL="https://github.com/github_username/repo_name"
+GITHUB_PAT="<YOUR_GITHUB_TOKEN>"
+SERVICE_ACCOUNT="pod-reader-sa"
+helm upgrade --install "${INSTALLATION_NAME}" \
+    --namespace "${NAMESPACE}" \
+    --create-namespace \
+    --set githubConfigUrl="${GITHUB_CONFIG_URL}" \
+    --set githubConfigSecret.github_token="${GITHUB_PAT}" \
+    --set template.spec.serviceAccountName="${SERVICE_ACCOUNT}" \
+ oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
+```
+
+- **GITHUB_CONFIG_URL** is the repository URL from **Step 4** you'll use to trigger the GitHub Actions Workflows
+- Replace `<YOUR_GITHUB_TOKEN>` with the token from **Step 3**
+- Note the **SERVICE_ACCOUNT - **this is the name of the service account we created in **Step 2**
+
+## 6. Run a Github Workflow on a self-hosted runner
+
+Now is the time to see some action!
+
+- Go to your GitHub repository and create a new file `.github/workflows/test.yml `
+- Paste the following content there:
+
+```yaml
+name: Actions Runner Controller Demo
+on:
+  workflow_dispatch:
+
+jobs:
+  GitHub-Actions-Self-Hosted-Runners:
+    runs-on: arc-runner-set
+    steps:
+      - uses: azure/setup-kubectl@v4
+        id: install
+
+      - run: |
+          echo "🎉 This job uses runner scale set runners!"
+          kubectl get pods -n apps
+```
+
+This is a simple [GitHub Workflow](https://docs.github.com/en/actions/writing-workflows/about-workflows) that we specify to run on our self-hosted runners. It uses the `azure/setup-kubectl@v4` workflow to install a
+specific version of `kubectl` binary on the runner and then runs the `kubectl get pods -n apps` command.
+This command will be executed on our self-hosted runners!
+
+It's important to note the `runs-on` part: Here you must use the **INSTALATION_NAME** from **Step 4** (`arc-runner-set`).
+
+Now we can go to **Actions** in GitHub and we'll be able to trigger the workflow:
+
+<Image
+  alt="Workflow Dispatch"
+  src={"/images/self-hosted/workflow-dispatch.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+  style={{ scale: "100%" }}
+/>
+
+And here is the result!
+
+<Image
+  alt="Successful workflow run"
+  src={"/images/self-hosted/success.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,UklGRmoJAABXRUJQVlA4WAoAAAAgAAAANgMACQIASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggfAcAAHCKAJ0BKjcDCgI+7W6wVimlJCOgURjZMB2JaW7hY/7MbvOk+VrDdk0f6n/GRsE//62ZjWPcz5AAw3lnT4AfSeZBVLpzFo3mAH0nmQWf0yqd0+Fsc+ulNOsL0ZwhPesqbHhWNOwfIOIstS3Tmws3cJOYsIL3kLG9kF0m97Av6ysSWZsRErT2humWjNHxuf55Vygb2CMXShiGN7LukysgZZjhEeMDh8qjPi4Ik0cswpp0S02oI7i0mRh9nSZl8c2SRRxv5p5PoOnFoG6dbU5O2zUhb06xunhWNyMXSPgYxqdNADe2oeZvHWTwd9eveXT/1H7ILpN71OTenMU3S6lPPeRKJ5sjsrFrsmMTneECiQEG2SZWob3C2QXSb3m1xRZPPeBjtaaZFxB6nJvTtXdjj3paIGiMjFGb8Ze8hY3sgrFxpBr57wLz3kjI+zRkcPepyb1IEAtF1+FEFyr7HgXoqEp3qS95A8afcVLTTIuJ12e4zFNNMi1/THNNIWN7LsOPykkTwY3xtTk+m54RaakPmmRvz5piuvdn/HrOusFh57UJmu1+pybpXoQXIsS7jGmRcaQp43sfbERRZTrjRx17sy1G2ZwPsJI1QZpAWjOWx9fhQ+B09kqIhEMyW1Y4osnnvAvPeYk0gKHXuygWT3GfyCDYyLijHV3Gj6+dpyG+tNKDdNKaafcINfPeBee8C73Xuy4dFoB2MqaUoYkaoM0f1VLvFYJ/YSmiwYXW1ALRhrSxBFk73XuvehfL3RbmLeoV3rjWM4rTQPHzsuJ0Le9nJGI1C8nnvAvPeBehM9m6JC23ijWLTmNGcogu0rO89nJPGcgv8Cw4ERGlzhbAvQmew7ar7s5yzpeLTmLTpy9q0j2Bwh2U6r64x6Axm9kyLjpebCQ+mx8AfSeZBVL61UfneOknfB/ssurpN8LN2Ryh18seM/Hh4B9J5kFUunMW5zAhhqonghD7mALg+2ls9vrFHYuGEz8APpPMgql03SrrnJrcJdo67+W/FolPT1BQql05i05i05pRKUyzH0lIh822qPph8zpR4mfcg05i05i05i05nnYft/xWCmqwGUZ6pG5WD+d0nmNwwmfgB9J5kFUm+d/4x/+LCDwmy3qQJO3CClOwfIEtOYtOYtOYtN3YttJVXrcCsdl/3+HpS1pN0VEKpOOk8yCqXTmLTmdbWJUepv/3tp7luSZVl3SbUAe3JsH0nmQVS6cxac0ljMvoqSmEJGtMcaZs+ML6dYdIeqXTmLTmLTdl2Qo9rj3SbqtZly8FhRTWosdxnomTPwA+k8yCplvIb6ENSIHyTYZY/+oSxKAFh/EVMWnMWnMWnWF46k3znqz59F0nmyb51UC4CAA7sFpzYPpPMgoO4KaI5qqrpOXrM6bUxadCxfO58QAwPpPMgqsO1TkC62XVfkVQ7K4xHLtDo7G9OpIxacxacxdoJonS0nmXyPGMvdyU++Punxt+IKtlNOYtOZbSINLowAD+6cL3ysOF75JZaYiHVDsf+ZYK0r0gMwG26WmPniuCO0tauSnoYkIjlz9BG0MVtd93BOOi0IgwLWOedZVexOEUUGuemJX9+FbAayeTBIzU0FEMvLUjokbz5YCPuhOEqo1sI/cGGPC6ndAWl45FjvFJtOSOY4AGZVdZuQY2wiXAd61+JKVrUid6je0pTInJHWmEmISd7AcidwlflgUmaI8XK+iiRortPBAAg1mRM5OL4CtNdRRwYRkEJDIaLObQ70yzVL/Htb6IN1IDbk6gdd6bQHE/3Dc3j2S4VNgy6c1C3bX0zViKGApuonmYFvg3kIoOffexTz+3iAaUEiGzgEzM9L8xzTgu3DezxdvgEod771/JIerMKzZzOg/WAh5q7m1tvVDd1JzaqB8ynoNHAqWqv1kQKJ8aAXQDhMEGodc2YTEZMoRljkz2fuTYWOLdA5ij+1SL3oP0o+YSt0G0gGr16G2WIHfSDtroEW9HENVvRZeUhM+gM1vz/uFO9kha+eCFsFyZYWAZi4j6Wv2VufYStlWJTIhqxilVmIGqerRNQRRhvapYjAwNBgFEjcbSNBAAI0dwLy8BuHieL0jqc138GSzOQoodnrE9u1/deAAaUPAGnpzgqbBgU2/vLFNoCVSv8c97YIAeAhj5M49UxJNCTae/F6JNXbbKwAAMmA96kg0OtuuqjT9P6bhCgAAHScvcNnkwLqWJ8zHVDPoshAAHe6m1XGAb5BTtN3A7m8YtoQAChv4jrJFOMepFwAAR5y+ac/AS3yJ/2Ia2UNvNp6oAADDK9+lefKsSf9nFBAgAGGOjJzVJdSOcixVQrkJsMgAAI9YXKSokL21G5I9dXnMqVZfAAbydpoTNHkkJkiZ8jB0LTBPkAEdHmTTLON2e4Nfqa4jiT7LVkQSEwSfLFP01mIAR00nJZYpKgC9j6QO352o14NwzESHqbsn7eYCR/UZ5vrunIXv1hNVF0/UAchcqY6eAz8wv1mQRgY2/zxvbsaWDwtlsemKK44FPAM2ScqoBZ87BADjnrFj+ehQhwWSjdguqABVeCctHlHHWWOIA"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+  style={{ scale: "100%" }}
+/>
+
+The output is "No resources found in the 'apps' namespace." because we haven't deployed any applications there. But the operation was successful!
+
+If we, for example, tried to `delete` a pod from our pipeline, the action is going to fail with `403 Forbidden`, because of our RBAC setup in **Step 2**.
+
+### Conclusion
+
+We managed to execute kubectl commands within our local cluster through GitHub Actions Workflow! We've essentially connected our local Kubernetes cluster to our CI/CD pipeline. This gives us great flexibility to automate and customize our Kubernetes cluster operations. With the help of Role-based access control (RBAC) we have also set up good security measures and have fine control over the actions allowed to be executed by our runners.
+
+<div className="h-10 w-2"></div>
