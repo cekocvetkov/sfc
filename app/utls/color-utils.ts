@@ -6,7 +6,8 @@ interface RGB {
 
 // export const colorScheme = ["#8C684E", "#E58C4C", "#8E562C", "#CC8F63", "#D49F78"]; // Example colors
 // export const colorScheme = [ "#e58c4c","#ad2e24"];
-export const colorScheme = ["#784F35", "#E58C4C", "#A75000", "#E58C4C", "#E58C4C"]; // Example colors
+// export const colorScheme = ["#805840", "#E5932E", "#B25A24", "#98704c", "#996335"];
+export const colorScheme = ["#784F35", "#A75000", "#C77336", "#8E562C"]; // Example colors
 
 export function isColorTooSimilar(color1: string, color2: string) {
   if (!color1 || !color2) return false;
