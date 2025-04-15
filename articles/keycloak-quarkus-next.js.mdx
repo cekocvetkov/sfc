@@ -604,3 +604,434 @@ Now it’s time to add the Sign-in functionality to our web app. Go to our `nav.
 
 Now go to our application, click on the Login button in our naviagtion and you will see
 the Keycloak Login Screen! Use the user “alice” to log in and you can even see your session in the Keycloak UI under (http://localhost:8082/admin/master/console/#/quarkus/sessions)
+
+<div className="flex justify-between">
+    <div>
+        <Image
+        alt="Login 1"
+        src={"/images/keycloak-quarkus-next/login1.webp"}
+        placeholder="blur"
+        blurDataURL="data:image/webp;base64,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"
+        width={250}
+        height={400}
+        objectFit="cover"
+        />
+    </div>
+    <div>
+
+        <Image
+        alt="Login 2"
+        src={"/images/keycloak-quarkus-next/login2.webp"}
+        placeholder="blur"
+        blurDataURL="data:image/webp;base64,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"
+        width={250}
+        height={400}
+        objectFit="cover"
+        />
+    </div>
+
+</div>
+
+Now let’s use some of that login information in our application!
+It would be nice to show our user's username on the home page.
+Our `Home` component (`/app/page.tsx`)is a server-rendered component, so let’s see how to get our user information in a server-side component:
+
+```typescript
+import { auth } from "@/auth";
+
+export default async function Home() {
+  const session = await auth();
+  const username = session?.user ? session.user.name : "You're not logged in.";
+
+  return (
+    <div className="text-center">
+      <h1 className="text-3xl font-bold mb-4">Welcome Home</h1>
+      <h2 className="text-3xl text-orange-400 mb-4"> {username}</h2>
+      <p className="text-gray-600">This is a public page anyone can see</p>
+    </div>
+  );
+}
+```
+
+We use Auth.js’ `auth()` function to get information about our session, and from there, we can get our username.
+If we’re not logged in, we just show the “You’re not logged in.” message from before. If you go to our application on http://localhost:3000/ you’ll be able to see our username “alice” in the `Home` component!
+
+<Image
+  alt="Alice logged in "
+  src={"/images/keycloak-quarkus-next/alice.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+  style={{ scale: "100%" }}
+/>
+
+### 5. Sign-out
+
+Signing out looks similar to what we had for our login — Let’s go to our `nav.tsx` component and change the Login button
+to “Logout” if the user is logged in. That means that we need user information in our `Nav` component, which is a client-side component, so let’s see how to get our user information on the client side:
+
+```typescript
+"use client";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
+
+function Nav() {
+  const pathname = usePathname(); // Gets the current route
+  const session = useSession();
+
+  return (
+    <nav className="bg-gray-800 p-4">
+      <div className="flex justify-center gap-x-60 items-center">
+        <div className="flex gap-x-5">
+          <Link href="/" className={`${pathname === "/" ? "text-yellow-500" : "text-white"} hover:text-gray-300`}>
+            Home
+          </Link>
+          <Link href="/protected-page" className={`${pathname === "/protected-page" ? "text-yellow-500" : "text-white"} hover:text-gray-300`}>
+            Protected
+          </Link>
+        </div>
+        {!session.data ? (
+          <button onClick={() => signIn("keycloak")} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+            Login
+          </button>
+        ) : (
+          <button onClick={() => signOut()} className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
+            Logout
+          </button>
+        )}
+      </div>
+    </nav>
+  );
+}
+
+export default Nav;
+```
+
+We used Auth.js' `useSession` hook to get the login information of our user and added a condition to show the login button if we’re logged-out and the logout button
+if we’re logged in. We also added the `signOut` call on click on the logout button.
+
+We also need to wrap all our components that access the `useSession` hook in the Auth.js’ `<SessionProvider>` . Go to `layout.tsx` and add it there:
+
+```typescript
+<html lang="en">
+  <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <SessionProvider>
+      <Nav></Nav>
+      <main className="container mx-auto p-4">{children}</main>
+    </SessionProvider>
+  </body>
+</html>
+```
+
+Now if we log in, we see the logout button in the navigation:
+
+<Image
+  alt="Alice Logout button"
+  src={"/images/keycloak-quarkus-next/alice-logout.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+  style={{ scale: "100%" }}
+/>
+
+That’s already pretty good! But we can still go to the `/protected-page` even if we’re logged out 🤔
+
+### 6. Authorize access to a page
+
+In order to forbid the access to `/protected-page` for unauthenticated users, we need to add the following `middleware.ts` to the root of our project:
+
+```typescript
+import { NextResponse } from "next/server";
+import { auth } from "./auth";
+
+export default auth((req) => {
+  if (!req.auth && req.nextUrl.pathname === "/protected-page") {
+    return NextResponse.redirect(new URL(`/api/login?callbackUrl=${encodeURIComponent(req.nextUrl.pathname)}`, req.nextUrl.origin));
+  }
+});
+export const config = {
+  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+};
+```
+
+Let’s see what happens here, and why it’s a bit tricky when we use Auth.js with providers when it comes to the middleware.
+
+We use the `auth` configuration object as a wrapper for our Middleware,
+following the [Auth.js documentation](https://authjs.dev/getting-started/migrating-to-v5#details). Inside we write our little logic that checks if a user
+is unauthenticated and wants to access the `/protected-page` => In this case, we redirect to `/api/login` with a callback URL as
+a parameter (in this case — `/protected-page` — this is where we want to land after the login).
+The `/api/login` is a route that we need to create in order to call the `signIn` method with “Keycloak” as a provider.
+The `NextResponse.redirect` code from above makes a GET Request to our own route which we can configure to trigger the `signIn` function from Auth.js.
+I hope that was clear enough, but if you want to dig a bit deeper into why this is the most elegant way to go for now, you can read the [discussion here](https://github.com/nextauthjs/next-auth/discussions/11220).
+
+So now create a `route.ts` file under `/api/login` with the following:
+
+```typescript
+import { signIn } from "@/auth";
+import { NextRequest } from "next/server";
+
+export async function GET(req: NextRequest) {
+  const callback = req.nextUrl.searchParams.get("callbackUrl");
+  return signIn("keycloak", callback ? { redirectTo: callback } : undefined);
+}
+```
+
+This implements the logic, explained above.
+
+### 7. Display data from the backend (challenges)
+
+Alright, now that we have protected our `/protected-route` , let’s display some sensitive data in it from our backend. We’ll modify our `/protected-page/page.tsx`:
+
+```typescript
+import { auth } from "@/auth";
+import React from "react";
+
+const fetchBackendData = async () => {
+  const response = await fetch("http://localhost:8080/protected");
+  if (response.status === 401) {
+    return "Unauthorized: Please login again";
+  }
+  if (!response.ok) {
+    throw new Error(`Error! Status: ${response.status}`);
+  }
+  const backendData = await response.json();
+  return backendData;
+};
+
+async function ProtectedPage() {
+  const session = await auth();
+  const username = session?.user?.name;
+
+  const backendData = await fetchBackendData();
+
+  return (
+    <div className="text-center">
+      <h1 className="text-3xl font-bold mb-4">Protected Page</h1>
+      <p className="text-gray-800">
+        Welcome <span className="text-green-800">{username}!</span>
+        <br />
+        <br />
+        This is a protected page.
+        <br />
+        <br />
+      </p>
+      <div>
+        <div>This is the data from the backend:</div>
+        <div className="text-blue-500">{backendData}</div>
+      </div>
+    </div>
+  );
+}
+
+export default ProtectedPage;
+```
+
+This stays a server component and we can now easily take our session data from the `auth` object.
+We’ll display the username here too, like on the Home page, but we’ll also make a request to our backend and display the data from there.
+
+🤔 🤔 🤔 _Hm, the code above looks suspicious …_
+
+I hope you already noticed why this component will now always return “_Unauthorized_: _Please login again_” for the backend data. We are making an unauthorized request to our backend!
+
+Now we come to the most challenging part — we have a couple of options here.
+
+### Options for secure communication with the backend
+
+1. **Direct API Calls with Bearer Tokens**: Store tokens in the session (Tokens are exposed in client-side code)
+
+2. **Secure Cookie-Based Authentication: Use HTTP-only, secure cookies**: The browser sends the cookie automatically with every request, but additional configuration is needed on the backend.
+
+3. **Backend-for-Frontend (BFF) Pattern**: Using Next.js API Routes as a Secure Proxy and accessing the token only server-side. Create API routes in Next.js that proxy requests to our Quarkus backend. The access token is added to the request on the server side and this way sensitive token operations do not happen in the browser. (Can increase complexity and latency though)
+
+At the time of writing, [Auth.js recommends only the first way in its documentation](https://authjs.dev/guides/integrating-third-party-backends). As briefly mentioned in the explanation above — this way is not perfect and we should understand that it hides some security risks (access token available client-side). I’ll discuss only this strategy in this article because our goal is to play around here, but keep in mind that this way is definitely not mature enough for real-world applications.
+
+**Anyways, let’s get into it**:
+
+#### Direct API Calls with Bearer Tokens
+
+Once a user is authenticated via Auth.js with Keycloak, we can obtain the JWT token,
+include it in our session, and add this token in the headers of our requests (e.g., `Authorization: Bearer <access_token>`
+[Here](https://www.oauth.com/oauth2-servers/making-authenticated-requests/) is a link if you’d like a quick refresher on the basics).
+
+In order to implement this approach, we actually have to save the token in
+our session object. Here is how this can happen in Auth.js — we’ll use the `jwt` and `session` [callbacks](https://authjs.dev/reference/nextjs#callbacks). The `jwt` one, does the following:
+
+> This callback is called whenever a JSON Web Token is created (i.e. at sign in) or updated (i.e whenever a session is accessed in the client). Anything you return here will be saved in the JWT and **forwarded to the session callback**. There you can control what should be returned to the client. Anything else will be kept from your frontend. The JWT is encrypted by default via your AUTH_SECRET environment variable.
+
+Let’s modify our `auth.ts` accordingly:
+
+```typescript
+import NextAuth, { NextAuthResult } from "next-auth";
+import KeycloakProvider from "next-auth/providers/keycloak";
+
+const authData: NextAuthResult = NextAuth({
+  providers: [
+    KeycloakProvider({
+      clientId: process.env.KEYCLOAK_CLIENT_ID,
+      issuer: process.env.KEYCLOAK_ISSUER,
+    }),
+  ],
+  callbacks: {
+    jwt({ token, account }) {
+      if (account) token.accessToken = account!.access_token;
+      return token;
+    },
+    session({ session, token }) {
+      if (token.accessToken) session.accessToken = token.accessToken;
+      return session;
+    },
+  },
+});
+
+export const { handlers, signIn, signOut, auth } = authData;
+```
+
+**Briefly explained**: We get the token from the [account](https://authjs.dev/reference/nextjs#account) which contains information about the provider being used (Keycloak in our case) and also the different tokens returned by Keycloak.
+Then we add it to the token object, which gets passed to the session callback, and there we attach it to the session and make it available in our application.
+
+Now let’s get back to our `/protected-page/page.tsx` and modify the backend call to include the Authorization Header:
+
+```typescript
+import { auth } from "@/auth";
+import React from "react";
+
+const fetchBackendData = async (accessToken: string) => {
+  const response = await fetch("http://localhost:8080/protected", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+  if (response.status === 401) {
+    return "Unauthorized: Please login again";
+  }
+  if (!response.ok) {
+    throw new Error(`Error! Status: ${response.status}`);
+  }
+  const backendData = await response.text();
+  return backendData;
+};
+
+async function ProtectedPage() {
+  const session = await auth();
+  const username = session?.user?.name;
+
+  const backendData = await fetchBackendData(session.accessToken);
+
+  return (
+    <div className="text-center">
+      <h1 className="text-3xl font-bold mb-4">Protected Page</h1>
+      <p className="text-gray-800">
+        Welcome <span className="text-green-800">{username}!</span>
+        <br />
+        <br />
+        This is a protected page.
+        <br />
+        <br />
+      </p>
+      <div>
+        <div>This is the data from the backend:</div>
+        <div className="text-blue-500">{backendData}</div>
+      </div>
+    </div>
+  );
+}
+
+export default ProtectedPage;
+```
+
+Keep in mind that the security risks we talked about before are mitigated as this here is a server component,
+**but** if we use the `useSession()` hook in a client-side component, a malicious script could potentially extract the
+token from the session object, as it is accessible in the client-side JavaScript context in the Browser.
+
+Almost everything looks well now:
+
+<Image
+  alt="Login video"
+  src={"/images/keycloak-quarkus-next/video.gif"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={500}
+  objectFit="cover"
+  style={{ scale: "100%" }}
+/>
+
+that looks very good, **but**:
+
+You will notice one small thing — the logout doesn’t quite work:
+
+If you click on **Logout** -> The Auth.js session is destroyed but Keycloak maintains his session, which keeps the user weirdly logged in.
+
+To fix this, we need to call the Keycloak-Logout URL additionally, after signOut from Auth.js. To correctly call the Keycloak-Logout URL, which is:
+`http://<KEYCLOAK_URL>/realms/<KEYCLOAK_REALM>/protocol/openid-connect/logout`
+one must also add the `id_token` as the `id_token_hint` parameter. This means, we need to extract the `id_token` from the `account` in our `jwt` callback as well.
+Here is how this comes together at the end in our auth.ts:
+
+```typescript
+import NextAuth, { NextAuthResult } from "next-auth";
+import KeycloakProvider from "next-auth/providers/keycloak";
+
+const authData: NextAuthResult = NextAuth({
+  providers: [
+    KeycloakProvider({
+      clientId: process.env.KEYCLOAK_CLIENT_ID,
+      issuer: process.env.KEYCLOAK_ISSUER,
+    }),
+  ],
+  callbacks: {
+    jwt({ token, account }) {
+      if (account) {
+        token.accessToken = account!.access_token;
+        token.id_token = account!.id_token;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      if (token.accessToken) session.accessToken = token.accessToken;
+      return session;
+    },
+  },
+  events: {
+    async signOut({ token }) {
+      const logOutUrl = new URL(`${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/logout`);
+      logOutUrl.searchParams.set("id_token_hint", token.id_token!);
+      const response = await fetch(logOutUrl);
+      if (!response.ok) {
+        console.error("Logout failed");
+      }
+    },
+  },
+});
+
+export const { handlers, signIn, signOut, auth } = authData;
+```
+
+We call the Keycloak-Logout URL on `signOut` and add the `id_token` to the token object, in order for it to be available in our `signOut` event.
+
+Now we have everything!
+
+## Final Thoughts
+
+Implementing full-stack authentication with **Keycloak**, **Quarkus**, and **Next.js** (via **Auth.js**) is not really a breeze — it involves multiple frameworks, covers backend and frontend paradigms, and battles with Auth.js specifics. In this article, we’ve walked through a working example with real code to demonstrate how these pieces can come together and I hope the additional diagrams and explanations prove useful to developers who want to gain a deeper understanding of the topic.
+
+That said, it's important to mention that **Auth.js**, while perfect for some use cases, still feels relatively **immature** for complex enterprise scenarios like this.
+**Injecting the access token into the session object** to make it available to client-side hooks like `useSession` might look convenient but it
+**does pose some risks** by exposing sensitive tokens to the browser. So while it's technically possible, it's not always advisable—especially in applications, where high security is a priority.
+
+**I'd love to hear about other developers' experiences with this stack as well!**
+
+Authentication and authorization are complex topics, although many people seem to underestimate
+them and approach them with little understanding because there are many great frameworks nowadays that abstract the great complexity
+that's hidden behind the scenes here. However, with the right approach — and a deep understanding of the limitations and trade-offs — this can become a great
+strength and a valuable skill in a developer's toolset
+
+**Thanks for reading!**
+
+<div className="h-10 w-2"></div>
