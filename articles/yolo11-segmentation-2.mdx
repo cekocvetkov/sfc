@@ -1,0 +1,187 @@
+---
+title: "YOLOv11 Instance Segmentation with OpenCV and Java (Part 2)"
+date: "2025-05-19"
+tags: ["java", "opencv", "yolo", "python"]
+image: "yolov11-seg-2/car-seg.webp"
+published: true
+---
+
+# YOLOv11 Instance Segmentation with OpenCV and Java (Part 2)
+
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  alt="Main image"
+  src={"/images/yolov11-seg-2/car-seg.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "335px", objectFit: "cover" }}
+/>
+<small className="w-full h-2 flex justify-center" style={{ marginBottom: "-2rem", marginTop: "-2rem" }}>
+  you can also read this article in Medium -> click [here](https://itnext.io/yolov11-instance-segmentation-with-opencv-and-java-part-2-582f57f8967a)
+</small>
+<br />
+
+In this article, we will look at instance segmentation using **YOLOv11**.
+
+This is **Part 2** of a **3-part** series.
+
+[Instance segmentation](https://www.ultralytics.com/glossary/instance-segmentation) goes a step further than object detection and involves identifying individual objects in an image and segmenting them from the rest of the image.
+
+> In the [first part](https://itnext.io/yolov11-instance-segmentation-with-opencv-and-java-part-1-8180afb52313), we set up our project, prepared the input image for the model, loaded our model, and fed the input data through the network. Now we’re going to inspect the output we got from the net.forward call. This will be our predictions data!
+
+In this part, we’ll have a look at the post-processing — extract the segmentation information from the results. This is somehow tricky as it’s not very well documented.
+
+Let’s expand a bit on our last code snippet from [Part 1](https://itnext.io/yolov11-instance-segmentation-with-opencv-and-java-part-1-8180afb52313) and print out the prediction results,
+which are saved in the `outputsList`:
+
+```java
+List<String> outNames = net.getUnconnectedOutLayersNames();
+List<Mat> outputsList = new ArrayList<>();
+net.forward(outputsList, outNames);
+
+// Get relevant outputs and print them out
+Mat boxOutputs = outputsList.get(0);
+Mat maskOutputs = outputsList.get(1);
+
+LOGGER.info("Boxes Output: "+boxOutputs.toString());
+LOGGER.info("Masks Output: "+maskOutputs.toString());
+```
+
+After we ran our input image through the network, we got a [Mat](https://docs.opencv.org/3.4/d3/d63/classcv_1_1Mat.html) output object — this is short for “Matrix” and is OpenCV’s primary data structure for storing images or numerical data.
+
+The first element of our list (`boxOutputs`) is the **Bounding Box Predictions**. If we wanted to just perform object detection, we’d only need these. Let’s inspect the output of boxOutputs and concentrate on its dimensions:
+
+```
+INFO: Boxes Output: Mat [ 1*116*8400*CV_32FC1, isCont=true, isSubmat=false, nativeObj=0x6000024672a0, dataAddr=0x7fb2e9ff8000 ]
+```
+
+We see that it has a shape of **[1, 116, 8400]**. Let’s break it down:
+
+The `boxOutputs` matrix contains predictions for **8400 potential detections**, where each detection has **116 values (4 for bounding box, 80 for class probabilities, and 32 for mask coefficients)**. The 1 is the batch size, meaning one image is processed.
+
+So, for every one of the **8400 predictions**, we have a vector of **116 values** that has the following structure:
+
+- 4 values for bounding box coordinates (center_x, center_y, width, height)
+- 80 values for class probabilities (80 is the number of classes the model was trained to detect — [COCO dataset](https://cocodataset.org/#home))
+- 32 values for mask coefficients (used to generate segmentation masks by combining with `maskOutputs` , we’ll get to this in the next part)
+
+> Note: The previous statement only applies for YOLO versions ≥ 8.
+> YOLO5, for example, has a different output shape:
+> `(batchSize, 25200, 85) (Num classes + box[x,y,w,h] + confidence[c])`
+> It uses anchor boxes, with 3 anchors per grid cell, influencing the number of predictions (25200 = 8400 × 3). We’re not going to get into details here — just wanted to briefly mention it as a side note. If you have any questions, feel free to ask in the comments.
+
+You probably noticed that the boxes output had the structure **1 x 116 x 8400**, but we talked about having 8400 predictions, and for each one of them, 116 values.
+In order to work with this logic properly, we need to transpose the matrix to **8400 x 116**. Luckily, this can be done easily with OpenCV in Java:
+
+```java
+Mat mat2D = boxOutputs.reshape(1, (int) boxOutputs.size().width); // The second parameter is the number of rows
+Core.transpose(mat2D, mat2D);
+```
+
+This will change the structure of our `mat2D` object to **8400 x 116**.
+
+Now we can extract the relevant information from the output. This is going to be our plan:
+
+1. **Interate over every one of the 8400 rows**
+2. **For every row, extract the 80 class probabilities and find the maximum.**
+3. **Check this maximum (we can also call this “score”) against a defined threshold** (for example, only take predictions that have score > 0.6)
+4. **Extract the mask coefficients** (the last 32 values out of the total 116)
+5. **Generate a mask for this detection.** We will use the mask coefficients from boxOutputs and the prototype masks from maskOutputs to generate the final segmentation masks for each detected object — we’ll talk about this in detail in the next part.
+
+```java
+var segmentationMasks = new ArrayList<Mat>();
+
+LOGGER.info("-----Start analysing the inference-----");
+for (int i = 0; i < mat2D.rows(); i++)
+{
+    Mat detectionMat = mat2D.row(i);
+    List<Double> scores = new ArrayList<>();
+    for (int j = 4; j < NUM_CLASSES+4; j++) {
+        scores.add(mat2D.get(i, j)[0]);
+    }
+
+    MaxScore maxScore = ScoreUtils.findMaxScore( scores );
+    if(maxScore.maxValue() < 0.6) {
+        continue;
+    }
+
+    // Extract mask coefficients
+    Mat maskCoeffs = detectionMat.colRange(4 + NUM_CLASSES, 4 + NUM_CLASSES + 32);
+    // Generate mask for this detection
+    Mat objectMask = generateMask(maskOutputs, maskCoeffs);
+    segmentationMasks.add(objectMask);
+}
+```
+
+This code snippet seems simple, but it requires an understanding of the underlying structure. Let’s walk through it to really lock it in:
+
+The for-loop iterates through all 8400 prediction rows. For every row, with structure:
+
+<Image
+  alt="Row Structure"
+  src={"/images/yolov11-seg-2/row-struct.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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
+"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+/>
+
+The values from **index 0** to **index 3** are the **bounding box predictions**. We would use these if we wanted simple object detection — to draw the bounding box
+over the original image where an object was found.
+
+For instance segmentation, we first go through the class probabilities (from index 4 to index NUM_CLASSES [80 in our case])
+and find the maximum. We call this `maxScore` — the class with the maximum score is the class of the object that the model found.
+
+The code for `ScoreUtils` is really just finding the max value from a double array, very simple:
+
+```java
+record MaxScore (double maxValue, int indexOfMax) {}
+
+public class ScoreUtils {
+
+    public static MaxScore findMaxScore(List<Double> array) {
+        double max = array.get(0);
+        int indexOfMax = 0;
+        for (int i = 1; i < array.size(); i++) {
+            if (array.get(i) > max) {
+                max = array.get(i);
+                indexOfMax = i;
+            }
+        }
+        return new MaxScore( max, indexOfMax );
+    }
+}
+```
+
+After we find the `maxScore`, we check if it’s above a given threshold, we chose **0.6** here. If that’s not the case, we just move to the next prediction.
+
+The code for extracting the mask coefficients is fairly simple too:
+`Mat maskCoeffs = detectionMat.colRange(4 + NUM_CLASSES, 4 + NUM_CLASSES + 32);`
+We just took the values from index `4 + NUM_CLASSES` (84 in our case) to `NUM_CLASSES+32` (116 in our case).
+
+**In Part 3**, we’ll have a look at the last two steps of the for loop:
+
+```java
+// Generate mask for this detection
+Mat objectMask = generateMask(maskOutputs, maskCoeffs);
+segmentationMasks.add(objectMask);
+```
+
+We’ll also look into how to overlay the masks over the original image.
+We’ll inspect the `maskOutputs` in detail and perform a matrix multiplication between the
+32 mask coefficients we extracted in the previous step and the 32 prototype masks in `maskOutputs`.
+
+<br />
+<div className="text-2xl"> We’re not done yet — Part 3 is coming soon. </div>
+
+## Conclusion
+
+Java is becoming better and better when it comes to rapidly experimenting with object detection, instance segmentation, and integration with LLMs. This series will help you get a grasp of what is now possible in this ecosystem with the help of OpenCV.
+
+Hope you have managed to follow along until now. Stay tuned as we tackle the rest in the next part!
+
+<div className="h-10 w-2"></div>
