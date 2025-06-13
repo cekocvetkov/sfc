@@ -1,0 +1,689 @@
+---
+title: "Visualizing Downhill Simplex in 2D with Java and OpenCV: Implementing the Nelder-Mead"
+date: "2025-06-10"
+tags: ["java", "opencv"]
+published: true
+image: "downhill-simplex/main.webp"
+---
+
+# Visualizing Downhill Simplex in 2D with Java and OpenCV: Implementing the Nelder-Mead
+
+<Image
+  alt="Article Header"
+  src={"/images/downhill-simplex/main.gif"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+/>
+
+<small className="w-full h-2 flex justify-center" style={{ marginBottom: "-2rem", marginTop: "-2rem" }}>
+  you can also read this article in Medium -> click [here](https://itnext.io/visualizing-downhill-simplex-in-2d-with-java-and-opencv-implementing-the-nelder-mead-6d658d2280de)
+</small>
+<br />
+
+Let's get straight to the point -  Downhill Simplex is an optimization algorithm.
+It's used to find a function's **local** minimum (or maximum). It doesn't need complex math like gradients and
+it's very intuitive and easy to understand. It's perfect to play around with and that's exactly what we'll do in this article.
+
+I like the real-life analogy normally used to explain this algorithm, so I'll start with this:
+
+> Imagine you and two of your friends are blindfolded and put on a hilly landscape. Your goal is to find the lowest point - like the bottom of a valley. You can't see the whole map, but you always have information on the current elevation above sea level. How do you figure out where the lowest point is?
+
+## The Nelder–Mead method 📐:
+
+1. You and your friends spread around a bit and everybody shouts their current elevation. (You form an imaginary triangle in 2D space)
+2. Find out which one sits the **highest**, the **lowest**, and the one who's in the **middle** of all three. We'll call these positions "**best**", "**worst**", and "**good**".
+3. Now the one in the "**worst**" point reflects its position over the other two in an attempt to find a better (lower) spot.
+
+   - If that's good, maybe stretch a bit further ("expand")
+
+<div className="flex justify-between">
+    <div>
+        <Image
+        alt="Blurred Images"
+        src={"/images/downhill-simplex/reflect1.png"}
+        placeholder="blur"
+        blurDataURL="data:image/webp;base64,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"
+        width={250}
+        height={400}
+        objectFit="cover"
+        />
+    </div>
+    <div>
+
+        <Image
+        alt="Not Blurred"
+        src={"/images/downhill-simplex/extend1.png"}
+        placeholder="blur"
+        blurDataURL="data:image/webp;base64,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"
+        width={250}
+        height={400}
+        objectFit="cover"
+        />
+    </div>
+
+</div>
+
+4. If the "**reflected**" position is still bad, shrink a bit back ("contract" the position)
+5. If nothing works, the "**worst**" and the "**good**" move a bit closer to the best position ("shrink" the imaginary triangle).
+6. Repeat: Keep adjusting until the triangle that forms from those three points gets very small and surrounds the lowest point.
+
+Makes sense right? That's a legit and very simple way you can find a local minimum of a function.
+The proposed algorithm is focused on the 2D space (that's why we use a triangle in our example), but the algorithm also works in any given dimension.
+The **simplex** from (Downhill Simplex) is the key to this algorithm - it
+is a geometric shape that has n+1 vertices in n dimensions - the simplest shape that can enclose a region in a number of dimensions. For example:
+
+- In **1D**: A **line** segment (2 points).
+- In **2D**: A **triangle** (3 points). - *Our example*
+- In **3D**: A **tetrahedron** (4 points).
+- …
+
+**So all of this relates to function minimization like this:**
+
+In our example here, each "person" represents a set of coordinates (a point [x,y] in a 2-dimensional space).
+For a function, like f(x, y) = x² + y², the Nelder-Mead method evaluates the function at the triangle's vertices,
+compares their values, and adjusts the triangle accordingly. And this without needing gradient information.
+This is perfect when derivatives are hard to compute.
+
+We'll create a visualization where we start from a random point in a 2D space,
+then follow the algorithm's steps and gradually end up in the minimum of the given function. For simplicity, we'll use this function in our example:
+
+f(x, y) = x² + y² which has it's minimum at (0,0)
+
+This is called the objective function and will be calculated on every step for all of the points in our triangle.
+
+## Visualize using Java and OpenCV 
+
+If you're a visual guy like me, seeing exactly how the triangle expands, shrinks, and moves toward
+the lowest point would help you understand this even better. I'll use **Java** and **OpenCV** to visualize the steps of the algorithm.
+If I'm being honest, this is a task I would normally approach using **Python**, but Java has evolved over the last few years and I must say
+fast prototyping is not out of the scope of the language anymore. I actually had a very nice time implementing this in Java and ended up with a very tidy,
+eye-pleasing code, that's easy to read and understand.
+
+**Let's get into it:**
+
+To start we need a simple Java gradle or Maven project and add the OpenCV dependency in build.gradle:
+
+```
+plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
+}
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.openpnp:opencv:4.9.0-0'
+    ...
+```
+
+here is also the maven dependency to add in your pom.xml if you use maven:
+
+```
+<dependency>
+    <groupId>org.openpnp</groupId>
+    <artifactId>opencv</artifactId>
+    <version>4.9.0-0</version>
+</dependency>
+```
+
+
+Let’s set up some basics next, before moving to the actual implementation of the algorithm. At the heart of the Nelder-Mead are simple geometric transformations that help our simplex move toward the lower points.
+
+Let’s implement the basic geometric operations we talked about when we explained the algorithm — “**reflection**”, “**expansion**”, and “**contraction**”. These are pretty straightforward, but I’d like to go through them briefly to keep things **beginner-friendly**.
+
+
+## Reflection
+The most fundamental operation for this algorithm is calculating reflection points. This is how our simplex moves away from bad “high” positions. In order to calculate the reflection of our **worst** point, we first need to find the **midpoint** of the line that connects our two **better** points:
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/refl.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={1000}
+  objectFit="cover"
+/>
+
+This **mid-point** is like a pivot for our reflection.
+
+**Midpoint Formula (Between Two Points):**
+We have two points G(x,y) (for Good) and B(x,y) (for Best). The midpont M between them is:
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/midpfb.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,UklGRqgHAABXRUJQVlA4WAoAAAAgAAAANgMAbgIASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggugUAAHB/AJ0BKjcDbwI+7Xa4VqmnJSOgCAEwHYlpbuFtrwPtUALfBG7b7KihgD4x+gBPYYiLmM9oFlqUQOotKgWTSKOU1L9PbMZ7QLJdrxc3cnKTqpw3hGk8M6OYuThU33weDeb5r8J6vTkPkaSIbkiYu/BWYIISQ7Un9r+RAtFWYVNWLIWoXE5SA+KBG6m3q44gqCcMVqXS7s6xDdbuscn29O7H0HyimORrQwswZAAtp2VnJ7Q5mEhdmXSmFehTHDUjotk7CmyUkNSGRnyl4+rdJ61LPR1AVZNtE9d6mP5oO7pFd1T0Rx4h3ZqGLxib2uK6xiHWTbYCrJA2vFzcof+wYIHNEQN9bfyfj+m2wDfOeoRCzDkSiBY8qNg6OnmgCpTjgRd56ip+89RU/eeZzFqBZN3DKbxWH2K0LuRdUmLoiUU/M689RU4Fb2yciwKYSnDOtQZ4q3LoI8ZCfSP0To+I4lwRAtQgu0rBNpUymYZCEG6H4SGj9DTZNkQVD0kicy1KIFj0ph+GiemJrs0VbqsmA7M0T9JrruZUhMAfF0u0um8qLxyNOzNfDZ5qVgKsmv3Kz6raq+2TwJpU478WS6o6fgri2TbYCrJE0387CC7SoFkvXwLdx5UzWMkGS3xjJ8EMlEUEVJdrxcnIfF1MAugXdw9Pk3+sAr7zoqgJ1VA97ZOQ99snIidoQhDfLKGkAU4rZ6o33cVPDYFku0qBZLteV6s/9aJ6T78S7W3uA0R1lI1nIokcILtKgWTD8NE30OcHnKVmhlNw443Kdgo3IlECyXa8XJ4KzF0q8L0kzI19ZU/eeoqaa8D32ych77ZORZWZnaoZw0fiO9yp+88zn0y09snIe+2TkPfdLJvF1PK7NFcPHNE/RHMJdpUCyXa8XJyHvtk5D4unciM4C+r6nF2l3G825teLk5D32ych77anMaGr8b5nxwlygZeLk5D32ych77ZQMvFych789s0un227a8XJyHvtk5D32yc4iLk5D379OuKFZsl2vFych77ZOQ99snIe+2TkPfbo8V2msh77ZOQ99snIe+3uMMA+A/S7Xkf4LDPYIuTkPfbJyHvtk5D32ycjB9snInPjWwAgHvtk5D32ych77ZOcRF68/T2ydco/b9oFku14uTkPfbJyHvwBApMPgtZgYXwkn4YIuTkPfbJyHvtk5D32yckAQW3mH7Rywds9snIe+2TkPfbJyUmH0Q9IlgP+gu0u+B57ZOQ99snIe+2TkPfbJyHvxYQXcN++r9yoFku14uTkPfbJyHvtk5D320JHhom5BFpUCyXa8XJyHvtk5EQPJyHvuJw1IHvjvNrxcnIe+2TkPoX0vpvPT4AgHwxs4oHqaiC7SoFku14uTj+AAP76tmnJEFzg02HKJ0HjnZtAy5cQHyhyvlNkSfTZ5ZQttvrbd79ap3WJXc8RprDQH9qqYqgDvXybxOoRci5uSr43G9/xhaBw0ruwZrDT7MbNTu42AVdnLTTRqbONW1gL23OcfXAsR2eFKaF4OYeBQpLIVAkBcislA56SJ1kL5AB7uF5pguXiHtFeyEQS6rKhuFQg6l9QpB0yluA9gMWwCEQ6V8FIW9WmI73TBXFp2aVWES+q/4I7HrXZETdcsY5uXa9u8KMO7C+lg3NewRIFMgFHQwExg2b3FSR6EGc1k7fxjyqjQP3irLZrWUH6iHHDGKi2OuwVPELJWV4bDN054QbOvHc5tI0aTK3YhqmlwglHbAq2u1ZpW1YDriBuDxrWlHDDoc+0o3AvwoWrVhFMIVqBFZtNqEHwVQt+S4HazYQUG3Zc5OzdwBFAAsrsS2AgAdoIAAKywAbpgABeERyTCAOhiE+DAo/CAHWH5E7RBgLsiWdUAQEBkYeh/O0IAN4OiaZnCAAZBOGLhcUkABmHlB0iECi34EAE42ljh1ccaNQgUgAdVwH1e7Km0kEESBZ80wMAAAAA"
+  width={400}
+  height={400}
+  objectFit="cover"
+/>
+
+Having the coordinates of the **Best** and **Good** points, we find the point exactly halfway between them by averaging their coordinates:
+
+```java
+/**
+ *   Midpoint of a line between a(x,y) and b(x,y):
+ *   ( a + b ) / 2
+ *   ( ( a.x + b.x ) / 2 ), ( (a.y + b.y) /2 )
+ *   
+ */
+public static Point midPoint(Point a, Point b) {
+    double midX = (a.x + b.x) / 2;
+    double midY = (a.y + b.y) / 2;
+
+    return new Point(midX, midY);
+}
+```
+
+Now we can use this to calculate the reflection. Let’s think it through:
+
+We have a point **W(x,y)** (for worst), and our newly calculated point **M(x,y)** (Midpoint). The goal is to find a new point R(x,y) (Reflected), which is the reflection of **W** over **M**, as if we flip **W** over **M**, to get a mirror image of it.
+
+> To reflect a point across a center point, take the center, double it, and subtract the original point. That gives the new point on the opposite side.
+
+So **R(x,y)** (for Reflected) is calculated like this:
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/r1.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={150}
+  height={100}
+  objectFit="cover"
+/>
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/r2.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={600}
+  height={500}
+  objectFit="cover"
+/>
+
+
+```java
+/**
+ *   Calculate the reflected point's coordinates using the reflection formula:
+ *  x' = 2 * midX - x, y' = 2 * midY - y
+ *
+ */
+public static Point reflectionPoint(Point p, Point midPoint) {
+    double xReflected = 2 * midPoint.x - p.x;
+    double yReflected = 2 * midPoint.y - p.y;
+
+    LOG.info("Reflection point: ("+xReflected+", "+yReflected+")");
+    return new Point(xReflected, yReflected);
+}
+```
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/reflp.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={600}
+  height={400}
+  objectFit="cover"
+/>
+
+## Expansion
+After computing the reflected point, the Nelson Mead algorithm sometimes tries to go **further** in that direction — this is called **expansion**. If after reflection, the reflected point is the best point so far, we move even further in that direction.
+
+We can calculate the expansion point, using the reflection point, very easily:
+
+We need to move from the midpoint **M** in the same direction as the reflection **R**, but **two** times the distance (or more than two, we’ll call this factor **gamma**):
+
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/e1.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,UklGRqgHAABXRUJQVlA4WAoAAAAgAAAANgMAbgIASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggugUAAHB/AJ0BKjcDbwI+7Xa4VqmnJSOgCAEwHYlpbuFtrwPtUALfBG7b7KihgD4x+gBPYYiLmM9oFlqUQOotKgWTSKOU1L9PbMZ7QLJdrxc3cnKTqpw3hGk8M6OYuThU33weDeb5r8J6vTkPkaSIbkiYu/BWYIISQ7Un9r+RAtFWYVNWLIWoXE5SA+KBG6m3q44gqCcMVqXS7s6xDdbuscn29O7H0HyimORrQwswZAAtp2VnJ7Q5mEhdmXSmFehTHDUjotk7CmyUkNSGRnyl4+rdJ61LPR1AVZNtE9d6mP5oO7pFd1T0Rx4h3ZqGLxib2uK6xiHWTbYCrJA2vFzcof+wYIHNEQN9bfyfj+m2wDfOeoRCzDkSiBY8qNg6OnmgCpTjgRd56ip+89RU/eeZzFqBZN3DKbxWH2K0LuRdUmLoiUU/M689RU4Fb2yciwKYSnDOtQZ4q3LoI8ZCfSP0To+I4lwRAtQgu0rBNpUymYZCEG6H4SGj9DTZNkQVD0kicy1KIFj0ph+GiemJrs0VbqsmA7M0T9JrruZUhMAfF0u0um8qLxyNOzNfDZ5qVgKsmv3Kz6raq+2TwJpU478WS6o6fgri2TbYCrJE0387CC7SoFkvXwLdx5UzWMkGS3xjJ8EMlEUEVJdrxcnIfF1MAugXdw9Pk3+sAr7zoqgJ1VA97ZOQ99snIidoQhDfLKGkAU4rZ6o33cVPDYFku0qBZLteV6s/9aJ6T78S7W3uA0R1lI1nIokcILtKgWTD8NE30OcHnKVmhlNw443Kdgo3IlECyXa8XJ4KzF0q8L0kzI19ZU/eeoqaa8D32ych77ZORZWZnaoZw0fiO9yp+88zn0y09snIe+2TkPfdLJvF1PK7NFcPHNE/RHMJdpUCyXa8XJyHvtk5D4unciM4C+r6nF2l3G825teLk5D32ych77anMaGr8b5nxwlygZeLk5D32ych77ZQMvFych789s0un227a8XJyHvtk5D32yc4iLk5D379OuKFZsl2vFych77ZOQ99snIe+2TkPfbo8V2msh77ZOQ99snIe+3uMMA+A/S7Xkf4LDPYIuTkPfbJyHvtk5D32ycjB9snInPjWwAgHvtk5D32ych77ZOcRF68/T2ydco/b9oFku14uTkPfbJyHvwBApMPgtZgYXwkn4YIuTkPfbJyHvtk5D32yckAQW3mH7Rywds9snIe+2TkPfbJyUmH0Q9IlgP+gu0u+B57ZOQ99snIe+2TkPfbJyHvxYQXcN++r9yoFku14uTkPfbJyHvtk5D320JHhom5BFpUCyXa8XJyHvtk5EQPJyHvuJw1IHvjvNrxcnIe+2TkPoX0vpvPT4AgHwxs4oHqaiC7SoFku14uTj+AAP76tmnJEFzg02HKJ0HjnZtAy5cQHyhyvlNkSfTZ5ZQttvrbd79ap3WJXc8RprDQH9qqYqgDvXybxOoRci5uSr43G9/xhaBw0ruwZrDT7MbNTu42AVdnLTTRqbONW1gL23OcfXAsR2eFKaF4OYeBQpLIVAkBcislA56SJ1kL5AB7uF5pguXiHtFeyEQS6rKhuFQg6l9QpB0yluA9gMWwCEQ6V8FIW9WmI73TBXFp2aVWES+q/4I7HrXZETdcsY5uXa9u8KMO7C+lg3NewRIFMgFHQwExg2b3FSR6EGc1k7fxjyqjQP3irLZrWUH6iHHDGKi2OuwVPELJWV4bDN054QbOvHc5tI0aTK3YhqmlwglHbAq2u1ZpW1YDriBuDxrWlHDDoc+0o3AvwoWrVhFMIVqBFZtNqEHwVQt+S4HazYQUG3Zc5OzdwBFAAsrsS2AgAdoIAAKywAbpgABeERyTCAOhiE+DAo/CAHWH5E7RBgLsiWdUAQEBkYeh/O0IAN4OiaZnCAAZBOGLhcUkABmHlB0iECi34EAE42ljh1ccaNQgUgAdVwH1e7Km0kEESBZ80wMAAAAA"
+  width={150}
+  height={100}
+  objectFit="cover"
+/>
+
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/e2.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={600}
+  height={500}
+  objectFit="cover"
+/>
+
+For simplitity, we set gamma always = 2 in our code:
+
+```java
+/**
+ * Calculates the expansion point using the reflected point.
+ * This difference tells us: “From the midPoint, I moved N units right in x and M unit down in y to get to the reflected point.”
+ * For expansion, we want to go further in that same direction. Let’s say we double the distance (gamma=2)
+ *
+ */
+public static Point expansionPointFromReflection(Point p, Point midPoint) {
+    return expansionPointFromReflection(p,midPoint,2);
+}
+public static Point expansionPointFromReflection(Point p, Point midPoint, double gamma) {
+    Point reflected = reflectionPoint(p, midPoint); // Get R
+    double xExpanded = midPoint.x + gamma * (reflected.x - midPoint.x);
+    double yExpanded = midPoint.y + gamma * (reflected.y - midPoint.y);
+
+    LOG.info("Expansion point: ("+xExpanded+", "+yExpanded+")");
+    return new Point(xExpanded, yExpanded);
+}
+```
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/ext.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={600}
+  height={500}
+  objectFit="cover"
+/>
+
+## Contraction
+The contraction is used when the reflection didn’t deliver a better result. It shrinks our triangle toward the middle point. There are two types:
+
+- **Outside contraction**: between the middle point (M) and the reflected point (R):
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/oc.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={500}
+  height={100}
+  objectFit="cover"
+/>
+
+If the **rho** coefficient here is 0.5, we’ll end up with the following:
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/oc1.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={600}
+  height={500}
+  objectFit="cover"
+/>
+
+- **Inside contraction**: between the middle point (M) and the worst point (W):
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/ic.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={500}
+  height={100}
+  objectFit="cover"
+/>
+
+Again, If the rho coefficient here is 0.5, we’ll end up with the following:
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/ic1.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={600}
+  height={500}
+  objectFit="cover"
+/>
+
+Here the code in java (_again, we’ll use 0.5 for rho for simplicity_):
+
+```java
+public static Point contractionPoint( Point p, Point midPoint, boolean isOutside ) {
+    return contractionPoint(p, midPoint, 0.5, isOutside);
+}
+
+/**
+ * Calculates the contraction point for a 2D downhill simplex (Nelder-Mead) optimization.
+ * The contraction point shrinks the simplex toward the centroid. There are two types:
+ * - Outside contraction: between the centroid (midPoint) and the reflected point (computed internally).
+ * - Inside contraction: between the centroid (midPoint) and the worst point (p).
+ * The formula is \( P_c = midPoint + rho * (endPoint - midPoint) \), where endPoint is either
+ * the reflected point (outside) or the worst point (inside), and rho is the contraction coefficient.
+ *
+ * @param p          the worst vertex of the simplex
+ * @param midPoint   the centroid of the remaining vertices
+ * @param rho        the contraction coefficient (typically 0.5 in Nelder-Mead)
+ * @param isOutside  true for outside contraction (uses reflected point), false for inside contraction (uses worst point)
+ * @return a new Point object representing the contraction point
+ */
+public static Point contractionPoint(Point p, Point midPoint, double rho, boolean isOutside) {
+
+    // Determine the endpoint: reflected point (outside) or worst point (inside)
+    Point endPoint = isOutside ? reflectionPoint(p, midPoint) : p;
+
+    // Calculate the contraction point:
+    // x_c = midX + rho * (endX - midX)
+    // y_c = midY + rho * (endY - midY)
+    double xContracted = midPoint.x + rho * (endPoint.x - midPoint.x);
+    double yContracted = midPoint.y + rho * (endPoint.y - midPoint.y);
+
+    LOG.info("Contraction point: ("+xContracted+", "+yContracted+")");
+    return new Point(xContracted, yContracted);
+}
+```
+
+## Shrinking
+If reflection, expansion, and contraction all failed, we’ll try to **shrink** the triangle around the best point and try again.
+
+The logic here is pretty straightforward. We find the midpoint between the worst and the best points and the midpoint between the good and the best points and set them to be the new “worst” and “good”.
+
+```java
+// shrinking the triangle towards best point
+PointValue s1 = new PointValue( midPoint ( worst.point(), best.point() ));
+PointValue s2 = new PointValue( midPoint (good.point(), best.point()));
+worst = s1;
+good = s2;
+```
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/sh.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={600}
+  height={500}
+  objectFit="cover"
+/>
+
+
+## Set Up Canvas with a grid in OpenCV
+Alright, let’s prepare some code to visualize our algorithm. We’ll start small and first just create a canvas with size 600x600 and draw a grid on it:
+
+```java
+import nu.pattern.OpenCV;
+import org.opencv.core.*;
+import org.opencv.highgui.HighGui;
+
+import static com.tsvetkov.Utils.*;
+
+public class Main {
+
+    public static final short CANVAS_SIZE = 600;
+    public static final short MIN_MAX_ALGORITHM_COORDINATES = 10;
+
+    public static void main(String[] args) {
+        OpenCV.loadLocally();
+        try {
+            mainDraw();
+        } finally {
+            HighGui.destroyAllWindows();
+            System.exit(0);
+        }
+    }
+
+    private static void mainDraw() {
+        Mat canvas = new Mat(CANVAS_SIZE, CANVAS_SIZE, CvType.CV_8UC3, new Scalar(255, 255, 255)); // White background
+
+        canvas.setTo(new Scalar(255, 255, 255));
+        drawCoordinateGrid(canvas, -MIN_MAX_ALGORITHM_COORDINATES, MIN_MAX_ALGORITHM_COORDINATES, CANVAS_SIZE, CANVAS_SIZE);
+
+        HighGui.imshow("Nelder-Mead Simplex", canvas);
+        HighGui.waitKey(0); // Keep final image open until key press
+    }
+
+}
+```
+
+Now, in order to draw the grid and all the triangle points in the future, we need a function that takes the algorithm coordinates and converts them to pixel coordinates to be drawn on the canvas. For example, from scale (-10 to 10) to pixel coordinates (0 to 500). Here both utility functions used above:
+
+```java
+// Convert algorithm coordinates to pixel coordinates
+// scales the algorithm's x,y values (e.g., -2 to 2) to pixel coordinates (0 to 500).
+public static Point toPixel(double x, double y, double min, double max, int width, int height) {
+    double scaleX = width / (max - min);
+    double scaleY = height / (max - min);
+    int px = (int) ((x - min) * scaleX);
+    int py = (int) ((y - min) * scaleY);
+    return new Point(px, height - py); // Flip y-axis for image coordinates
+}
+// Draw coordinate grid with labels
+public static void drawCoordinateGrid(Mat canvas, double minCoord, double maxCoord, int width, int height) {
+    double gridStep = 1; // Grid lines every 0.5 units
+    double labelStep = 1.0; // Labels every 1.0 unit to avoid clutter
+
+    // Vertical lines (constant x)
+    for (double x = minCoord; x <= maxCoord; x += gridStep) {
+        Point start = toPixel(x, minCoord, minCoord, maxCoord, width, height);
+        Point end = toPixel(x, maxCoord, minCoord, maxCoord, width, height);
+        Imgproc.line(canvas, start, end, GRID_COLOR, 1);
+    }
+
+    // Horizontal lines (constant y)
+    for (double y = minCoord; y <= maxCoord; y += gridStep) {
+        Point start = toPixel(minCoord, y, minCoord, maxCoord, width, height);
+        Point end = toPixel(maxCoord, y, minCoord, maxCoord, width, height);
+        Imgproc.line(canvas, start, end, GRID_COLOR, 1);
+    }
+
+    // Draw axes (x=0, y=0) slightly darker
+    Imgproc.line(canvas,
+            toPixel(0, minCoord, minCoord, maxCoord, width, height),
+            toPixel(0, maxCoord, minCoord, maxCoord, width, height),
+            new Scalar(150, 150, 150), 1);
+    Imgproc.line(canvas,
+            toPixel(minCoord, 0, minCoord, maxCoord, width, height),
+            toPixel(maxCoord, 0, minCoord, maxCoord, width, height),
+            new Scalar(150, 150, 150), 1);
+}
+```
+
+If you managed to follow along, you should see the following window after you execute your Main class:
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/gr.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={600}
+  height={500}
+  objectFit="cover"
+/>
+
+Let’s start small and draw a single triangle on this grid. We’ll use the following (_absolutely random_) coordinates: (4,2), (5,4), (7,2). These will be our starting point. Here the updated `mainDraw()` method:
+
+```java
+...
+record PointValue(Point point, double value) {
+    public PointValue(Point point) {
+        this(point, objectiveFunction(point));
+    }
+    double x(){
+        return point.x;
+    }
+    double y(){
+        return point.y;
+    }
+}
+...
+
+public class Main {
+
+...
+
+private static void mainDraw() {
+        Mat canvas = new Mat(CANVAS_SIZE, CANVAS_SIZE, CvType.CV_8UC3, new Scalar(255, 255, 255)); // White background
+
+        canvas.setTo(new Scalar(255, 255, 255));
+        drawCoordinateGrid(canvas, -MIN_MAX_ALGORITHM_COORDINATES, MIN_MAX_ALGORITHM_COORDINATES, CANVAS_SIZE, CANVAS_SIZE);
+
+        PointValue a = new PointValue(new Point(4, 2));
+        PointValue b = new PointValue(new Point(5, 4));
+        PointValue c = new PointValue(new Point(7, 2));
+
+        //draw triangle
+        MatOfPoint trianglePoints = new MatOfPoint(toPixel(a.x(), a.y()), toPixel(b.x(), b.y()), toPixel(c.x(), c.y()));
+        Imgproc.polylines(canvas, List.of(trianglePoints), true, RED_COLOR, 2);
+
+        HighGui.imshow("Nelder-Mead Simplex", canvas);
+        HighGui.waitKey(0); // Keep final image open until key press
+    }
+...
+```
+
+
+<Image
+  alt="Fixed Height and Width"
+  src={"/images/downhill-simplex/tr.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={600}
+  height={500}
+  objectFit="cover"
+/>
+
+Now we have set up a window with a grid and we can draw triangles on the canvas using OpenCV. That’s all we need in order to implement our algorithm and visualize it.
+
+## Implementation
+
+> Our aim will be to find the (local) minimum of the following objective function:
+f(x, y) = x² + y²
+
+Here the code to calculate it for every given point:
+
+```java
+// Function to minimize: f(x, y) = x^2 + y^2
+public static double objectiveFunction(Point point) {
+    double x = point.x;
+    double y= point.y;
+    return x * x + y * y;
+}
+```
+
+We’ll repeat the following in a loop until we reach the max number of iterations we have set:
+
+1. Clear the **canvas**.
+2. Draw **triangle** (the starting point will be the triangle (4,2), (5,4), (7,2) from above).
+3. Calculate the **objective function** for every point of the triangle.
+4. Assign **Best**, **Good** and **Worst** to the points of the triangle.
+5. Calculate the **Midpoint (M)** between the Good and the Best point.
+6. Calculate the **Reflected Point (R)**, flipping the **Worst** point over the **Midpoint**
+
+
+Now we need to branch out:
+
+- If the value of the objective function for the reflected point is better than the good point, then we either reflect or extend.
+
+- If the value of the objective function for the reflected point is not better than the good point, then we either contract or shrink.
+
+We have set ourselves pretty good by now with all the functions we need to implement this. Here the final code:
+
+```java
+private static void mainDraw() {
+    Mat canvas = new Mat(CANVAS_SIZE, CANVAS_SIZE, CvType.CV_8UC3, new Scalar(255, 255, 255)); // White background
+    Function<Point, Double> objectiveFunction = Functions::objectiveFunction;
+
+    PointValue a = new PointValue(new Point(4, 2));
+    PointValue b = new PointValue(new Point(5, 4));
+    PointValue c = new PointValue(new Point(7, 2));
+
+    for (int iter = 0; iter < MAX_ITERATIONS; iter++) {
+        // clean  canvas
+        canvas.setTo(new Scalar(255, 255, 255));
+        drawCoordinateGrid(canvas, -MIN_MAX_ALGORITHM_COORDINATES, MIN_MAX_ALGORITHM_COORDINATES, CANVAS_SIZE, CANVAS_SIZE);
+        //draw triangle
+        MatOfPoint trianglePoints = new MatOfPoint(toPixel(a.x(), a.y()), toPixel(b.x(), b.y()), toPixel(c.x(), c.y()));
+        Imgproc.polylines(canvas, List.of(trianglePoints), true, RED_COLOR, 2);
+
+        List<PointValue> sorted = Stream.of(a,b,c).sorted(Comparator.comparingDouble(PointValue::value)).toList();
+
+        // Assign best, good, worst
+        PointValue best = sorted.get(0);
+        PointValue good = sorted.get(1);
+        PointValue worst = sorted.get(2);
+        
+        //Start algorithm
+        Point midPoint = midPoint(good.point(), best.point());
+
+        //calculate reflected point
+        PointValue reflected = new PointValue(Functions.reflectionPoint(worst.point(), midPoint));
+
+        if(reflected.value() < good.value()) {
+            //either reflect or extend
+            if(best.value() < reflected.value()) {
+                //replace worst with reflected
+                worst = reflected;
+            } else {
+                // compute extended
+                PointValue extended = new PointValue(expansionPointFromReflection(worst.point(), midPoint));
+                if(extended.value() < good.value()) {
+                    //replace worst with extended
+                    worst = extended;
+                } else {
+                    //replace worst with reflected
+                    worst = reflected;
+                }
+            }
+
+        } else {
+            //either contract or shrink
+            if(reflected.value() < worst.value()) {
+                // make worst to be the reflected point (flip triangle)
+                worst = reflected;
+            }
+
+            // compute contraction
+            PointValue contractionInner = new PointValue(contractionPoint(worst.point(), midPoint, false));
+            PointValue contractionOuter = new PointValue(contractionPoint(worst.point(), midPoint, true));
+
+            PointValue contraction = contractionInner.value() < contractionOuter.value() ? contractionInner : contractionOuter;
+            if(contraction.value() < worst.value()) {
+                //contraction
+                worst = contraction;
+            } else {
+                // shrinking the triangle towards best point
+                PointValue s1 = new PointValue( midPoint ( worst.point(), best.point() ));
+                PointValue s2 = new PointValue( midPoint (good.point(), best.point()));
+                worst = s1;
+                good = s2;
+            }
+
+        }
+
+        a = best;
+        b = good;
+        c = worst;
+
+        HighGui.imshow("Nelder-Mead Simplex", canvas);
+        HighGui.waitKey(0); // Pause for 500ms to observe each step
+    }
+
+    // Show the canvas
+    HighGui.waitKey(0); // Keep final image open until key press
+}
+```
+
+If you run this, you’ll see the triangle moving closer and closer to **(0,0)**, which is the minimum of our objective function **f(x, y) = x² + y²**.
+
+## Conclusion
+The simplicity of this method really makes it stand out. It’s easy to understand and play around with. You’ll be surprised how many real-world applications actually use this method — from robotics and navigation to medical imaging — for example in Image Registration, to find the best transformation matrix.
+
+Hope you managed to deeply understand the concept and had fun with this — I know I did!
+
+**Thanks for reading!**
+
+
+<div className="h-10 w-2"></div>
