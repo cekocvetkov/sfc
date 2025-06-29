@@ -1,3 +1,28 @@
+## Prisma DB Notes:
+### Local playaround way
+1. In `schema.prisma` we define how we want our database to look like
+2. If then we change something in `schema.prisma` (e.g. add column to some table)
+3. Everytime we make such change (including the very first time) we have to run `npx prisma db push` - this is the quick and dirty way to update the database to conform to our `schema.prisma` definitions
+
+### Production way
+In production we usually want to track such changes we make to the database - so now we say every change we make is a 'migration'. 
+
+After we have made changes to the `schema.prisma` we run:
+`npx prisma migrate dev --name init` (in this case we name the migration 'init')
+this creates the following file:
+`prisma/migrations/20250629173346_init/migration.sql`
+This way we will have a history of all our migrations.
+
+Now in production we can run :
+    `"build:prod-with-db": "prisma generate && prisma migrate deploy && next build"`
+(see `package.json`)
+
+## run db container for local development:
+`docker run --name sfcdb -e POSTGRES_USER=sfc -e POSTGRES_PASSWORD=sfc -e POSTGRES_DB=sfcdb -p 5432:5432 -d postgres:latest`
+
+very convenient:
+run `npx prisma studio` for Database Admin UI
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

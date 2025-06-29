@@ -5,6 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import React from "react";
 import { notFound } from "next/navigation";
 import { BASE_URL } from "@/app/utls/constants";
+import CommentSection from "@/app/components/comments/comment-section";
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   try {
@@ -40,6 +41,10 @@ async function Article({ params }: { params: { slug: string } }) {
 
       {/* @ts-expect-error: Should expect string */}
       <MDXRemote source={article.content} components={MdxComponents} options={MdxOptions} />
+
+      <div id="comments-section">
+        <CommentSection postSlug={params.slug} />
+      </div>
     </article>
   );
 }

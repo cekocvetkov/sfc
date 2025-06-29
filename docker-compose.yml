@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    # image: ghcr.io/cekocvetkov/sfc:latest
+    # platform: linux/amd64
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://sfc:sfc@db:5432/sfcdb
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=sfc
+      - POSTGRES_PASSWORD=sfc
+      - POSTGRES_DB=sfcdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data: 

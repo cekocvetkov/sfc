@@ -1,0 +1,31 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model sfcuser {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  name      String?
+  image     String?
+  provider  String
+  email     String    @unique
+  comments  comment[]
+}
+
+model comment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postSlug  String
+  userId    String
+  user      sfcuser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([postSlug]) // Add index for faster queries by postSlug
+}

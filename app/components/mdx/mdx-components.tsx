@@ -3,9 +3,17 @@ import Image from "next/image";
 import Link from "next/link";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
+import CommentsLink from "./comments-link";
 
 export const MdxComponents = {
-  h1: (props: React.HTMLProps<HTMLHeadingElement>) => <h1 className="text-3xl" {...props} />,
+  h1: (props: React.HTMLProps<HTMLHeadingElement>) => (
+    <div>
+      <h1 className="text-3xl mb-0" {...props} />
+      <div className="w-full flex justify-end">
+        <CommentsLink />
+      </div>
+    </div>
+  ),
   h2: (props: React.HTMLProps<HTMLHeadingElement>) => {
     if (props.id) {
       return (
