@@ -60,6 +60,13 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/node_modules/.prisma /app/node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma /app/node_modules/@prisma
 
+# Create startup script before switching users
+RUN echo '#!/bin/sh\n\
+echo "Running database migrations..."\n\
+npx prisma migrate deploy\n\
+echo "Starting application..."\n\
+exec node server.js' > /app/start.sh && chmod +x /app/start.sh
+
 USER nextjs
 
 EXPOSE 3000
@@ -69,12 +76,5 @@ ENV PORT=3000
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
-
-# Create startup script
-RUN echo '#!/bin/sh\n\
-echo "Running database migrations..."\n\
-npx prisma migrate deploy\n\
-echo "Starting application..."\n\
-exec node server.js' > /app/start.sh && chmod +x /app/start.sh
 
 CMD ["/app/start.sh"]
