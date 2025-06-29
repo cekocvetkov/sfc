@@ -60,12 +60,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/node_modules/.prisma /app/node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma /app/node_modules/@prisma
 
-# Create startup script before switching users
-RUN echo '#!/bin/sh\n\
-echo "Running database migrations..."\n\
-npx prisma migrate deploy\n\
-echo "Starting application..."\n\
-exec node server.js' > /app/start.sh && chmod +x /app/start.sh
+# Copy startup script
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
 
 USER nextjs
 
