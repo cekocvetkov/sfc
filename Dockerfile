@@ -32,9 +32,9 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN \
-  if [ -f yarn.lock ]; then yarn run build:prod-with-db; \
-  elif [ -f package-lock.json ]; then npm run build:prod-with-db; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build:prod-with-db; \
+  if [ -f yarn.lock ]; then yarn run build; \
+  elif [ -f package-lock.json ]; then npm run build; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
   else echo "Lockfile not found." && exit 1; \
   fi
 
@@ -69,4 +69,12 @@ ENV PORT=3000
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+
+# Create startup script
+RUN echo '#!/bin/sh\n\
+echo "Running database migrations..."\n\
+npx prisma migrate deploy\n\
+echo "Starting application..."\n\
+exec node server.js' > /app/start.sh && chmod +x /app/start.sh
+
+CMD ["/app/start.sh"]
