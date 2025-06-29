@@ -49,6 +49,7 @@ function SearchForm({ allTags }: TagsProps) {
       };
     });
     setCurrentTags(updatedTags); // Update state with the new array
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="flex flex-col flex-grow justify-center">
