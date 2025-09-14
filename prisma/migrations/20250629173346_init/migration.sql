@@ -1,5 +1,6 @@
 -- CreateTable
-CREATE TABLE "sfcuser" (
+CREATE TABLE "sfcuser"
+(
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -12,7 +13,8 @@ CREATE TABLE "sfcuser" (
 );
 
 -- CreateTable
-CREATE TABLE "comment" (
+CREATE TABLE "comment"
+(
     "id" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

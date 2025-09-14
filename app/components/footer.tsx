@@ -14,7 +14,7 @@ function Footer() {
   const [showLogout, setShowLogout] = useState(false);
   const [showPrivacyDialog, setShowPrivacyDialog] = useState(false);
   return (
-    <footer className="fixed bottom-0 left-0 w-full py-10 text-center hidden flex-col gap-y-3 md:flex [@media_((max-height:800px)_and_(min-width:948px))]:py-1 [@media_((max-height:800px)_and_(min-width:948px))]:mt-[-100px] ">
+    <footer className="fixed bottom-0 left-0 w-full py-10 text-center hidden flex-col gap-y-3 md:flex [@media_((max-height:800px)_and_(min-width:948px))]:py-1 [@media_((max-height:800px)_and_(min-width:948px))]:mt-[-100px] [@media_((max-height:800px)_and_(min-width:948px))]:flex-row">
       <div className="flex justify-center gap-x-4 [@media_((max-height:800px)_and_(min-width:948px))]:hidden">
         <Link aria-label="LinkedIn Link" href="https://linkedin.com/in/tsvetkov-tsvetan">
           <IoLogoLinkedin size={24} />

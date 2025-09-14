@@ -1,10 +1,16 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import useScrollDirection from "../hooks/UseScrollDirection";
 import { usePathname } from "next/navigation";
+import useMobile from "../hooks/IsMobile";
+import { signOut, useSession } from "next-auth/react";
+import UserAvatar from "./user-avatar-mobile";
+import { MdOutlinePrivacyTip } from "react-icons/md";
+import PrivacyPolicyDialog from "./privacy-policy-dialog";
 
 function Navigation() {
+  const { data: session, status } = useSession();
   useScrollDirection();
   const pathName = usePathname();
   const isActive = (href: string) => pathName === href;
@@ -12,7 +18,11 @@ function Navigation() {
   return (
     <nav id="header" className=" sticky top-0 bg-background-color !z-50 min-h-[142px] mt-0 md:mt-10 lg:mt-14 mt flex items-center justify-between transition-transform ease-in-out duration-[0.2s]">
       <div>
-        <Link href="/" className="hover:text-secondary-text-color">
+        <div className="md:hidden flex items-center gap-3">
+          <UserAvatar />
+
+        </div>
+        <Link href="/" className=" hover:text-secondary-text-color">
           home
         </Link>
       </div>
@@ -24,6 +34,8 @@ function Navigation() {
           search
         </Link>
       </div>
+
+
     </nav>
   );
 }

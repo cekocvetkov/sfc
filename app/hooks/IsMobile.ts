@@ -4,7 +4,7 @@ const useMobile = () => {
   const isMobile = useRef(false);
 
   useEffect(() => {
-    if (window.innerWidth < 900) {
+    if (window.innerWidth < 948) {
       isMobile.current = true;
     } else {
       isMobile.current = false;

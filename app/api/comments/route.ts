@@ -1,4 +1,3 @@
-// import { auth } from "@/auth";
 import { prisma } from "@/app/prisma";
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";

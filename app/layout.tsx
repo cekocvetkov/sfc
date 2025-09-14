@@ -11,7 +11,7 @@ import { Suspense } from "react";
 import { BASE_URL } from "./utls/constants";
 import { SessionProvider } from "next-auth/react";
 
-const inter = Montserrat({
+const montserrat = Montserrat({
   weight: "200",
   subsets: ["latin"],
 });
@@ -42,7 +42,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <Script defer src="/umami.js" data-website-id="ae5e8a60-bb8f-42f9-a85c-7af013ca8a81" />
-      <body className={`${inter.className} antialiased m-0 p-0 h-screen w-screen overflow-hidden bg-background-color text-primary-text-color`}>
+      <body className={`${montserrat.className} antialiased m-0 p-0 h-screen w-screen overflow-hidden bg-background-color text-primary-text-color`}>
         <SessionProvider>
           <div className=" h-[100%] flex flex-col items-start justify-start [@media_((max-height:800px)_and_(min-width:948px))]:mt-[-100px] md:mt-[-200px] md:h-auto md:flex-co md:fixed md:inset-0  md:items-center md:justify-center">
             <div className="h-[100%] flex flex-col w-full md:flex-row mt-0 md:mt-24 md:w-[900px] lg:w-[1100px] md:h-[560px] lg:h-[695px] md:border-[0.1px] md:border-border-color">
@@ -60,7 +60,7 @@ export default async function RootLayout({
               </section>
             </div>
           </div>
-          <Footer></Footer>       
+          <Footer></Footer>
         </SessionProvider>
 
       </body>

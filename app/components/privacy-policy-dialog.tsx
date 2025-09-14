@@ -11,18 +11,18 @@ export default function PrivacyPolicyDialog({ isOpen, onClose }: PrivacyPolicyDi
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-code-snippet-background-color border border-border-color rounded-lg max-w-xl w-full max-h-[80vh] overflow-y-scroll [&::-webkit-scrollbar]:w-3 [&::-webkit-scrollbar-track]:bg-[#2a2a2a] [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-[#555555] [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:hover:bg-[#666666]">
-                <div className="flex justify-between items-center p-6 border-b border-border-color">
-                    <h2 className="text-xl font-bold text-primary-text-color">Privacy Policy</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4">
+            <div className="bg-code-snippet-background-color border border-border-color rounded-lg max-w-xl w-full max-h-[90vh] md:max-h-[80vh] overflow-y-scroll [&::-webkit-scrollbar]:w-3 [&::-webkit-scrollbar-track]:bg-[#2a2a2a] [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-[#555555] [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:hover:bg-[#666666]">
+                <div className="flex justify-between items-center p-4 md:p-6 border-b border-border-color">
+                    <h2 className="text-lg md:text-xl font-bold text-primary-text-color">Privacy Policy</h2>
                     <button
                         onClick={onClose}
-                        className="text-primary-text-color hover:text-secondary-text-color transition-colors"
+                        className="text-primary-text-color hover:text-secondary-text-color transition-colors p-1"
                     >
-                        <IoClose size={24} />
+                        <IoClose size={20} className="md:w-6 md:h-6" />
                     </button>
                 </div>
-                <div className="p-6 text-primary-text-color space-y-4 text-left">
+                <div className="p-4 md:p-6 text-primary-text-color space-y-4 text-left">
 
                     <section>
                         <h3 className="text-lg font-semibold mb-2">What is this website about

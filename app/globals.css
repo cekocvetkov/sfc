@@ -46,12 +46,15 @@ a.active {
 
 /* For IE, Edge and Firefox */
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .post-item {
-  transition: background-color 0.3s ease; /* Added transition for smooth color change */
+  transition: background-color 0.3s ease;
+  /* Added transition for smooth color change */
 }
 
 .post-item:hover {
@@ -71,6 +74,7 @@ a.active {
   transform: translateY(100%);
   transition: transform var(--transition-duration) ease-in-out;
 }
+
 .move-body {
   transition: margin-bottom 0.2s linear;
   margin-bottom: -150px;
@@ -81,9 +85,11 @@ a.active {
   transform: translateY(-100%);
   transition: transform var(--transition-duration) ease-in-out;
 }
+
 .show-header {
   background-image: radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0) 100%);
 }
+
 /* Loading Spinner */
 .loadingWrapper {
   display: flex;
@@ -97,12 +103,14 @@ a.active {
 .loading div {
   box-sizing: border-box;
 }
+
 .loading {
   display: inline-block;
   position: relative;
   width: 80px;
   height: 80px;
 }
+
 .loading div {
   display: inline-block;
   position: absolute;
@@ -111,31 +119,37 @@ a.active {
   background: currentColor;
   animation: loading 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
 }
+
 .loading div:nth-child(1) {
   left: 8px;
   animation-delay: -0.24s;
   color: #e58c4c;
 }
+
 .loading div:nth-child(2) {
   left: 32px;
   animation-delay: -0.12s;
 
   color: #8c684e;
 }
+
 .loading div:nth-child(3) {
   left: 56px;
   animation-delay: 0s;
   color: #8e562c;
 }
+
 @keyframes loading {
   0% {
     top: 8px;
     height: 64px;
   }
+
   50%,
   100% {
     top: 24px;
     height: 32px;
   }
 }
+
 /* --------------- */

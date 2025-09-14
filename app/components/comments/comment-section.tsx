@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react"
 import CommentForm from "./comment-form";
 import CommentList from "./comment-list";
+import useMobile from "../../hooks/IsMobile";
 
 export interface Comment {
   id: string;
@@ -20,7 +21,9 @@ export default function CommentSection({ postSlug }: { postSlug: string }) {
   const [dbError, setDbError] = useState<string>("");
   const [comments, setComments] = useState<Comment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSigningIn, setIsSigningIn] = useState(false);
   const { status } = useSession();
+  const isMobile = useMobile();
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -30,7 +33,7 @@ export default function CommentSection({ postSlug }: { postSlug: string }) {
           // If there's an error (like DB connection), just set empty comments
           setComments([]);
           const errorData = await response.json();
-          setDbError("There was a problem fetching the comments" + errorData.error);
+          setDbError("There was a problem fetching the comments: " + errorData.error);
           return;
         }
         const commentsData = await response.json();
@@ -54,6 +57,18 @@ export default function CommentSection({ postSlug }: { postSlug: string }) {
     setDbError(""); // Clear any previous errors when new comment is added
   };
 
+  const handleSignIn = async () => {
+    setIsSigningIn(true);
+    try {
+      await signIn("github");
+    } catch (error) {
+      console.error("Sign in error:", error);
+    } finally {
+      // Reset loading state after a delay to show the loading message
+      setTimeout(() => setIsSigningIn(false), 3000);
+    }
+  };
+
   if (isLoading) {
     return <div>Loading comments...</div>;
   }
@@ -66,16 +81,27 @@ export default function CommentSection({ postSlug }: { postSlug: string }) {
       ) : (
         <p className="text-sm text-gray-300">
           Please{"  "}
-          <button className="font-extrabold hover:text-secondary-text-color"
-           onClick={() => signIn("github")}
-           >
-            Sign In with GitHub
-          </button>{" "}
+          {isSigningIn ? (
+            <span className="font-extrabold text-secondary-text-color animate-pulse">
+              Logging in...
+            </span>
+          ) : (
+            <button
+              className={`font-extrabold hover:text-secondary-text-color transition-colors ${isMobile.current
+                ? 'animate-pulse text-secondary-text-color hover:text-secondary-text-color'
+                : 'hover:text-secondary-text-color'
+                }`}
+              onClick={handleSignIn}
+              disabled={isSigningIn}
+            >
+              Sign In with GitHub
+            </button>
+          )}{" "}
           to leave a comment
         </p>
       )}
       {dbError && <p className="text-red-500 text-sm">{dbError}</p>}
-      <CommentList comments={comments} />
+      {!dbError && <CommentList comments={comments} />}
     </div>
   );
 }
