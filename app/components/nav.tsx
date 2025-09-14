@@ -1,16 +1,11 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import useScrollDirection from "../hooks/UseScrollDirection";
 import { usePathname } from "next/navigation";
-import useMobile from "../hooks/IsMobile";
-import { signOut, useSession } from "next-auth/react";
 import UserAvatar from "./user-avatar-mobile";
-import { MdOutlinePrivacyTip } from "react-icons/md";
-import PrivacyPolicyDialog from "./privacy-policy-dialog";
 
 function Navigation() {
-  const { data: session, status } = useSession();
   useScrollDirection();
   const pathName = usePathname();
   const isActive = (href: string) => pathName === href;
