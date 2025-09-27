@@ -5,7 +5,14 @@ import type { CommentNotificationData, NewUserNotificationData, UserDeletionNoti
 import React from "react";
 import { render } from "@react-email/render";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazily create the Resend client at runtime to avoid requiring env vars during build
+function getResend() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) {
+    throw new Error("RESEND_API_KEY is not configured");
+  }
+  return new Resend(key);
+}
 
 export async function sendCommentNotification(commentNotificationData: CommentNotificationData) {
   console.log("Sending comment notification...");
@@ -33,6 +40,7 @@ export async function sendCommentNotification(commentNotificationData: CommentNo
   //   console.log(JSON.stringify(resendEmailData, null, 2));
 
   try {
+    const resend = getResend();
     const { data, error } = await resend.emails.send(resendEmailData);
 
     if (error) {
@@ -70,6 +78,7 @@ export async function sendUserDeletionNotification(data: UserDeletionNotificatio
   };
 
   try {
+    const resend = getResend();
     const { data: sent, error } = await resend.emails.send(resendEmailData);
     if (error) {
       console.error("Error sending user deletion email:", error);
@@ -106,6 +115,7 @@ export async function sendNewUserNotification(newUserData: NewUserNotificationDa
   };
 
   try {
+    const resend = getResend();
     const { data, error } = await resend.emails.send(resendEmailData);
     if (error) {
       console.error("Error sending new user email:", error);
@@ -118,3 +128,4 @@ export async function sendNewUserNotification(newUserData: NewUserNotificationDa
     return Response.json({ error }, { status: 500 });
   }
 }
+
