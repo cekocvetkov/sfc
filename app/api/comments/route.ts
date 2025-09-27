@@ -48,8 +48,8 @@ export async function POST(req: Request) {
     try {
       const article = await getMdxArticleBySlug(postSlug);
       postTitle = article?.metadata?.title || postSlug;
-    } catch (_) {
-      // ignore, fallback to slug
+    } catch (e) {
+      console.error("Failed to get article title:", e);
     }
     await sendCommentNotification({
       commenterName: user.name || "Anonymous",

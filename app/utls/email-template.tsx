@@ -16,7 +16,7 @@ export function EmailTemplate({ commenterName, commenterEmail, commentContent, p
   );
 }
 
-export function NewUserEmailTemplate({ userName, userEmail, provider, profileImage }: NewUserNotificationData) {
+export function NewUserEmailTemplate({ userName, userEmail }: NewUserNotificationData) {
   return (
     <div>
       <h1>New User Registered</h1>
@@ -33,9 +33,7 @@ export function DeletionEmailTemplate({ userEmail, userName, deletedCommentsCoun
       <p>The following user requested account deletion (GDPR):</p>
       <p>Name: {userName || "N/A"}</p>
       <p>Email: {userEmail}</p>
-      {typeof deletedCommentsCount === "number" ? (
-        <p>Deleted comments: {deletedCommentsCount}</p>
-      ) : null}
+      {typeof deletedCommentsCount === "number" ? <p>Deleted comments: {deletedCommentsCount}</p> : null}
     </div>
   );
 }
