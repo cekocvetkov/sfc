@@ -7,11 +7,11 @@ services:
       - "3000:3000"
     environment:
       - DATABASE_URL=postgresql://sfc:sfc@db:5432/sfcdb
-      - RESEND_API_KEY=re_Qvfy2Nfa_CbfbTodiZvP6856HTD3ByrCG
-      - ADMIN_EMAIL=c.y.cvetkov@gmail.com
-      - AUTH_SECRET=yTpagODXhQ8mRNr1Z/tQQcOIEvMEPSlQWLrqSLZoqoE=
-      - AUTH_GITHUB_ID=Ov23lifZNyTfcRogcgMc
-      - AUTH_GITHUB_SECRET=b9d105f424bd9376cd6b6fda49ab47b49daa32f4
+      - RESEND_API_KEY=
+      - ADMIN_EMAIL=
+      - AUTH_SECRET=
+      - AUTH_GITHUB_ID=
+      - AUTH_GITHUB_SECRET=
       - AUTH_URL=http://localhost:3000
       - AUTH_TRUST_HOST=http://localhost:3000 # <-- Set this to your real domain
       - WEBSITE_URL=http://localhost:3000
