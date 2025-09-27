@@ -1,0 +1,580 @@
+---
+title: "Building a Text-to-SQL AI Agent with pure Java, LangChain4j, and Ollama: Ask your database anything"
+date: "2025-07-17"
+tags: ["java", "langchain4j", "ai", "ollama", "sql", ]
+image: "text-to-sql/main.webp"
+published: true
+---
+
+# Simple RAG with pure Java and Langchain4j: Use locally hosted Ollama to talk to your documents
+
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  alt="RAG workflow diagram"
+  src={"/images/text-to-sql/main.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "335px", objectFit: "cover" }}
+/>
+<small className="w-full h-2 flex justify-center" style={{ marginTop: "-2rem" }}>
+  you can also read this article in Medium -> click [here](https://medium.com/itnext/building-a-text-to-sql-ai-agent-with-pure-java-langchain4j-and-ollama-ask-your-database-anything-5a643f9df632)
+</small>
+<br />
+
+**How about asking your application questions about stuff in your database?**
+
+
+Many business users or even developers sometimes struggle with complex SQL queries. Imagine non-technical managers asking questions about data in the database in plain English.
+
+```
+Question:
+What are our top 3 most ordered products?
+
+
+Answer:
+Based on the provided data, our top 3 most ordered products are:
+
+1. Laptop - sold 3 times
+2. Mouse - sold 2 times
+3. Keyboard - sold 2 times
+
+These products have been the best sellers in terms of quantity, with all three having a sales count greater than or equal to 2.
+```
+
+
+>Note: This isn’t a practical or well-optimized approach. The goal here is to experiment and become familiar with what LLMs can do. Only this way we can get creative and understand the true power of AI integration into software applications. (Things like [MCP](https://modelcontextprotocol.io/docs/getting-started/intro) or function calling with [@Tool](https://python.langchain.com/docs/concepts/tools/) from Langchain4j would be the way to go here if we’re talking real-world applications)
+
+---
+
+Let’s get into it. Here is the main idea:
+
+1. The user asks a question about something in the database (for example, “What are our top 3 most ordered products?”)
+2. We’ll give an Ollama model a description of our database schema as context and ask it to generate an SQL query that can help answer the question.
+3. We then execute the query and get the relevant data from the database.
+4. The results will be passed as context to the Ollama model along with the original question.
+
+**There will be no magic here or anything too complicated. We’re simply utilizing the power of LLMs and experimenting a bit, playing around.**
+
+---
+
+### Prerequisites
+
+Let’s prepare some things before we get to the coding part.
+
+**- Start a PostgreSQL database container locally:**
+
+```bash
+docker run --name tts-db \
+-e POSTGRES_USER=tts-user \
+-e POSTGRES_PASSWORD=tts-pass \
+-e POSTGRES_DB=tts-db \
+-p 5432:5432 -d postgres
+```
+
+_Database_: `tts-db`
+_User_: `tts-user`
+_Password_: `tts-pass`
+
+
+**- Install Ollama on our machine:**
+
+Just go to their website: https://ollama.com/download.
+
+Download the appropriate file for your OS and install it like you would install any other application. This installs the ollama command line tool, and you will be able to run ollama models locally with just a simple command like:
+
+```bash
+ollama run llama3.2:1b
+```
+
+which will run the smallest available ollama model right now (~1.3 GB). It’s not a very good model, but it’s small and will run very fast locally — perfect for our use case. You can later experiment with all the free models Ollama provides — see [here](https://ollama.com/library).
+
+**- Create a simple Java Gradle or Maven project (I’m using Gradle in this example) and add the PostgreSQL and Langchain4j dependencies in `build.gradle`:**
+
+```
+implementation 'org.postgresql:postgresql:42.7.7'
+implementation 'dev.langchain4j:langchain4j:1.0.1'
+implementation 'dev.langchain4j:langchain4j-ollama:1.0.1-beta6'
+```
+
+---
+
+### Implementation
+Now let’s get into the fun part:
+
+We’ll start by creating a simple SQL file with some create and insert statements to fill in our database. I asked ChatGPT to generate a (very) simplified E-Commerce database schema and add some sample data. This is what it came up with, and I liked it:
+
+```sql
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS customers;
+
+-- Customers table
+CREATE TABLE customers (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    city VARCHAR(50)
+);
+
+-- Products table
+CREATE TABLE products (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    price DECIMAL(8,2)
+);
+
+-- Orders table
+CREATE TABLE orders (
+    id INT PRIMARY KEY,
+    customer_id INT,
+    product_id INT,
+    quantity INT,
+    order_date DATE,
+    FOREIGN KEY (customer_id) REFERENCES customers(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+-- Insert sample customers
+INSERT INTO customers VALUES
+(1, 'John Smith', 'john@email.com', 'New York'),
+(2, 'Jane Doe', 'jane@email.com', 'Los Angeles'),
+(3, 'Bob Wilson', 'bob@email.com', 'Chicago'),
+(4, 'Alice Brown', 'alice@email.com', 'Houston'),
+(5, 'Charlie Davis', 'charlie@email.com', 'Phoenix');
+
+-- Insert sample products
+INSERT INTO products VALUES
+(1, 'Laptop', 999.99),
+(2, 'Mouse', 25.99),
+(3, 'Keyboard', 75.99),
+(4, 'Monitor', 299.99),
+(5, 'Headphones', 149.99);
+
+-- Insert sample orders
+INSERT INTO orders VALUES
+(1, 1, 1, 1, '2024-01-15'),  -- John bought 1 Laptop
+(2, 2, 2, 2, '2024-01-16'),  -- Jane bought 2 Mouse
+(3, 1, 3, 1, '2024-01-17'),  -- John bought 1 Keyboard
+(4, 3, 1, 1, '2024-01-18'),  -- Bob bought 1 Laptop
+(5, 4, 4, 1, '2024-01-19'),  -- Alice bought 1 Monitor
+(6, 2, 5, 1, '2024-01-20'),  -- Jane bought 1 Headphones
+(7, 5, 2, 3, '2024-01-21'),  -- Charlie bought 3 Mouse
+(8, 1, 4, 1, '2024-01-22'),  -- John bought 1 Monitor
+(9, 3, 3, 1, '2024-01-23'),  -- Bob bought 1 Keyboard
+(10, 4, 2, 1, '2024-01-24'); -- Alice bought 1 Mouse
+``` 
+
+So, we have a customers table, a products table, and an orders table that records who ordered what. We can ask questions like:
+
+- What are our top 3 most ordered products?
+- How many orders has John Smith placed?
+- What’s the most expensive product in the catalog?
+- …
+
+We’ll save this SQL file under `src/main/resources/init.sql` and use it to initialize our database on application start.
+
+Let’s now create a `DatabaseManager` class, which will help us establish a connection to our database and initialize our database schema with the `init.sql`:
+
+```java
+package com.tsvetkov.db;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class DatabaseManager {
+    private static final String URL = "jdbc:postgresql://localhost:5432/tts-db";
+    private static final String USER = "tts-user";
+    private static final String PASSWORD = "tts-pass";
+
+    public static Connection getInitialConnection() throws SQLException, IOException {
+        Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Connected to PostgreSQL!");
+
+            String initSql = loadSQL();
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute(initSql);
+                System.out.println("Schema initialized.");
+            }
+        return connection;
+
+    }
+
+    public static String loadSQL() throws IOException {
+        return new String(Files.readAllBytes(Paths.get("src/main/resources/init.sql")));
+    }
+
+}
+```
+
+We keep things minimal and straightforward here:
+
+- First, we define the database connection parameters as constants.
+- We then use `DriverManager.getConnection()` to establish a connection.
+- The `loadSQL` method helps us load the database initialization script.
+- Then we execute the initialization script and return the connection.
+
+
+Next, we will initialize our AI Assistant — the Ollama chat model we set up earlier, and make it available for our application. Let’s put all the logic for this in an `AIUtils` class:
+
+```java
+
+import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.ollama.OllamaChatModel;
+import dev.langchain4j.service.AiServices;
+
+public class AIUtils {
+
+    public static AIAssistant getAIAssistant() {
+        return AiServices.builder(AIAssistant.class)
+                .chatModel(initOllamaChatModel())
+                .build();
+    }
+
+    private static ChatModel initOllamaChatModel()
+    {
+        return OllamaChatModel.builder()
+                .baseUrl("http://localhost:11434")
+                .modelName("llama3.2:1b")
+                .build();
+    }
+
+}
+```
+
+---
+
+Alright, now let’s back up a bit and remember what we’re actually trying to do:
+
+**We want our model to generate SQL queries that can help answer the user's question, execute those queries against the database, and then use the results as context for the model to generate final answers.**
+
+First, let’s define a message template that will help our model create a useful database query. It will be used each time the AI service is invoked with the `getQuery` method. This method will be part of our `AIAssistant` interface implementation (note the `AIAssistant.class` used in the previous code snippet). Let’s have a look:
+
+
+```java
+import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.V;
+
+public interface AIAssistant {
+    @UserMessage("""
+      You are a senior SQL engineer. Given the database schema and user question below, write a syntactically correct and schema-valid SQL SELECT query.
+      
+      Database Schema (Use only columns and tables listed here)
+      {{schemaDescription}}
+      
+      Rules:
+      Only valid syntax queries - meaning it must start with SELECT
+      
+      Only use tables and columns from the schema above — do not guess
+      
+      Only use SELECT statements (no INSERT, UPDATE, DELETE)
+  
+      Use explicit JOINs, not subqueries unless necessary
+      
+      Add LIMIT 100 to large result sets if not specified in the question
+      
+      Use aggregate functions (COUNT, SUM, etc.) only if the question requires it
+      
+      Return only the SQL query, no explanation, no comments
+      
+      The query must be valid SQL and executable without syntax errors
+      
+      User Question
+      {{question}}
+                
+    """)
+    String getQuery(@V("question") String question,  @V("schema") String schemaDescription);
+
+}
+```
+
+Alright, we’ll use this method to generate a database query as soon as we get a question from the user. We see that it contains two arguments:
+The user's **question** and a **description of the database schema**.
+
+**Create a Schema Analyzer**
+
+Let’s create a class that will help us generate a structured description of our database schema. I used the following format (but you can adjust this as you wish, experiment with this, and see how the model responds to the changes):
+
+First, list the table names, along with their columns and column types. Then, add 3 sample rows per table so that the model has a couple of examples. For the `customers` table, this would look like this:
+
+```
+Table: customers
+  - id (int4)
+  - name (varchar)
+  - email (varchar)
+  - city (varchar)
+
+Sample rows:
+  | id | name       | email           | city        | 
+  | 1  | John Smith | john@email.com  | New York    | 
+  | 2  | Jane Doe   | jane@email.com  | Los Angeles | 
+  | 3  | Bob Wilson | bob@email.com   | Chicago     | 
+
+```
+
+Alright, let’s implement this. Here is our `SchemaAnalyzer` :
+
+```java
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+record ColumnInfo(String name, String type) {}
+
+public class SchemaAnalyzer {
+
+    private static final int EXAMPLES_LIMIT = 3;
+
+    public static String getSchemaDescription(Connection connection) throws SQLException {
+        if (connection == null) {
+            throw new IllegalArgumentException("Connection cannot be null");
+        }
+        StringBuilder schemaDescription = new StringBuilder();
+        List<String> tables = getTables(connection);
+        for (String table : tables) {
+            schemaDescription.append("Table: ").append(table).append("\n");
+            schemaDescription.append(getTableDescription(connection, table));
+        }
+
+        return schemaDescription.toString();
+    }
+
+    private static String getTableDescription(Connection connection, String table) throws SQLException {
+        var tableDescription = new StringBuilder();
+        var columns = getColumns(connection, table);
+            for (ColumnInfo col : columns) {
+                tableDescription.append("  - ").append(col.name()).append(" (").append(col.type()).append(")\n");
+            }
+        var sampleRows = getSampleRows(connection, table, columns);
+
+        tableDescription.append("Sample rows:\n");
+
+        tableDescription.append("  | ");
+        for (ColumnInfo col : columns) {
+            tableDescription.append(col.name()).append(" | ");
+        }
+        tableDescription.append("\n");
+
+        for (List<String> row : sampleRows) {
+            tableDescription.append("  | ");
+            for (String value : row) {
+                tableDescription.append(value).append(" | ");
+            }
+            tableDescription.append("\n");
+        }
+        return tableDescription.toString();
+    }
+
+    private static List<String> getTables(Connection connection) throws SQLException {
+        var tables = new ArrayList<String>();
+        try (ResultSet rs = connection.getMetaData().getTables(null, "public", "%", new String[]{"TABLE"})) {
+            while (rs.next()) {
+                tables.add(rs.getString("TABLE_NAME"));
+            }
+        }
+        return tables;
+    }
+
+    private static List<ColumnInfo> getColumns(Connection connection, String table) throws SQLException {
+        var columns = new ArrayList<ColumnInfo>();
+        try (ResultSet rs = connection.getMetaData().getColumns(null, "public", table, "%")) {
+            while (rs.next()) {
+                columns.add(new ColumnInfo(
+                        rs.getString("COLUMN_NAME"),
+                        rs.getString("TYPE_NAME")
+                ));
+            }
+        }
+        return columns;
+    }
+
+    private static List<List<String>> getSampleRows(Connection connection, String table, List<ColumnInfo> columns) throws SQLException {
+        var rows = new ArrayList<List<String>>();
+        try (ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM \"" + table + "\" LIMIT " + EXAMPLES_LIMIT)) {
+            while (rs.next()) {
+                var row = new ArrayList<String>();
+                for (ColumnInfo col : columns) {
+                    row.add(rs.getString(col.name()));
+                }
+                rows.add(row);  
+            }
+        }
+        return rows;
+    }
+}
+```
+
+We first get the table names and their column names, and types. Then, we generate the description in the format I mentioned above, and list some sample rows from every table. That’s it!
+
+Now, if we call the `getQuery` method from our `AIAssistant` with a question like _“What’s the most expensive product in the catalog?”_ we’ll get something like this:
+
+```
+SELECT T1.price FROM products AS T1 INNER JOIN orders AS T2 ON T1.id = T2.product_id GROUP BY T1.price ORDER BY SUM(T1.price) DESC LIMIT 1
+```
+
+### Execute the database query
+
+The next step would be to execute this query and get its results. Let’s start by validating its syntax. I won’t do anything fancy here, just a basic query validation. Let’s add a `validateQuery` to our `DatabaseManager` :
+
+```java
+public static void validateQuery(String sql) {
+    // Basic validation - only allow SELECT statements
+    String upperSql = sql.toUpperCase().trim();
+
+    if(!upperSql.startsWith("SELECT") ||
+            upperSql.contains("DROP") ||
+            upperSql.contains("DELETE") ||
+            upperSql.contains("INSERT") ||
+            upperSql.contains("UPDATE") ||
+            upperSql.contains("ALTER") ||
+            upperSql.contains("CREATE")) {
+        throw new RuntimeException("Invalid query:\n"+sql);
+    }
+}
+```
+
+After validation, we just need to execute the query and summarize its results.
+For example, if we ask the following question:
+
+_“Can you list me all the products and how much they cost?”_
+
+We’ll get a query similar to this from our model:
+
+```
+SELECT p.name, p.price FROM products p ORDER BY p.price LIMIT 100
+```
+
+I would want to format the results from this query like this:
+
+```
+name       | price
+Mouse      | 25.99
+Keyboard   | 75.99
+Headphones | 149.99
+Monitor    | 299.99
+Laptop     | 999.99
+```
+
+Let’s implement a method that does this. It will get the SQL query generated in the previous step from the model and the database connection as parameters. We’ll call it `getFormattedResultsFromQuery`:
+
+```java
+private static String getFormattedResultsFromQuery(Connection conn, String sql) throws SQLException {
+        DatabaseManager.validateQuery(sql);
+        var resultsDescription = new StringBuilder();
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            int columnCount = rs.getMetaData().getColumnCount();
+
+            for (int i = 1; i <= columnCount; i++) {
+                resultsDescription.append(rs.getMetaData().getColumnName(i));
+                if (i < columnCount) resultsDescription.append(" | ");
+            }
+            resultsDescription.append("\n");
+
+            while (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    resultsDescription.append(rs.getString(i));
+                    if (i < columnCount) resultsDescription.append(" | ");
+                }
+                resultsDescription.append("\n");
+            }
+        }
+        return resultsDescription.toString();
+    }
+```
+
+---
+
+### Use the results from the SQL query to get the final answer
+
+We can now define a template for our model that passes the database schema, along with the results from the executed query, and the user’s question — this should be enough for it to give us a good answer. Add the following to our `AIAssistant` class:
+
+```java
+    @UserMessage("""
+      You are a data analyst. Based on the database schema, the user’s question, the SQL query and the SQL query results, generate a clear, concise, human-readable answer.
+      Focus on answering the user's question directly using the data provided — do not describe the SQL or repeat the table structure. Give a straight answer.
+      
+      ### Database Schema
+      {{schema}}
+      
+      ### User Question
+      {{question}}
+      
+      ### SQL Query
+      {{ query }}
+      
+      ### SQL Query Results
+      {{results}}
+      
+      ### Answer
+    """)
+    String explainAnswer(@V("question") String question, @V("schema") String schema, @V("results") String results);
+```
+
+And that’s it! Let’s review:
+
+1. User asks a question
+2. We generate a database schema description
+3. We pass the question along with the schema description to our model
+4. Our model generates an SQL query that can help answer the users’ question.
+5. Validate the query
+6. Then execute the query
+7. Get the results and format them
+8. Pass the results, along with the database schema and the user’s question to the model
+9. Get a human-readable answer
+
+**Let’s put all of the parts together in a very simple `main` method:**
+
+```java
+public static void main(String[] args) throws SQLException, IOException {
+        System.out.println("Starting our text-to-sql application...");
+        AIAssistant aiAssistant = AIUtils.getAIAssistant();
+
+        try (Connection conn = DatabaseManager.getInitialConnection()) {
+            String schemaDescription = SchemaAnalyzer.getSchemaDescription(conn);
+
+            String question = "What are our top 3 most ordered products?";
+
+            String query = aiAssistant.getQuery(question, schemaDescription);
+
+            String formattedQueryResults = getFormattedResultsFromQuery(conn, query);
+
+            String humanAnswer = aiAssistant.explainAnswer(question, schemaDescription, query, formattedQueryResults);
+
+            System.out.println(humanAnswer);
+        }
+}
+```
+
+**And finally, if you run the example, you’ll get something like the following:**
+
+```
+Starting our text-to-sql application...
+Connected to PostgreSQL!
+Schema initialized.
+
+John Smith has placed 3 orders in total.
+```
+
+
+_Note that the results, especially with the model I use in this example, won’t always be perfect. It’s enough to play around with, though, and even makes it fun to try and experiment with different templates for the model and see what makes the model give better answers. If you use a more powerful model, you’ll get a good result almost every time._
+
+You’ll also notice that the query generated from the model is often invalid, so a nice exercise would be to build a retry logic. Just have fun with this!
+
+
+### Conclusion
+
+Playing around with LLMs locally can nowadays be very easy to do with Java. Lightweight models and well-structured code in a familiar language make prototyping such ideas fast and fun! As mentioned at the beginning of this article, this approach isn’t optimized or appropriate for a real-world application, but it builds on the idea of AI Agents and how things actually happen under the hood in a simplified way.
+
+Thanks for reading!
+
+
+
