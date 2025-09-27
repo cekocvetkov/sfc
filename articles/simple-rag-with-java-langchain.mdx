@@ -1,0 +1,298 @@
+---
+title: "Simple RAG with pure Java and Langchain4j: Use locally hosted Ollama to talk to your documents"
+date: "2025-06-18"
+tags: ["java", "langchain4j", "ollama", "rag", "ai"]
+image: "rag-java/main.webp"
+published: true
+---
+
+# Simple RAG with pure Java and Langchain4j: Use locally hosted Ollama to talk to your documents
+
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,UklGRjAMAABXRUJQVlA4WAoAAAAgAAAANgMAOAMASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggQgoAABDTAJ0BKjcDOQM+7W6xVimlJCOgkHmZMB2JaW7hai8ccyT2S/Wc4YZhQB//945GPrxj9AAUG2opVMbailUWt2w9mbF7M2L3kLSqLYBaSiAdBBKIB0ORpjahXFXNRIDb0yjoYQHeUcuIc5oHEogHY+ZuMYjcsuZ3Twadit7hsYLopz7FdqjR5kCQBBQtVEsrrt32277dlkNJ+gABDvMhgx6wd2hgclCrxvqtzmQ9g9GKSXbvtt3Cdu4PzYbR152Zl6443wmg5Tp8b0JroG6jj4G6MDdGBKO3bz6V+jXqR0T4FViWLSVp2aNaVV9FZx3dCw3PpYX3wEW1Z+csWGF4eqcv/M3eoR3yXdo5IOCWDcFgGz9TTuE7d9OJR0ySglHYD94eqcvEXwpi2jOPGzgMAHYqdQoA3A2fqad99S5IDpnIfLQ7nGIHc5sk+n3vCoGNlst1pV1fYfLhWbMDdUK9+/1mExQrYh4RQO5xiB3OU2RSORWm5IjO+Z2fZLX322h7dlknVpA7mt8sPWu6py8PVOYLCf9IOfLtqJZ0JJ1TLHfYJdM3cH4gdIXwnnqlNsB/Ad4RQSxNwRBymiT5BKxajA0kCHhIItrbxzYeWOqcvD1T5ciGHqnoE5eIbH8K6mU5dtwPJ6Ln9WRJQa0MPWgeHrQPD0h0GrcYgdfObxDuZ/7EesC/KGzK4VR1Mq0cj3AfCRvRSqlrB+8PVOXh5m2vkixxjJudbxS3Dv+4RfLOiSvZw/aTuYWcsi9+8RkF4eqcvEuNzjEDucYgdzlwcYgd2Ph7/wZTYP1ltiCtyAsj28NpZwcYgdzjEDucYgdzjEDvBBjlwcYa6zN2BMkAm/xoFamKraTImrW8UdGVgP3h6puJiB3ggxxi1MQUUH1sifkH8aCCUQDoIhOa1r0RSO8S43OMQG5xiB3OMC+5xiB3OMQOFyH2rdWBvH4Z0SJJCy7SmVSZzD3MbP4kB3OXBxiB3OMQO5xbXuUsG8t0rFZUU54oA0pTHDHWOq9ps5cHGIHc4xA7nGIHc4xA7m6/brLBsYwmG8XAB0EEzxU9T8e217nAY4xA7nGIHc4xA7nGHbrLBsGxik+TDi4AOggmizH2p5gwZmmOsP7UddJ3iO8PVOXasGwbBsGxdCBm4A21FKpjbUUt5BO2QMaxcpS8rW8NsGyHx1lBXIdZYNg2QZjJ45BvWDLxtqKVTG2o9CEbMc83rIKWDYNEnGLUxs0wowbATw5eFGqKUQDoIJRAOgglK+Xwqmk95wQQ8roQnz2ah0ZAkmZcAHQQSiAdBBKIB0ERfc7pEjcXEtEA9wDLxtqKVTG2opVMbailUxtqKVTG2ov32tDLxtqKVTG2opVMbailUxtqKVTG2opVW4mNtRSqY21FKpjbUUqmNtRSqY7RyFpVMbailUxtqKVTG2opVMbailUxtqKaDl421FKpjbUUqmNtRSqY21FKpjbUUqmNybMkMvG2opVMbailUxtqKVTG2opVMbailaYIJRAOgglEA6CCUQDoIJRAOgglEA6CCUV4AdBBKIB0EEogHQQSiAdBBKIB0EEogHQWm4uADoIJRAOgglEA6CCUQDoIJRAOgglEHqzbUUqmNtRSqY21FKpjbUUqmNtRSqY23fN4uADoIJRAOgglEA6CCUQDoIJRAOgfZMdYgKAq+4wwLY7NKMOLgA6CCUQDoIJRAOgglEA50OU4wMRQfuWye9ztSD1sIFHW1FKpjbUUqmNtRSqY21En2cYgNzm0jsB+zfVOLtKcwgZYG8XAB0EEogHQQSiAc7UU5eHrQM31Tlm940bEx4bgYBWWYB0EEogHQQSiAdBBKHzqn27gp3cFTHrnYILMCBwbJY5eTG2opVMbailUxtp7gpJ6S3RgbomC4CJB2z+Ush103FwAdBBKIB0EEogC/OU+9NQxJU8vZZYSEUIMaTSsMG8XAB0EEogHQQQUKwDGOKeB1DNCJY57ZIDux8EHVpVMbailUxtqKVTG0VX+FtaCSV+mzlqdma5PKMRMgy8bailUxtqKRDdxHNbXhfq6rSrJdnTaMg8Ih0AB0EEogHQ3py2wWWopYVZGzd99OlOG7OvFlzFNApjbUUqjeWOSU8oeFxhxcAIEVIh2eWsV1HrsDMoEA6CCFnLXD5mINqKVTG3LHHGLM30GADdbWExAIJRAOBFgPVuH39cIxgEjeTtyYpkFXWtfHA1CyoaIAdBBKIB0EIFOkNsl8j4VXTf2NvmihLCRQ78Co98oAOgglFeASOogAP7qDneBTNlU1sQhLyezETs3dqWvnOk4V2kc9qbT4XvhOZ199PfL7zebzebzebzdAfT6Ad7fJbqIud7Ky2ydYwFbub/Ip1mdk5uGzpEyviY/7mrQ9tdgzR2jxaRLKFMz2NAejpzr9ygiktkWeVZKtACqS5qlJkRRuU4y0lCgED9XTtinKU6GGUBRuN6oRKoGc6clGo1jCOEtN2S3lG131HylSjwso917yGEUceCiAKizurrOXa3x2kZTjLkNVqI5nhn5M35YVDmabEYs/LMzFjWstWnbJhVqrZ7ladO+SRCULBlQ+QndRDq5b10zQ0eRoBgsqBYRJzuSFawbN1Ib7ikZ51A/P2QD0iHcJIELaAuw9JcpeWEkpQX6i4tWB3422yXZhtzLHOePTq4hFfgxV/mea0lFIgm6x7YMh+pf3L9d7NqGQub/G/VXnJXdxFGCjtjYN1EA2PhQ6saBl/H/IV1vt2XDmfp6/oEIayjwX34dm7fLgKWClPZKDyxI9HRqMrFVVvKIzWfUtnzZ7mxszluXwy1/J92KUwyelBqpMTlVlE7LnvXlqHdqODQkdfgSKc8C+L/m94RXaRlJJ47L82GJlJFtTF9N5VkGMLDOvrAaGcEj/014VLxm3NfvgqTcqNa72Ou9+m6NuKudesSwZg2+6Aoiy4vDAgehzPG86jAq/2P7FrqZcGhWNzEE55MAhVxem9+/jAxQwRD0yh7Wwcz/nm+5CwUTDSF24MUDvKAKW/XN/BfnMz01qJk8CDBdzp0qUQgWrTvMuelInQXjoB+7Azg3y151NpCAEqwRWrr/0z7T0T5UaovXsfdjUf3neXvEwZPwAAHyg8vBTnq9b09rPjDpl4du7lBkEACxxU8HHwzAgABbwO0AABEhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADpwxXY/Xwh1HanwAAArqKV5RNdxiFwdz683+0PwEEAA8bHe/svl8GbqNwgAMBCp5A1X2xpeLBACP1L4SNgtWZj3AAFbE7i/cDCJZ5iAQBbAoTqYNBrnky5AAGYzelJWauG2PGdTvQEFwq59wOGS09iB4g1OkNeDAPMDbXg/f5aaAOzjj3NBPu3bmThCm+4JZRbS3JKNYg2cvpyp7raNah5HJzs1gQRBLxBD/ORcgTSM2GDG/FClpuxcUfYoCgXe0Yi53RDdyY50xFQMwumkuzyLqw+kRgbAA6GcCBUX1AubawgAAA="
+  alt="RAG workflow diagram"
+  src={"/images/rag-java/main.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "335px", objectFit: "cover" }}
+/>
+<small className="w-full h-2 flex justify-center" style={{ marginTop: "-2rem" }}>
+  you can also read this article in Medium -> click [here](https://medium.com/@tsvetkov/simple-rag-with-pure-java-and-langchain4j-use-locally-hosted-ollama-to-talk-to-your-documents-123456)
+</small>
+<br />
+
+Talk to your documents using a simple RAG pipeline, which we will build with the help of a locally-hosted Ollama model, pure Java, and Langchain4j! 📚 🧠 🤖
+
+All of this will run on our local computer: no API keys or subscriptions needed — just pure experimenting with AI integration in a very simple Java application. I'll also try to keep things beginner-friendly!
+
+## What is RAG?
+
+Now, let's see what Wikipedia has to say about RAG:
+
+>[Retrieval-augmented generation (RAG)](https://en.wikipedia.org/wiki/Retrieval-augmented_generation) is a technique that enables large language models (LLMs) to retrieve and incorporate new information. With RAG, LLMs do not respond to user queries until they refer to a specified set of documents. These documents supplement information from the LLM's pre-existing training data. This allows LLMs to use domain-specific and/or updated information that is not available in the training data.
+
+I think we can simplify this in the spirit of this tutorial, to keep things beginner-friendly and specific to our goal here:
+
+### **RAG lets language models use information from your own documents to answer your questions.**
+
+So, without RAG, the models rely only on what they were trained on, but with RAG, they can use additional external or private information from documents we define.
+
+RAG combines two main tools: an **embedding model** and a **chat model**. The embedding model turns text into vectors called embeddings. These are really just numerical representations of the text — think of a list or an array of numbers (e.g. `[0.12, -1.4, 3.7, …]`). The embeddings are stored in an embedding store (this can be an in-memory structure or a vector database). When the user asks a question, the system can quickly find the relevant information from the embedding store and pass it to the chat model, which reads it and uses it to generate an informed response.
+
+<Image
+  alt="RAG workflow"
+  src={"/images/rag-java/sketch.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={600}
+  style={{ objectFit: "cover" }}
+/>
+
+Now that we have some understanding of what's going on, let's create a more detailed plan:
+
+1. Load the document we want to use for our RAG Pipeline
+2. Split the document into chunks
+3. Initialize the Embedding Model
+4. Create the embeddings
+5. Store the embeddings into an Embedding Store
+6. Create a content retriever, using the embedding model and the embedding store
+7. Initialize the (Ollama) Chat Model
+8. Create the final AI Assistant, using the chat model and the content retriever
+
+## Prerequisites
+
+### Install Ollama on our machine
+
+Just go to their website: [https://ollama.com/download](https://ollama.com/download).
+
+Download the appropriate file for your OS and install it like you would install any other application. This installs the ollama command line tool, and you will be able to run ollama models locally with just a simple command like:
+
+```bash
+ollama run llama3.2:1b
+```
+
+which will run the smallest available ollama model right now (~1.3 GB). It's not a very good model, but it's small and will run very fast locally — perfect for our use case. You can later experiment with all the free models Ollama provides — see [here](https://ollama.com/library).
+
+This will be the **Chat Model**, answering our questions.
+
+So after you run the previous command in your terminal, you should see something like this, which downloads the model, runs it, and opens a prompt where you can chat with the LLM.
+
+
+<Image
+  alt="Ollama screenshot"
+  src={"/images/rag-java/ollama.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={600}
+  style={{ objectFit: "cover" }}
+/>
+
+But this also exposes an HTTP API on localhost, which we can interact with. This will happen under the hood with the langchain4j extension.
+
+Now do the same for `nomic-embed-text:latest` which will be our **Embedding Model**.
+
+```bash
+ollama run nomic-embed-text:latest
+```
+
+We now have both the Embedding Model (`nomic-embed-text:latest`) and the Chat Model (`llama3.2:1b`) running locally on our machine!
+
+### Set up Java Project
+
+Create a Java Gradle project and add the following two dependencies in the `build.gradle` file:
+
+```gradle
+dependencies {
+    ...
+    
+    implementation 'dev.langchain4j:langchain4j:1.0.1'
+    implementation 'dev.langchain4j:langchain4j-ollama:1.0.1-beta6'
+    
+    ...
+}
+```
+
+### Choose documents to talk to
+
+I asked ChatGPT to create some descriptive text about a fictional animal that we can use as a Document and ask questions about it. That's what it came up with:
+
+> **The Fluffnook (Pellucia memorialis)**
+>
+> The Fluffnook is a small, rabbit-sized mammal native to the misty highlands of the fictional Veridian Mountains. Standing approximately 12 inches tall and weighing 3–4 pounds, this creature is covered in dense, iridescent fur that shifts from deep purple to silver depending on the angle of light. The Fluffnook's most distinctive feature is its oversized, luminescent ears that can rotate 180 degrees and glow with a soft blue light during twilight hours. These nocturnal creatures are herbivorous, feeding primarily on moonbell flowers and crystalline moss that grows on volcanic rocks. Fluffnooks are known for their exceptional memory — they can recall the exact location of food sources for up to seven years and have been observed creating intricate mental maps of their territory spanning over 50 square miles. They live in small family groups of 4–6 individuals and communicate through a series of melodic chirps that can be heard up to two miles away on clear nights. The average lifespan of a Fluffnook is 25–30 years, and they reproduce only once every three years, typically giving birth to twins during the spring equinox.
+
+I liked it — we'll ask our model questions about the Fluffnook!
+
+I also asked it to generate some questions that we can ask right away. I found those three to be enough for us to check if the model really uses this information:
+
+- How much does a typical Fluffnook weigh?
+- Where do Fluffnooks live?
+- What do Fluffnooks eat?
+
+Now let's start with the fun part!
+
+## Implementation
+
+Create a java class with the good old `public static void main(String[] args)` method. (Can't wait for Java 25 btw…)
+
+Now, let's follow the steps from our plan:
+
+### 1. Load the document we want to use for our RAG Pipeline
+
+```java
+var document = loadDocument( getResourcePath( "FluffnookKnowledgeBase.txt" ),  new TextDocumentParser() );
+```
+
+### 2. Split the document into chunks
+
+```java
+var splitter = DocumentSplitters.recursive( 400, 50 );
+var segments = splitter.split( document );
+```
+
+This here is very important, because how we split the document can have a great effect on the results we get from the model. You may need to experiment with different values to find the best configuration for your use case.
+
+The first argument is the Chunk Size, and the second one — Chunk Overlap. You can check how our text gets split up with [ChunkViz](https://chunkviz.up.railway.app/) (which is really a great tool to visualize how we split our texts):
+<Image
+  alt="Ollama screenshot"
+  src={"/images/rag-java/split.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={600}
+  style={{ objectFit: "cover" }}
+/>
+
+
+### 3. Initialize the Embedding Model
+```java
+var embeddingModel = initEmbeddingModel();
+```
+
+Here the function (maybe create like `Utils` class or something, to keep things tidy):
+
+```java
+static EmbeddingModel initEmbeddingModel()
+{
+    return OllamaEmbeddingModel.builder()
+            .baseUrl("http://localhost:11434")
+            .modelName("nomic-embed-text:latest")
+            .build();
+}
+```
+### 4. Create the embeddings
+
+```java
+List<Embedding> embeddings = embeddingModel.embedAll( segments ).content();
+```
+
+### 5. Store the embeddings in an Embedding Store
+
+I’ll use an `InMemoryEmbeddingStore` here for simplicity, but using a vector database is also very straightforward. I might write a separate article about this.
+
+```java
+EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
+embeddingStore.addAll( embeddings, segments );
+```
+
+### 6. Create a content retriever, using the embedding model and the embedding store
+
+```java
+var contentRetriever = initContentRetriever( embeddingStore, embeddingModel );
+```
+
+Here is the helper function:
+
+```java
+static ContentRetriever initContentRetriever(EmbeddingStore<TextSegment> embeddingStore, EmbeddingModel embeddingModel )
+{
+    return EmbeddingStoreContentRetriever.builder()
+            .embeddingStore( embeddingStore )
+            .embeddingModel( embeddingModel )
+            .maxResults(3)
+            .minScore(0.5)
+            .build();
+}
+```
+
+### 7. Initialize the (Ollama) Chat Model
+
+```java
+var chatModel = initOllamaChatModel();
+```
+
+```java
+static ChatModel initOllamaChatModel()
+{
+    return OllamaChatModel.builder()
+            .baseUrl("http://localhost:11434")
+            .modelName("llama3.2:1b")
+            .logRequests(true)
+            .build();
+}
+```
+
+### 8. Create the final AI Assistant, using the chat model and the content retriever
+
+```java
+var assistant = AiServices.builder(RagDocumentAssistant.class)
+        .chatModel(chatModel)
+        .contentRetriever(contentRetriever)
+        .build();
+```
+
+Now, here we pass an Interface, which we create manually. We can even pass it a System Prompt to give some more hints to our model. Here is the code:
+
+```java
+public interface RagDocumentAssistant {
+    @SystemMessage("You are a helpful assistant that answers questions about a fictional animal called Fluffnook.")
+    String answer(@UserMessage String question);
+}
+```
+
+And that’s really all we need to start chatting with our model about the Fluffnooks!
+
+Let’s finish this off with the code for handling the user input and **actually asking the model**:
+
+```java
+try (var scanner = new Scanner(System.in)) {
+    while (true) {
+        System.out.print("\nEnter your question (or 'exit' to quit): ");
+        var question = scanner.nextLine();
+
+        if ("exit".equalsIgnoreCase(question)) {
+            break;
+        }
+
+        System.out.println("Thinking...");
+        var answer = assistant.answer(question);
+        System.out.println("Answer: " + answer);
+    }
+}
+System.out.println("Goodbye!");
+```
+
+### Now let’s run the program and ask some questions!
+
+<Image
+  alt="Ask the questions"
+  src={"/images/rag-java/ask.webp"}
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  width={1400}
+  height={600}
+  style={{ objectFit: "cover" }}
+/>
+
+Looks good! We got all the answers we needed for the specific information we provided in the document.
+
+## Conclusion
+
+Langchain4j makes RAG pretty simple! This is a very basic example of course. There are many advanced RAG strategies that are usually used in real-world applications, but we managed to get some good results even with our simple approach.
+
+**Thanks for reading!**
+
+<div className="h-10 w-2"></div>
