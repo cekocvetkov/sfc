@@ -1,13 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function CodeSnippetWithCopyIcon(props: any) {
   const [isCopied, setIsCopied] = useState(false);
+  const preRef = useRef<HTMLPreElement | null>(null);
 
   const handleCopy = () => {
-    const code = props.children.props.children;
-    navigator.clipboard.writeText(code).then(() => {
+    const codeText = preRef.current?.innerText ?? "";
+    if (!codeText) {
+      return;
+    }
+    navigator.clipboard.writeText(codeText).then(() => {
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     });
@@ -19,6 +23,7 @@ function CodeSnippetWithCopyIcon(props: any) {
         {isCopied ? "Copied!" : "Copy"}
       </button>
       <pre
+        ref={preRef}
         className="!bg-code-snippet-background-color 
         [&::-webkit-scrollbar]:h-2
       [&::-webkit-scrollbar-track]:bg-[#a37c64]

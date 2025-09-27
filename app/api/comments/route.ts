@@ -1,4 +1,6 @@
 import { prisma } from "@/app/prisma";
+import { sendCommentNotification } from "@/app/utls/email-service";
+import { getMdxArticleBySlug } from "@/app/utls/articles";
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
@@ -38,6 +40,27 @@ export async function POST(req: Request) {
       include: {
         user: true,
       },
+    });
+
+    console.log("Sending comment notification...");
+    // Try to get the article title from MDX frontmatter; fallback to slug
+    let postTitle = postSlug;
+    try {
+      const article = await getMdxArticleBySlug(postSlug);
+      postTitle = article?.metadata?.title || postSlug;
+    } catch (_) {
+      // ignore, fallback to slug
+    }
+    await sendCommentNotification({
+      commenterName: user.name || "Anonymous",
+      commenterEmail: user.email,
+      commentContent: content,
+      postSlug,
+      postTitle: postTitle,
+      commentUrl: `${process.env.WEBSITE_URL}/article/${postSlug}#comments`,
+    }).catch((error) => {
+      console.error("Failed to send comment notification:", error);
+      // Don't fail the comment creation if email fails
     });
 
     console.log("Created comment:", comment); // Debug log

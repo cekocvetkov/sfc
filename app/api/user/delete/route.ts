@@ -1,6 +1,7 @@
 import { prisma } from "@/app/prisma";
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+import { sendUserDeletionNotification } from "@/app/utls/email-service";
 
 export async function DELETE(req: Request) {
     try {
@@ -29,6 +30,17 @@ export async function DELETE(req: Request) {
         await prisma.sfcuser.delete({
             where: { id: user.id }
         });
+
+        // Notify admin about the deletion (do not block deletion on email errors)
+        try {
+            await sendUserDeletionNotification({
+                userEmail: user.email,
+                userName: user.name ?? null,
+                deletedCommentsCount: user.comments.length,
+            });
+        } catch (emailErr) {
+            console.error("Failed to send user deletion notification:", emailErr);
+        }
 
         // Return success response
         return NextResponse.json({

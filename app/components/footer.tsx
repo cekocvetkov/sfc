@@ -14,8 +14,8 @@ function Footer() {
   const [showLogout, setShowLogout] = useState(false);
   const [showPrivacyDialog, setShowPrivacyDialog] = useState(false);
   return (
-    <footer className="fixed bottom-0 left-0 w-full py-10 text-center hidden flex-col gap-y-3 md:flex [@media_((max-height:800px)_and_(min-width:948px))]:py-1 [@media_((max-height:800px)_and_(min-width:948px))]:mt-[-100px] [@media_((max-height:800px)_and_(min-width:948px))]:flex-row">
-      <div className="flex justify-center gap-x-4 [@media_((max-height:800px)_and_(min-width:948px))]:hidden">
+    <footer className="fixed bottom-0 left-0 w-full py-10 text-center hidden flex-col gap-y-3 md:flex [@media_((max-height:800px)_and_(min-width:948px))]:py-1 [@media_((max-height:800px)_and_(min-width:948px))]:mt-[-100px] [@media_((max-height:800px)_and_(min-width:948px))]:flex-row [@media_((max-height:800px)_and_(min-width:948px))]:justify-center [@media_((max-height:800px)_and_(min-width:948px))]:items-center [@media_((max-height:800px)_and_(min-width:948px))]:gap-x-4">
+      <div className="flex justify-center gap-x-4 [@media_((max-height:800px)_and_(min-width:948px))]:flex [@media_((max-height:800px)_and_(min-width:948px))]:items-center">
         <Link aria-label="LinkedIn Link" href="https://linkedin.com/in/tsvetkov-tsvetan">
           <IoLogoLinkedin size={24} />
         </Link>
@@ -67,7 +67,7 @@ function Footer() {
           <></>
         )}
       </div>
-      <p className="text-primary-text-color">Copyright &copy; {currentYear} Tsvetan Tsvetkov</p>
+      <p className="text-primary-text-color [@media_((max-height:800px)_and_(min-width:948px))]:m-0">Copyright &copy; {currentYear} Tsvetan Tsvetkov</p>
     </footer>
   );
 }

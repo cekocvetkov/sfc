@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import { prisma } from "./app/prisma";
+import { sendNewUserNotification } from "./app/utls/email-service";
 
 export const { auth, handlers } = NextAuth({
   providers: [GitHub],
@@ -27,6 +28,18 @@ export const { auth, handlers } = NextAuth({
                 provider: account.provider,
               },
             });
+
+            // Notify admin about the new user registration
+            try {
+              await sendNewUserNotification({
+                userName: user.name || null,
+                userEmail: user.email,
+                provider: account.provider,
+              });
+            } catch (emailError) {
+              console.error("Failed to send new user notification:", emailError);
+              // don't block sign-in if email fails
+            }
           }
         }
 

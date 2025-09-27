@@ -46,10 +46,10 @@ export async function getMdxArticleBySlug(slug: string) {
 }
 
 export async function getSortedArticlesData(): Promise<ArticleModel[]> {
-  console.log(`Read file names from directory '${articlesDirectory}'`);
+  // console.log(`Read file names from directory '${articlesDirectory}'`);
   // Get file names under /articles
   const articlesFileNames = await fs.readdir(articlesDirectory);
-  console.log(`Following articles are available: ${articlesFileNames}`);
+  // console.log(`Following articles are available: ${articlesFileNames}`);
   const allArticlesData = await Promise.all(
     articlesFileNames.map(async (fileName) => {
       // Remove ".mdx" from file name
@@ -75,7 +75,7 @@ export async function getSortedArticlesData(): Promise<ArticleModel[]> {
       };
       // Combine the data with the id
       return article;
-    })
+    }),
   );
   // Sort articles by date
   return allArticlesData
