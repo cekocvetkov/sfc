@@ -1,0 +1,434 @@
+---
+title: "Type-Safe LLM Response Handling with BoundaryML for Java Developers"
+date: "2025-08-20"
+tags: ["java", "llm", "boundaryml", "ai", "baml"]
+image: "boundary-ml/main.webp"
+published: true
+---
+
+# Type-Safe LLM Response Handling with BoundaryML for Java Developers
+
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  alt="Type-safe LLM responses with BoundaryML"
+  src={"/images/boundary-ml/main.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "335px", objectFit: "cover" }}
+/>
+<small className="w-full h-2 flex justify-center" style={{ marginTop: "-2rem" }}>
+  you can also read this article in Medium -> click [here](https://medium.com/itnext/type-safe-llm-response-handling-with-boundaryml-for-java-developers-4741809d9389)
+</small>
+<br />
+
+Are you tired of messy LLM JSON outputs in your Java project? Well, this might be the tool to try — [BoundaryML](https://boundaryml.com/). Have a look at this:
+
+```
+// BAML
+class Ticket {
+  category Category
+  urgency Urgency
+  summary string
+}
+function ClassifyTicket(message: string) -> Ticket {
+  client LocalOllama
+  prompt #"""
+  ...
+  Message:
+  {{ message }}
+
+  {{ctx.output_format}}
+  """#
+}
+------------------------------------------------------------------
+// Java
+Ticket supportTicket = defaultApi.classifyTicket(classifyTicketRequest);
+```
+
+It can make our apps much more reliable as it really excels in providing **structured outputs** and best of all — it works with any LLM and any language!
+
+> Boundary ML (BAML) is a domain-specific language to generate structured outputs from LLMs — with the best developer experience.<br/><br/>
+> With BAML you can build reliable Agents, Chatbots with RAG, extract data from Pdfs, and more.
+
+So with **BAML**, instead of just text, we can get structured output from our LLM calls — return object types which we can then inspect easily and process further, or call other AI Agents or APIs with type-safe data.
+
+In **BAML**, a prompt is a function — if we’re extracting, for example, information about a support ticket from a text with some LLM, we would want that ticket **type** returned from the BAML prompt function.
+
+**Example**
+
+Now let’s review our real-world example here and see how BAML lets us play around with its prompts:
+
+We want to call a Large Language Model with a text from a customer’s support request. Let’s say we send:
+
+> Hello Customer Support Team! I was charged twice for my monthly subscription this morning! Can you please refund the extra charge ASAP? I’m worried this might happen again.
+
+
+Normally, we’d get back **free-form text**. Maybe something like: `The user has a billing problem. This seems urgent because they were charged twice.`
+
+That’s OK for us humans to read, but not so nice for your backend — you’d still need to parse it, handle edge-cases, validate it, etc.
+
+**Instead, we want the model to output a clear object with three fields:**
+
+**1. Category (ENUM — Billing, Technical, Account, or Other)**
+
+**2. Urgency (ENUM — Low, Medium, or High)**
+
+**3. Summary of the problem (string)**
+
+--- 
+
+I think the support ticket use case is a pretty common real-world scenario, so let’s use it for our example. It’s easy to get started, and you can get the hang of Boundary ML in no time. We’ll use locally hosted Ollama for our examples to make things even easier — **no API Keys or Subscriptions required**:
+
+1. Install Ollama
+
+Just go to their website: https://ollama.com/download.
+
+Download the appropriate file for your OS and install it like you would install any other application. This installs the ollama command line tool, and you will be able to run ollama models locally with just a simple command like:
+
+```
+ollama run gemma3:latest
+```
+
+This will run [gemma3](https://ollama.com/library/gemma3:latest) locally on your computer
+
+2. Open VSCode or a similar editor and [install the BAML extension](https://open-vsx.org/extension/Boundary/baml-extension) — besides syntax highlighting, it gives us a pretty neat playground and testing feature, which makes things very easy to debug
+
+3. Create a folder `baml_src` and inside a file called `ticket-classifier.baml`
+
+Paste the following code inside:
+
+```
+client<llm> LocalOllama {
+  provider "openai-generic"
+  options {
+    base_url "http://localhost:11434/v1"
+    model "gemma3:latest"
+  }
+}
+
+enum Category {
+  Billing
+  Technical
+  Account
+  Other
+}
+
+enum Urgency {
+  Low
+  Medium
+  High
+}
+
+class Ticket {
+  category Category
+  urgency Urgency
+  summary string
+}
+
+function ClassifyTicket(message: string) -> Ticket {
+  client LocalOllama
+  prompt #"""
+  You are a customer support ticket assistant.  
+  Given the customer’s message, classify it into:
+  - category: Billing, Technical, Account, or Other
+  - urgency: Low, Medium, or High
+  - summary: A short 1-sentence summary of the issue.
+
+  Message:
+  {{ message }}
+
+  {{ctx.output_format}}
+  """#
+}
+
+test TestName {
+  functions [ClassifyTicket]
+  args {
+    message #"
+      Hi, I was charged twice for my monthly subscription this morning. 
+      Can you please refund the extra charge ASAP? 
+      I'm worried this might happen again.
+    "#
+  }
+}
+
+```
+
+Thanks to the BAML extension you installed in your VSCode, you’d get the following actions in your code.
+
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,UklGRjAMAABXRUJQVlA4WAoAAAAgAAAANgMAOAMASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggQgoAABDTAJ0BKjcDOQM+7W6xVimlJCOgkHmZMB2JaW7hai8ccyT2S/Wc4YZhQB//945GPrxj9AAUG2opVMbailUWt2w9mbF7M2L3kLSqLYBaSiAdBBKIB0ORpjahXFXNRIDb0yjoYQHeUcuIc5oHEogHY+ZuMYjcsuZ3Twadit7hsYLopz7FdqjR5kCQBBQtVEsrrt32277dlkNJ+gABDvMhgx6wd2hgclCrxvqtzmQ9g9GKSXbvtt3Cdu4PzYbR152Zl6443wmg5Tp8b0JroG6jj4G6MDdGBKO3bz6V+jXqR0T4FViWLSVp2aNaVV9FZx3dCw3PpYX3wEW1Z+csWGF4eqcv/M3eoR3yXdo5IOCWDcFgGz9TTuE7d9OJR0ySglHYD94eqcvEXwpi2jOPGzgMAHYqdQoA3A2fqad99S5IDpnIfLQ7nGIHc5sk+n3vCoGNlst1pV1fYfLhWbMDdUK9+/1mExQrYh4RQO5xiB3OU2RSORWm5IjO+Z2fZLX322h7dlknVpA7mt8sPWu6py8PVOYLCf9IOfLtqJZ0JJ1TLHfYJdM3cH4gdIXwnnqlNsB/Ad4RQSxNwRBymiT5BKxajA0kCHhIItrbxzYeWOqcvD1T5ciGHqnoE5eIbH8K6mU5dtwPJ6Ln9WRJQa0MPWgeHrQPD0h0GrcYgdfObxDuZ/7EesC/KGzK4VR1Mq0cj3AfCRvRSqlrB+8PVOXh5m2vkixxjJudbxS3Dv+4RfLOiSvZw/aTuYWcsi9+8RkF4eqcvEuNzjEDucYgdzlwcYgd2Ph7/wZTYP1ltiCtyAsj28NpZwcYgdzjEDucYgdzjEDvBBjlwcYa6zN2BMkAm/xoFamKraTImrW8UdGVgP3h6puJiB3ggxxi1MQUUH1sifkH8aCCUQDoIhOa1r0RSO8S43OMQG5xiB3OMC+5xiB3OMQOFyH2rdWBvH4Z0SJJCy7SmVSZzD3MbP4kB3OXBxiB3OMQO5xbXuUsG8t0rFZUU54oA0pTHDHWOq9ps5cHGIHc4xA7nGIHc4xA7m6/brLBsYwmG8XAB0EEzxU9T8e217nAY4xA7nGIHc4xA7nGHbrLBsGxik+TDi4AOggmizH2p5gwZmmOsP7UddJ3iO8PVOXasGwbBsGxdCBm4A21FKpjbUUt5BO2QMaxcpS8rW8NsGyHx1lBXIdZYNg2QZjJ45BvWDLxtqKVTG2o9CEbMc83rIKWDYNEnGLUxs0wowbATw5eFGqKUQDoIJRAOgglK+Xwqmk95wQQ8roQnz2ah0ZAkmZcAHQQSiAdBBKIB0ERfc7pEjcXEtEA9wDLxtqKVTG2opVMbailUxtqKVTG2ov32tDLxtqKVTG2opVMbailUxtqKVTG2opVW4mNtRSqY21FKpjbUUqmNtRSqY7RyFpVMbailUxtqKVTG2opVMbailUxtqKaDl421FKpjbUUqmNtRSqY21FKpjbUUqmNybMkMvG2opVMbailUxtqKVTG2opVMbailaYIJRAOgglEA6CCUQDoIJRAOgglEA6CCUV4AdBBKIB0EEogHQQSiAdBBKIB0EEogHQWm4uADoIJRAOgglEA6CCUQDoIJRAOgglEHqzbUUqmNtRSqY21FKpjbUUqmNtRSqY23fN4uADoIJRAOgglEA6CCUQDoIJRAOgfZMdYgKAq+4wwLY7NKMOLgA6CCUQDoIJRAOgglEA50OU4wMRQfuWye9ztSD1sIFHW1FKpjbUUqmNtRSqY21En2cYgNzm0jsB+zfVOLtKcwgZYG8XAB0EEogHQQSiAc7UU5eHrQM31Tlm940bEx4bgYBWWYB0EEogHQQSiAdBBKHzqn27gp3cFTHrnYILMCBwbJY5eTG2opVMbailUxtp7gpJ6S3RgbomC4CJB2z+Ush103FwAdBBKIB0EEogC/OU+9NQxJU8vZZYSEUIMaTSsMG8XAB0EEogHQQQUKwDGOKeB1DNCJY57ZIDux8EHVpVMbailUxtqKVTG0VX+FtaCSV+mzlqdma5PKMRMgy8bailUxtqKRDdxHNbXhfq6rSrJdnTaMg8Ih0AB0EEogHQ3py2wWWopYVZGzd99OlOG7OvFlzFNApjbUUqjeWOSU8oeFxhxcAIEVIh2eWsV1HrsDMoEA6CCFnLXD5mINqKVTG3LHHGLM30GADdbWExAIJRAOBFgPVuH39cIxgEjeTtyYpkFXWtfHA1CyoaIAdBBKIB0EIFOkNsl8j4VXTf2NvmihLCRQ78Co98oAOgglFeASOogAP7qDneBTNlU1sQhLyezETs3dqWvnOk4V2kc9qbT4XvhOZ199PfL7zebzebzebzdAfT6Ad7fJbqIud7Ky2ydYwFbub/Ip1mdk5uGzpEyviY/7mrQ9tdgzR2jxaRLKFMz2NAejpzr9ygiktkWeVZKtACqS5qlJkRRuU4y0lCgED9XTtinKU6GGUBRuN6oRKoGc6clGo1jCOEtN2S3lG131HylSjwso917yGEUceCiAKizurrOXa3x2kZTjLkNVqI5nhn5M35YVDmabEYs/LMzFjWstWnbJhVqrZ7ladO+SRCULBlQ+QndRDq5b10zQ0eRoBgsqBYRJzuSFawbN1Ib7ikZ51A/P2QD0iHcJIELaAuw9JcpeWEkpQX6i4tWB3422yXZhtzLHOePTq4hFfgxV/mea0lFIgm6x7YMh+pf3L9d7NqGQub/G/VXnJXdxFGCjtjYN1EA2PhQ6saBl/H/IV1vt2XDmfp6/oEIayjwX34dm7fLgKWClPZKDyxI9HRqMrFVVvKIzWfUtnzZ7mxszluXwy1/J92KUwyelBqpMTlVlE7LnvXlqHdqODQkdfgSKc8C+L/m94RXaRlJJ47L82GJlJFtTF9N5VkGMLDOvrAaGcEj/014VLxm3NfvgqTcqNa72Ou9+m6NuKudesSwZg2+6Aoiy4vDAgehzPG86jAq/2P7FrqZcGhWNzEE55MAhVxem9+/jAxQwRD0yh7Wwcz/nm+5CwUTDSF24MUDvKAKW/XN/BfnMz01qJk8CDBdzp0qUQgWrTvMuelInQXjoB+7Azg3y151NpCAEqwRWrr/0z7T0T5UaovXsfdjUf3neXvEwZPwAAHyg8vBTnq9b09rPjDpl4du7lBkEACxxU8HHwzAgABbwO0AABEhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADpwxXY/Xwh1HanwAAArqKV5RNdxiFwdz683+0PwEEAA8bHe/svl8GbqNwgAMBCp5A1X2xpeLBACP1L4SNgtWZj3AAFbE7i/cDCJZ5iAQBbAoTqYNBrnky5AAGYzelJWauG2PGdTvQEFwq59wOGS09iB4g1OkNeDAPMDbXg/f5aaAOzjj3NBPu3bmThCm+4JZRbS3JKNYg2cvpyp7raNah5HJzs1gQRBLxBD/ORcgTSM2GDG/FClpuxcUfYoCgXe0Yi53RDdyY50xFQMwumkuzyLqw+kRgbAA6GcCBUX1AubawgAAA="
+  alt="VSCode BAML"
+  src={"/images/boundary-ml/baml-vscode.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "335px", objectFit: "cover" }}
+/>
+
+The code is pretty straightforward.
+
+- First, we define our locally hosted Ollama model
+- We then define the `Ticket` class — It contains a summary and two ENUM fields — Category and Urgency.
+- The `ClassifyTicket` is our **function** (remember, we talked about how in BAML, a prompt is seen as a function) where we define our prompt and pass the user message to it. **Its return type is `Ticket`**
+- The last piece of code is a test that we can run and see how the parsing happens:
+
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  alt="BAML Parsing"
+  src={"/images/boundary-ml/baml-parsing.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "335px", objectFit: "cover" }}
+/>
+
+Perfect, our example works, and BAML does its job quite well!
+
+---
+
+
+**I promised you Java integration, though, so let’s look into it:**
+
+BAML offers close integration only for a limited set of languages (Typescript, Python, Ruby…). It’s pretty nice — you get seamless type-safety, autocompletion, and direct function calls as part of the code in your app.
+
+They have a simple-enough solution for other languages ( like Java, Go, or others), though — OpenAPI integration that exposes BAML functions as RESTful API. So we essentially need to generate a client using the OpenAPI generator. [They have done a good job documenting this](https://docs.boundaryml.com/guide/installation-language/rest-api-other-languages), but I’ll guide you through it in detail here too. (I’ll also use Gradle instead of Maven, which is used across their documentation)
+
+### Set up Java Project
+
+Create a Java Gradle project and add the `mavenLocal()` repository to the `build.gradle` file:
+
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  alt="VSCode BAML"
+  src={"/images/boundary-ml/intellij.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "335px", objectFit: "cover" }}
+/>
+
+```
+repositories {
+    ...
+    mavenLocal()
+}
+
+dependencies {
+
+    ...
+
+}
+```
+
+### Install npm and OpenAPI
+
+On my Mac, I just needed to execute: `brew install npm openapi-generator`
+
+You can easily find the instructions to install both for Linux and Windows online.
+
+### Add BAML to our existing Java project
+
+Open your terminal in the root folder of your Java project and execute the following command, which will give us some starter BAML code:
+
+```
+npx @boundaryml/baml init \
+  --client-type rest/openapi --openapi-client-type java
+```
+
+You should see the following output in your terminal:
+
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,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"
+  alt="VSCode BAML"
+  src={"/images/boundary-ml/baml-output.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "335px", objectFit: "cover" }}
+/>
+
+This command creates a `baml_src` folder in the root of our project. It contains three files: `clients.baml` `generators.baml` and `resume.baml`
+
+**`clients.baml`** defines which AI Services (OpenAI, Anthropic, etc.) you want to connect to. It’s basically a list of available models you can choose from (Ollama isn’t there by default.)
+
+_Note: You don’t always need a separate `clients.baml` file. You can define clients directly in your main BAML files (like `resume.baml` or as in our example from above `ticket-classifier.baml`) if you prefer to keep everything in one place._
+
+
+**r`esume.baml`** - Your AI Functions. This is the file that contains the actual AI functions — the prompts, expected outputs, and which client to use. (Same as our example — `ticket-classifier.baml` , from above)
+
+
+**`generators.baml`** — Code Generation Settings: This file tells BAML how to generate client libraries in your programming language of choice. In our case, we have `output_type = “rest/openapi”` which generates OpenAPI spec + HTTP client. So, BAML converts your functions into a standard REST API specification and generates an OpenAPI Client
+
+So, after understanding what these files do, let’s:
+
+- Delete the clients.baml (We’ll define our Ollama Client in the same file as our AI Functions and prompts.)
+- Go to `generators.baml` and remove the `&& mvn clean install` from the generated `on_generate` command.
+- Rename `resume.baml` to `ticket-classifier.baml` — We want to implement our example about the support tickets, so a better file naming is only logical.
+- Delete the pre-generated content (everything) in `ticket-classifier.baml` and add our BAML code for the support tickets classifier. Here is the code again:
+
+```
+client<llm> LocalOllama {
+  provider "openai-generic"
+  options {
+    base_url "http://localhost:11434/v1"
+    model "gemma3:latest"
+  }
+}
+
+enum Category {
+  Billing
+  Technical
+  Account
+  Other
+}
+
+enum Urgency {
+  Low
+  Medium
+  High
+}
+
+class Ticket {
+  category Category
+  urgency Urgency
+  summary string
+}
+
+function ClassifyTicket(message: string) -> Ticket {
+  client LocalOllama
+  prompt #"""
+  You are a customer support ticket assistant.  
+  Given the customer's message, classify it into:
+  - category: Billing, Technical, Account, or Other
+  - urgency: Low, Medium, or High
+  - summary: A short 1-sentence summary of the issue.
+
+  Message:
+  {{ message }}
+
+  {{ctx.output_format}}
+  """#
+}
+
+test TestName {
+  functions [ClassifyTicket]
+  args {
+    message #"
+      Hi, I was charged twice for my monthly subscription this morning. 
+      Can you please refund the extra charge ASAP? 
+      I'm worried this might happen again.
+    "#
+  }
+}
+```
+
+_(Again: at the beginning of the file, we define our Ollama Client using the `gemma3:latest` model)_
+
+### Generate OpenAPI Schema
+
+Run  the following command:
+
+```
+npx @boundaryml/baml generate
+```
+
+**What this does**: BAML reads your `ticket-classifier.baml` and `generators.baml` files and creates a `baml_client/` directory containing:
+
+- The generated Java client code
+- An OpenAPI specification (under `baml_client/openapi.yaml` )
+- All the type-safe classes and API methods you need to call your AI functions
+
+
+### Building and Running Our BAML Application
+
+Now, this generated code is just source files — we need to compile them into a usable library and install it locally so our main application can import it as a dependency. Let’s go into our `baml_client` folder and execute:
+
+```
+cd baml_client
+./gradlew clean build publishToMavenLocal
+```
+
+This will compile the code and add the library to our local Maven repository (`~/.m2/repository/`), so all our projects can use it (remember we added `mavenLocal()` to our `build.gradle` file when we started with our Java project).
+
+Now that we’ve published our BAML client to the local Maven repository, we need to tell our main Java project to use it:
+
+```
+  dependencies {
+     ...
+
+     implementation "org.openapitools:openapi-java-client:0.1.0"
+
+     ...
+  }
+```
+
+_(Your IDE won’t recognize the BAML Client classes if you don’t add this, and you’ll get compilation errors.)_
+
+We’re ready to write some Java code now. Go to your `Main.java` file and add the following sample code:
+
+```java
+import com.boundaryml.baml_client.ApiClient;
+import com.boundaryml.baml_client.ApiException;
+import com.boundaryml.baml_client.Configuration;
+import com.boundaryml.baml_client.api.DefaultApi;
+import com.boundaryml.baml_client.model.ClassifyTicketRequest;
+import com.boundaryml.baml_client.model.Ticket;
+
+public class Main {
+
+    private final static String userMessage = """
+            Hi, I was charged twice for my monthly subscription this morning.
+            Can you please refund the extra charge ASAP?
+            I'm worried this might happen again.
+        """;
+
+
+    public static void main(String[] args) throws ApiException {
+        ApiClient apiClient = Configuration.getDefaultApiClient();
+        DefaultApi defaultApi = new DefaultApi(apiClient);
+        ClassifyTicketRequest classifyTicketRequest = new ClassifyTicketRequest().message(userMessage);
+        Ticket supportTicket = defaultApi.classifyTicket(classifyTicketRequest);
+        
+        System.out.println("Here the well-structured output from the LLM");
+        System.out.println(supportTicket);
+    }
+}
+```
+
+You’ll see you’ll have all types available (like `ClassifyTicketRequest` , `Ticket` , etc.)
+
+This will call our function `classifyTicket` that we defined in our BAML file, and will convert it into a well-structured `Ticket` object with all the needed fields.
+
+**Start the BAML development server**
+
+```
+npx @boundaryml/baml dev
+```
+
+**Let’s run the program and see the output:**
+
+```
+Here the well-structured output from the LLM
+class Ticket {
+    category: Billing
+    summary: The customer was incorrectly charged twice for their subscription and requests a refund.
+    urgency: Medium
+}
+```
+
+And that’s it! We get a normal type-safe Java Object out of the LLM!
+
+### Conclusion
+
+Well-structured responses from LLMs are crucial for AI Workflows and AI Agent calls nowadays. You might know I’m a big fan of [Langchain4j](https://docs.langchain4j.dev/), which offers a similar functionality out of the box by just returning the object type from the AI Interface method call, but the BAML way is supposed to scale better in real-world scenario and decouples the logic of writing the Prompt itself — meaning non-technical people can play around in the baml files too. Another BAML advantage is, of course, that it can be used in multiple Programming Languages. It can also be very helpful when using popular AI Platforms like [AWS Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started-api-ex-cli.html), for example — I think this can play well together. Feel free to share if you have experience with this combo. I’d love to hear about your experiments in the comments!
+
+Thanks for reading
+
+
