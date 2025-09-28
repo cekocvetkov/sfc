@@ -1,12 +1,12 @@
 ---
 title: "Building a Text-to-SQL AI Agent with pure Java, LangChain4j, and Ollama: Ask your database anything"
 date: "2025-07-17"
-tags: ["java", "langchain4j", "ai", "ollama", "sql", ]
+tags: ["java", "langchain4j", "ai", "ollama", "sql"]
 image: "text-to-sql/main.webp"
 published: true
 ---
 
-# Simple RAG with pure Java and Langchain4j: Use locally hosted Ollama to talk to your documents
+# Building a Text-to-SQL AI Agent with pure Java, LangChain4j, and Ollama: Ask your database anything
 
 <Image
   placeholder="blur"
@@ -25,7 +25,6 @@ published: true
 
 **How about asking your application questions about stuff in your database?**
 
-
 Many business users or even developers sometimes struggle with complex SQL queries. Imagine non-technical managers asking questions about data in the database in plain English.
 
 ```
@@ -43,8 +42,7 @@ Based on the provided data, our top 3 most ordered products are:
 These products have been the best sellers in terms of quantity, with all three having a sales count greater than or equal to 2.
 ```
 
-
->Note: This isn’t a practical or well-optimized approach. The goal here is to experiment and become familiar with what LLMs can do. Only this way we can get creative and understand the true power of AI integration into software applications. (Things like [MCP](https://modelcontextprotocol.io/docs/getting-started/intro) or function calling with [@Tool](https://python.langchain.com/docs/concepts/tools/) from Langchain4j would be the way to go here if we’re talking real-world applications)
+> Note: This isn’t a practical or well-optimized approach. The goal here is to experiment and become familiar with what LLMs can do. Only this way we can get creative and understand the true power of AI integration into software applications. (Things like [MCP](https://modelcontextprotocol.io/docs/getting-started/intro) or function calling with [@Tool](https://python.langchain.com/docs/concepts/tools/) from Langchain4j would be the way to go here if we’re talking real-world applications)
 
 ---
 
@@ -77,7 +75,6 @@ _Database_: `tts-db`
 _User_: `tts-user`
 _Password_: `tts-pass`
 
-
 **- Install Ollama on our machine:**
 
 Just go to their website: https://ollama.com/download.
@@ -101,6 +98,7 @@ implementation 'dev.langchain4j:langchain4j-ollama:1.0.1-beta6'
 ---
 
 ### Implementation
+
 Now let’s get into the fun part:
 
 We’ll start by creating a simple SQL file with some create and insert statements to fill in our database. I asked ChatGPT to generate a (very) simplified E-Commerce database schema and add some sample data. This is what it came up with, and I liked it:
@@ -164,7 +162,7 @@ INSERT INTO orders VALUES
 (8, 1, 4, 1, '2024-01-22'),  -- John bought 1 Monitor
 (9, 3, 3, 1, '2024-01-23'),  -- Bob bought 1 Keyboard
 (10, 4, 2, 1, '2024-01-24'); -- Alice bought 1 Mouse
-``` 
+```
 
 So, we have a customers table, a products table, and an orders table that records who ordered what. We can ask questions like:
 
@@ -220,7 +218,6 @@ We keep things minimal and straightforward here:
 - The `loadSQL` method helps us load the database initialization script.
 - Then we execute the initialization script and return the connection.
 
-
 Next, we will initialize our AI Assistant — the Ollama chat model we set up earlier, and make it available for our application. Let’s put all the logic for this in an `AIUtils` class:
 
 ```java
@@ -256,7 +253,6 @@ Alright, now let’s back up a bit and remember what we’re actually trying to 
 
 First, let’s define a message template that will help our model create a useful database query. It will be used each time the AI service is invoked with the `getQuery` method. This method will be part of our `AIAssistant` interface implementation (note the `AIAssistant.class` used in the previous code snippet). Let’s have a look:
 
-
 ```java
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
@@ -264,30 +260,30 @@ import dev.langchain4j.service.V;
 public interface AIAssistant {
     @UserMessage("""
       You are a senior SQL engineer. Given the database schema and user question below, write a syntactically correct and schema-valid SQL SELECT query.
-      
+
       Database Schema (Use only columns and tables listed here)
       {{schemaDescription}}
-      
+
       Rules:
       Only valid syntax queries - meaning it must start with SELECT
-      
+
       Only use tables and columns from the schema above — do not guess
-      
+
       Only use SELECT statements (no INSERT, UPDATE, DELETE)
-  
+
       Use explicit JOINs, not subqueries unless necessary
-      
+
       Add LIMIT 100 to large result sets if not specified in the question
-      
+
       Use aggregate functions (COUNT, SUM, etc.) only if the question requires it
-      
+
       Return only the SQL query, no explanation, no comments
-      
+
       The query must be valid SQL and executable without syntax errors
-      
+
       User Question
       {{question}}
-                
+
     """)
     String getQuery(@V("question") String question,  @V("schema") String schemaDescription);
 
@@ -311,10 +307,10 @@ Table: customers
   - city (varchar)
 
 Sample rows:
-  | id | name       | email           | city        | 
-  | 1  | John Smith | john@email.com  | New York    | 
-  | 2  | Jane Doe   | jane@email.com  | Los Angeles | 
-  | 3  | Bob Wilson | bob@email.com   | Chicago     | 
+  | id | name       | email           | city        |
+  | 1  | John Smith | john@email.com  | New York    |
+  | 2  | Jane Doe   | jane@email.com  | Los Angeles |
+  | 3  | Bob Wilson | bob@email.com   | Chicago     |
 
 ```
 
@@ -404,7 +400,7 @@ public class SchemaAnalyzer {
                 for (ColumnInfo col : columns) {
                     row.add(rs.getString(col.name()));
                 }
-                rows.add(row);  
+                rows.add(row);
             }
         }
         return rows;
@@ -501,19 +497,19 @@ We can now define a template for our model that passes the database schema, alon
     @UserMessage("""
       You are a data analyst. Based on the database schema, the user’s question, the SQL query and the SQL query results, generate a clear, concise, human-readable answer.
       Focus on answering the user's question directly using the data provided — do not describe the SQL or repeat the table structure. Give a straight answer.
-      
+
       ### Database Schema
       {{schema}}
-      
+
       ### User Question
       {{question}}
-      
+
       ### SQL Query
       {{ query }}
-      
+
       ### SQL Query Results
       {{results}}
-      
+
       ### Answer
     """)
     String explainAnswer(@V("question") String question, @V("schema") String schema, @V("results") String results);
@@ -564,17 +560,12 @@ Schema initialized.
 John Smith has placed 3 orders in total.
 ```
 
-
 _Note that the results, especially with the model I use in this example, won’t always be perfect. It’s enough to play around with, though, and even makes it fun to try and experiment with different templates for the model and see what makes the model give better answers. If you use a more powerful model, you’ll get a good result almost every time._
 
 You’ll also notice that the query generated from the model is often invalid, so a nice exercise would be to build a retry logic. Just have fun with this!
-
 
 ### Conclusion
 
 Playing around with LLMs locally can nowadays be very easy to do with Java. Lightweight models and well-structured code in a familiar language make prototyping such ideas fast and fun! As mentioned at the beginning of this article, this approach isn’t optimized or appropriate for a real-world application, but it builds on the idea of AI Agents and how things actually happen under the hood in a simplified way.
 
 Thanks for reading!
-
-
-
