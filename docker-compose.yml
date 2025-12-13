@@ -19,7 +19,7 @@ services:
       - db
 
   db:
-    image: postgres:latest
+    image: postgres:17
     environment:
       - POSTGRES_USER=sfc
       - POSTGRES_PASSWORD=sfc
