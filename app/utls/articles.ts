@@ -45,6 +45,12 @@ export async function getMdxArticleBySlug(slug: string) {
   return article;
 }
 
+// Matches the slug against the file names exactly, so user input never becomes a file path.
+export async function articleExists(slug: string): Promise<boolean> {
+  const articlesFileNames = await fs.readdir(articlesDirectory);
+  return articlesFileNames.includes(`${slug}.mdx`);
+}
+
 export async function getSortedArticlesData(): Promise<ArticleModel[]> {
   // console.log(`Read file names from directory '${articlesDirectory}'`);
   // Get file names under /articles

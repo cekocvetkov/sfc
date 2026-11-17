@@ -1,11 +1,25 @@
 import { prisma } from "@/app/prisma";
 import { sendCommentNotification } from "@/app/utls/email-service";
-import { getMdxArticleBySlug } from "@/app/utls/articles";
+import { articleExists, getMdxArticleBySlug } from "@/app/utls/articles";
+import { MAX_COMMENT_LENGTH } from "@/app/utls/constants";
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
 // Comments are public: expose only what the comment list shows, never the author's email.
 const publicAuthor = { select: { name: true, image: true } } as const;
+
+const MAX_COMMENTS_PER_WINDOW = 5;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+
+function errorResponse(error: string, status = 400) {
+  return NextResponse.json({ error }, { status });
+}
+
+async function hasReachedRateLimit(userId: string): Promise<boolean> {
+  const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MS);
+  const recentComments = await prisma.comment.count({ where: { userId, createdAt: { gte: windowStart } } });
+  return recentComments >= MAX_COMMENTS_PER_WINDOW;
+}
 
 export async function POST(req: Request) {
   try {
@@ -16,11 +30,17 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-
-    const { content, postSlug } = body;
+    const content = typeof body.content === "string" ? body.content.trim() : "";
+    const postSlug = typeof body.postSlug === "string" ? body.postSlug : "";
 
     if (!content || !postSlug) {
-      return new NextResponse("Missing required fields", { status: 400 });
+      return errorResponse("Missing required fields");
+    }
+    if (content.length > MAX_COMMENT_LENGTH) {
+      return errorResponse(`Comment is too long (max ${MAX_COMMENT_LENGTH} characters)`);
+    }
+    if (!(await articleExists(postSlug))) {
+      return errorResponse("Article not found", 404);
     }
 
     // Verify the user exists
@@ -30,6 +50,9 @@ export async function POST(req: Request) {
 
     if (!user) {
       return new NextResponse("User not found", { status: 404 });
+    }
+    if (await hasReachedRateLimit(user.id)) {
+      return errorResponse("Too many comments, please wait a few minutes", 429);
     }
 
     const comment = await prisma.comment.create({

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Comment } from "./comment-section";
+import { MAX_COMMENT_LENGTH } from "@/app/utls/constants";
 
 interface CommentFormProps {
   postSlug: string;
@@ -49,6 +50,7 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Write your comment..."
+        maxLength={MAX_COMMENT_LENGTH}
         className="w-full p-2 border-border-color border-[0.1px] min-h-[100px] bg-code-snippet-background-color focus:outline-none focus:border-border-color focus:border-[1px]"
         required
       />
