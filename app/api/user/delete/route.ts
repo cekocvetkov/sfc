@@ -49,12 +49,6 @@ export async function DELETE() {
     });
   } catch (error) {
     console.error("Error deleting user account:", error);
-    return new NextResponse(
-      JSON.stringify({
-        error: "Failed to delete account",
-        details: error instanceof Error ? error.message : "Unknown error",
-      }),
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Failed to delete account" }, { status: 500 });
   }
 }

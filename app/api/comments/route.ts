@@ -67,8 +67,7 @@ export async function POST(req: Request) {
     return NextResponse.json(comment);
   } catch (error) {
     console.error("Error creating comment:", error);
-    // Return more specific error message
-    return new NextResponse(JSON.stringify({ error: "Failed to create comment", details: error }), { status: 500 });
+    return NextResponse.json({ error: "Failed to create comment" }, { status: 500 });
   }
 }
 
@@ -90,6 +89,6 @@ export async function GET(req: Request) {
     return NextResponse.json(comments);
   } catch (error) {
     console.error("Error fetching comments:", error);
-    return new NextResponse(JSON.stringify({ error: "Failed to fetch comments", details: error }), { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch comments" }, { status: 500 });
   }
 }
