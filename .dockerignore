@@ -1,0 +1,15 @@
+# Secrets: never send env files or compose files with real values into the build
+.env
+.env.*
+docker-compose*.yml
+
+# Host build artifacts: the image installs and builds its own (Linux binaries)
+node_modules
+.next
+
+# Not needed in the image
+.git
+.github
+scripts/backups
+*.log
+.DS_Store
