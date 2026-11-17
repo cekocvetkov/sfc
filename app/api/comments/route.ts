@@ -4,6 +4,9 @@ import { getMdxArticleBySlug } from "@/app/utls/articles";
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
+// Comments are public: expose only what the comment list shows, never the author's email.
+const publicAuthor = { select: { name: true, image: true } } as const;
+
 export async function POST(req: Request) {
   try {
     const session = await auth();
@@ -38,7 +41,7 @@ export async function POST(req: Request) {
         userId: user.id,
       },
       include: {
-        user: true,
+        user: publicAuthor,
       },
     });
 
@@ -83,7 +86,7 @@ export async function GET(req: Request) {
 
     const comments = await prisma.comment.findMany({
       where: { postSlug },
-      include: { user: true },
+      include: { user: publicAuthor },
       orderBy: { createdAt: "desc" },
     });
 
