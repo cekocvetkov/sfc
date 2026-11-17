@@ -60,6 +60,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/node_modules/.prisma /app/node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma /app/node_modules/@prisma
 
+# Prisma CLI at the lockfile version, so start.sh never downloads one from npm
+COPY --from=builder /app/node_modules/prisma /app/node_modules/prisma
+
 # Copy Prisma schema for migrations
 COPY --from=builder /app/prisma ./prisma
 
