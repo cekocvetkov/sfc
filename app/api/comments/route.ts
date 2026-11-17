@@ -10,14 +10,12 @@ const publicAuthor = { select: { name: true, image: true } } as const;
 export async function POST(req: Request) {
   try {
     const session = await auth();
-    console.log("Session:", session); // Debug log
 
     if (!session?.user?.email) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const body = await req.json();
-    console.log("Request body:", body); // Debug log
 
     const { content, postSlug } = body;
 
@@ -66,7 +64,6 @@ export async function POST(req: Request) {
       // Don't fail the comment creation if email fails
     });
 
-    console.log("Created comment:", comment); // Debug log
     return NextResponse.json(comment);
   } catch (error) {
     console.error("Error creating comment:", error);

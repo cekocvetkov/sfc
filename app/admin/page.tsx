@@ -20,16 +20,10 @@ interface UserWithComments {
 export default async function AdminPage() {
   const session = await auth();
 
-  // Debug logging
-  console.log("Admin page - Session:", session);
-  console.log("Admin page - User email:", session?.user?.email);
-
   // Check if user is authenticated and is the specific admin user
   const adminEmail = process.env.ADMIN_EMAIL;
   if (!session?.user?.email || !adminEmail || session.user.email !== adminEmail) {
     console.log("Admin page - Access denied, redirecting to home");
-    console.log("Expected admin email:", adminEmail);
-    console.log("User email:", session?.user?.email);
     redirect("/");
   }
 

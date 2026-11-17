@@ -24,7 +24,7 @@ export async function DELETE() {
     }
 
     // Log the deletion for audit purposes (optional)
-    console.log(`GDPR deletion requested for user: ${user.email}, comments count: ${user.comments.length}`);
+    console.log(`GDPR deletion requested, comments count: ${user.comments.length}`);
 
     // Delete the user and all associated comments (cascade delete is configured in schema)
     await prisma.sfcuser.delete({

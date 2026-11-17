@@ -7,9 +7,6 @@ export const { auth, handlers } = NextAuth({
   providers: [GitHub],
   callbacks: {
     async signIn({ user, account }) {
-      console.log("User:", user);
-      console.log("Account:", account);
-
       if (!user?.email || !account?.provider) return false;
 
       try {
