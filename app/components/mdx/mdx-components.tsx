@@ -74,7 +74,10 @@ export const MdxComponents = {
 const rehypePrettyCodeOptions = {
   theme: "vitesse-dark",
 };
+// Articles are trusted repo files whose JSX props are expressions (src={...}, style={{...}}),
+// so JS stays enabled; blockDangerousJS (default true) still blocks eval, Function, process.
 export const MdxOptions = {
+  blockJS: false,
   mdxOptions: {
     remarkPlugins: [],
     rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions], rehypeSlug],

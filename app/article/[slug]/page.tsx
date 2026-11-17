@@ -7,9 +7,12 @@ import { notFound } from "next/navigation";
 import { BASE_URL } from "@/app/utls/constants";
 import CommentSection from "@/app/components/comments/comment-section";
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+type ArticlePageProps = { params: Promise<{ slug: string }> };
+
+export async function generateMetadata({ params }: ArticlePageProps) {
+  const { slug } = await params;
   try {
-    const article = await getMdxArticleBySlug(params.slug);
+    const article = await getMdxArticleBySlug(slug);
     return {
       openGraph: {
         title: article.metadata.title,
@@ -26,9 +29,10 @@ export async function generateStaticParams() {
     slug: article.metadata.slug,
   }));
 }
-async function Article({ params }: { params: { slug: string } }) {
-  console.log(`Article with slug '${params.slug}' opened`);
-  const article = await getMdxArticleBySlug(params.slug).catch((e) => {
+async function Article({ params }: ArticlePageProps) {
+  const { slug } = await params;
+  console.log(`Article with slug '${slug}' opened`);
+  const article = await getMdxArticleBySlug(slug).catch((e) => {
     console.error(e);
     return notFound();
   });
@@ -43,7 +47,7 @@ async function Article({ params }: { params: { slug: string } }) {
       <MDXRemote source={article.content} components={MdxComponents} options={MdxOptions} />
 
       <div id="comments-section">
-        <CommentSection postSlug={params.slug} />
+        <CommentSection postSlug={slug} />
       </div>
     </article>
   );
