@@ -5,18 +5,31 @@ import { usePathname } from "next/navigation";
 import UserAvatar from "./user-avatar-mobile";
 import useScrolledUp from "../hooks/use-scrolled-up";
 
-function NavLinks({ isActive }: { isActive: (href: string) => boolean }) {
-  const linkClass = (href: string) =>
-    `transition-colors hover:text-primary-text-color ${isActive(href) ? "text-primary-text-color" : "text-muted-text-color"}`;
+type NavLinkProps = { href: string; label: string; active: boolean; tabIndex?: number };
+
+function NavLink({ href, label, active, tabIndex }: NavLinkProps) {
+  const color = active ? "text-primary-text-color" : "text-muted-text-color";
   return (
-    <div className="label-caps flex gap-7">
-      <Link href="/about" className={linkClass("/about")}>
-        about
-      </Link>
-      <Link href="/search" className={linkClass("/search")}>
-        search
-      </Link>
-    </div>
+    <Link href={href} tabIndex={tabIndex} className={`label-caps transition-colors hover:text-primary-text-color ${color}`}>
+      {label}
+    </Link>
+  );
+}
+
+type NavBarProps = { isActive: (href: string) => boolean; tabIndex?: number; leading?: React.ReactNode };
+
+function NavBar({ isActive, tabIndex, leading }: NavBarProps) {
+  return (
+    <>
+      <div className="flex items-center gap-4">
+        {leading}
+        <NavLink href="/" label="home" active={isActive("/")} tabIndex={tabIndex} />
+      </div>
+      <div className="flex gap-7">
+        <NavLink href="/about" label="about" active={isActive("/about")} tabIndex={tabIndex} />
+        <NavLink href="/search" label="search" active={isActive("/search")} tabIndex={tabIndex} />
+      </div>
+    </>
   );
 }
 
@@ -27,22 +40,18 @@ function Navigation() {
 
   return (
     <>
-      <nav id="header" className="flex justify-between items-baseline pt-14">
-        <div className="flex items-center gap-3">
-          <div className="md:hidden flex items-center">
-            <UserAvatar />
-          </div>
-          <Link href="/" className="text-lg tracking-wide hover:text-secondary-text-color transition-colors">
-            home
-          </Link>
-        </div>
-        <NavLinks isActive={isActive} />
+      <nav id="header" className="flex justify-between items-center pt-14">
+        <NavBar
+          isActive={isActive}
+          leading={
+            <div className="md:hidden flex items-center">
+              <UserAvatar />
+            </div>
+          }
+        />
       </nav>
-      <div className={`scroll-peek flex justify-between items-baseline ${scrolledUp ? "visible" : ""}`} aria-hidden={!scrolledUp}>
-        <Link href="/" tabIndex={scrolledUp ? 0 : -1} className="tracking-wide hover:text-secondary-text-color transition-colors">
-          home
-        </Link>
-        <NavLinks isActive={isActive} />
+      <div className={`scroll-peek flex justify-between items-center ${scrolledUp ? "visible" : ""}`} aria-hidden={!scrolledUp}>
+        <NavBar isActive={isActive} tabIndex={scrolledUp ? 0 : -1} />
       </div>
     </>
   );

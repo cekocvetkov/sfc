@@ -64,11 +64,19 @@ a.active {
   /* Firefox */
 }
 
-.about-rectangle {
-  height: 18px;
-  width: 164px;
-  background-color: transparent;
-  border: 1.4px var(--border-color) solid;
+/* Single-colour icon: the SVG is used as a mask so it takes the palette accent */
+.mask-icon {
+  display: inline-block;
+  background-color: var(--secondary-text-color);
+  opacity: 0.8;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+  transition: opacity var(--transition-duration) ease, transform var(--transition-duration) ease;
+}
+
+.mask-icon:hover {
+  opacity: 1;
+  transform: translateY(-2px);
 }
 
 /* Show - Hide Navigation and articles on scroll */
