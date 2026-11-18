@@ -55,7 +55,7 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
         required
       />
       {error && <p className="text-red-500 text-sm">{error}</p>}
-      <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-accent-color rounded-md hover:bg-accent-color-darker disabled:opacity-50">
+      <button type="submit" disabled={isSubmitting} className="px-4 py-2 rounded-md bg-primary-text-color text-background-color hover:bg-secondary-text-color transition-colors disabled:opacity-50">
         {isSubmitting ? "Posting..." : "Post Comment"}
       </button>
     </form>
