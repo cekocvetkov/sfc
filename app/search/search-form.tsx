@@ -55,7 +55,7 @@ function SearchForm({ allTags }: TagsProps) {
     <div className="flex flex-col flex-grow justify-center">
       <div className="">
         <input
-          className="w-4/5 outline-none bg-transparent text-primary-text-color text-3xl border-[hsla(45,29%,97%,.5)] border-b-[0.5px] placeholder:text-[#eb905080] placeholder:opacity-100"
+          className="w-4/5 outline-none bg-transparent text-primary-text-color text-3xl border-[hsla(45,29%,97%,.5)] border-b-[0.5px] placeholder:text-muted-text-color placeholder:opacity-100"
           autoFocus={true}
           value={input}
           type="text"

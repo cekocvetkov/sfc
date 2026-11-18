@@ -1,37 +1,59 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import useScrollDirection from "../hooks/UseScrollDirection";
 import { usePathname } from "next/navigation";
 import UserAvatar from "./user-avatar-mobile";
+import useScrolledUp from "../hooks/use-scrolled-up";
+
+type NavLinkProps = { href: string; label: string; active: boolean; tabIndex?: number };
+
+function NavLink({ href, label, active, tabIndex }: NavLinkProps) {
+  const color = active ? "text-primary-text-color" : "text-muted-text-color";
+  return (
+    <Link href={href} tabIndex={tabIndex} className={`label-caps transition-colors hover:text-primary-text-color ${color}`}>
+      {label}
+    </Link>
+  );
+}
+
+type NavBarProps = { isActive: (href: string) => boolean; tabIndex?: number; leading?: React.ReactNode };
+
+function NavBar({ isActive, tabIndex, leading }: NavBarProps) {
+  return (
+    <>
+      <div className="flex items-center gap-4">
+        {leading}
+        <NavLink href="/" label="home" active={isActive("/")} tabIndex={tabIndex} />
+      </div>
+      <div className="flex gap-7">
+        <NavLink href="/about" label="about" active={isActive("/about")} tabIndex={tabIndex} />
+        <NavLink href="/search" label="search" active={isActive("/search")} tabIndex={tabIndex} />
+      </div>
+    </>
+  );
+}
 
 function Navigation() {
-  useScrollDirection();
   const pathName = usePathname();
   const isActive = (href: string) => pathName === href;
+  const scrolledUp = useScrolledUp();
 
   return (
-    <nav id="header" className=" sticky top-0 bg-background-color !z-50 min-h-[142px] mt-0 md:mt-10 lg:mt-14 mt flex items-center justify-between transition-transform ease-in-out duration-[0.2s]">
-      <div>
-        <div className="md:hidden flex items-center gap-3">
-          <UserAvatar />
-
-        </div>
-        <Link href="/" className=" hover:text-secondary-text-color">
-          home
-        </Link>
+    <>
+      <nav id="header" className="flex justify-between items-center pt-14">
+        <NavBar
+          isActive={isActive}
+          leading={
+            <div className="md:hidden flex items-center">
+              <UserAvatar />
+            </div>
+          }
+        />
+      </nav>
+      <div className={`scroll-peek flex justify-between items-center ${scrolledUp ? "visible" : ""}`} aria-hidden={!scrolledUp}>
+        <NavBar isActive={isActive} tabIndex={scrolledUp ? 0 : -1} />
       </div>
-      <div className="flex flex-col ">
-        <Link href="/about" className={`hover:text-secondary-text-color ${isActive("/about") ? "text-secondary-text-color" : ""}`}>
-          about me
-        </Link>
-        <Link href="/search" className={`hover:text-secondary-text-color ${isActive("/search") ? "text-secondary-text-color" : ""}`}>
-          search
-        </Link>
-      </div>
-
-
-    </nav>
+    </>
   );
 }
 

@@ -1,3 +1,26 @@
+## Old design
+
+The site used a framed two-column layout with brown article tiles until the minimal "Coral + ink"
+redesign. It is not kept in the code; it lives on as a git tag and a Docker image:
+
+| | |
+|---|---|
+| Git tag | `design-classic` → commit `fb2cf94` (last commit on `main` with the old design) |
+| Docker image | `ghcr.io/cekocvetkov/sfc:0.4` (built from `fb2cf94`) |
+
+To switch back, deploy that image: set `image: ghcr.io/cekocvetkov/sfc:0.4` in the compose stack and
+redeploy. No database change is involved. To work on the old design, run `git checkout design-classic`.
+Articles and fixes added after the redesign are not in that image; you would have to cherry-pick them
+onto the tag and build a new image.
+
+| Home | About |
+|---|---|
+| ![Old design: home](docs/old-design/home.png) | ![Old design: about](docs/old-design/about.png) |
+
+| Search | Article |
+|---|---|
+| ![Old design: search](docs/old-design/search.png) | ![Old design: article](docs/old-design/article.png) |
+
 ## Prisma DB Notes:
 ### Local playaround way
 1. In `schema.prisma` we define how we want our database to look like

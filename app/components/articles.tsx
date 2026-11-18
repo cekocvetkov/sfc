@@ -2,7 +2,7 @@
 
 import React from "react";
 import { colorScheme, isColorTooSimilar } from "../utls/color-utils";
-import { formatDate } from "../utls/date-utils";
+import { formatShortDate } from "../utls/date-utils";
 import { ArticleModel } from "../utls/articles";
 import ArticleLink from "./article-link";
 import { useSearchParams } from "next/navigation";
@@ -34,7 +34,7 @@ function Articles({ initialArticles }: ArticlesProps) {
   getRandomColor();
 
   return (
-    <div className="bg-[#895f41] flex w-full scrollbar-hide overflow-x-auto h-[151px] md:h-full md:flex-col md:max-w-[180px] md:border-x-[0.1px] md:border-border-color md:overflow-y-auto ">
+    <div className="flex h-full md:flex-col">
       {filteredArticles
         .filter((article: ArticleModel) => {
           // First check if there's a search string match
@@ -56,7 +56,8 @@ function Articles({ initialArticles }: ArticlesProps) {
               key={article.metadata.slug}
               params={{
                 color: getRandomColor(),
-                date: formatDate(article.metadata.date),
+                number: initialArticles.length - initialArticles.indexOf(article),
+                date: formatShortDate(article.metadata.date),
                 title: article.metadata.title,
                 slug: article.metadata.slug,
               }}

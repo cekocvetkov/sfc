@@ -1,48 +1,44 @@
 import React from "react";
-import Image from "next/image";
+import MaskIcon from "./mask-icon";
+
+const hobbies = [
+  ["guitar", "Guitar"],
+  ["music", "Music"],
+  ["football", "Football"],
+  ["basketball", "Basketball"],
+  ["book", "Book"],
+  ["laptop", "Laptop"],
+];
+
+function Detail({ label, children, wide = false }: { label: string; children: React.ReactNode; wide?: boolean }) {
+  return (
+    <div className={`min-w-0 ${wide ? "col-span-2 smm:col-span-1" : ""}`}>
+      <dt className="label-caps text-muted-text-color mb-2">{label}</dt>
+      <dd className="m-0 text-base font-extralight text-primary-text-color break-words">{children}</dd>
+    </div>
+  );
+}
 
 function Stuff() {
   return (
-    <div className="flex -mx-3 md:mx-0 justify-between text-[10px] sm:text-[13px] md:text-[13px] lg:text-[15px] text-white">
-      <div className="flex flex-col gap-y-2">
-        <div className="flex flex-col gap-x-2 md:gap-x-1 lg:gap-x-2">
-          <div className=" min-w-24 sm:min-w-max">Name:</div> <div className="text-nowrap text-secondary-text-color">Tsvetan Tsvetkov</div>
-        </div>
-        <div className="flex flex-col gap-x-2 md:gap-x-0 lg:gap-x-2">
-          <div className=" min-w-24 sm:min-w-max">Hobbies: </div>
-          <div className="flex text-secondary-text-color">
-            <Image src={"/images/icons/guitar.svg"} title="Guitar" alt="Guitar" width={18} height={18} />
-            <Image src={"/images/icons/music.svg"} title="Music" alt="Music" width={18} height={18} />
-            <Image src={"/images/icons/football.svg"} title="Football" alt="Football" width={18} height={18} />
-            <Image src={"/images/icons/basketball.svg"} title="Basketball" alt="Basketball" width={18} height={18} />
-            <Image src={"/images/icons/book.svg"} title="Book" alt="Book" width={18} height={18} />
-            <Image src={"/images/icons/laptop.svg"} title="Laptop" alt="Laptop" width={18} height={18} />
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col gap-y-2">
-        <div className="flex flex-col gap-x-2 md:gap-x-1 lg:gap-x-2 ">
-          <div className=" min-w-24 sm:min-w-max text-nowrap">Born in:</div>
-          <div className="flex flex-nowrap text-secondary-text-color">
-            <div>Shumen, Bulgaria</div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-x-2">
-          <div className=" text-nowrap min-w-24 sm:min-w-max"> Lives in:</div>
-          <div className="flex flex-nowrap  text-secondary-text-color">
-            <div>Vienna, Austria</div>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col gap-y-2">
-        <div className="flex flex-col gap-x-2 md:gap-x-1 lg:gap-x-2">
-          <div className=" text-nowrap min-w-24 sm:min-w-max">Languages:</div> <div className="text-secondary-text-color">Bulgarian, English, German</div>
-        </div>
-        <div className="flex flex-col gap-x-2">
-          <div className=" text-nowrap min-w-24 sm:min-w-max">E-Mail: </div> <div className="text-secondary-text-color">c.y.cvetkov@gmail.com</div>
-        </div>
-      </div>
-    </div>
+    <dl className="grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8 m-0">
+      <Detail label="name">Tsvetan Tsvetkov</Detail>
+      <Detail label="born in">Shumen, Bulgaria</Detail>
+      <Detail label="languages">Bulgarian, English, German</Detail>
+      <Detail label="lives in">Vienna, Austria</Detail>
+      <Detail label="e-mail" wide>
+        <a href="mailto:c.y.cvetkov@gmail.com" className="hover:text-secondary-text-color transition-colors">
+          c.y.cvetkov@gmail.com
+        </a>
+      </Detail>
+      <Detail label="hobbies">
+        <span className="flex gap-3 pt-0.5">
+          {hobbies.map(([file, label]) => (
+            <MaskIcon key={file} file={file} label={label} size={20} />
+          ))}
+        </span>
+      </Detail>
+    </dl>
   );
 }
 

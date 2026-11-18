@@ -27,6 +27,7 @@ const config: Config = {
         "accent-color-darker": "var(--accent-color-darker)",
         "primary-text-color": "var(--primary-text-color)",
         "secondary-text-color": "var(--secondary-text-color)",
+        "muted-text-color": "var(--muted-text-color)",
         "secondary-text-color2": "var(--secondary-text-color2)",
         "tags-color": "var(--tags-color)",
         "border-color": "var(--border-color)",
