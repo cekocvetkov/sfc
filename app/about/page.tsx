@@ -22,7 +22,7 @@ function About() {
             Software <span className="text-secondary-text-color">Developer</span>
           </h1>
           <div className="text-[17px] font-extralight text-secondary-text-color mt-1">Lifelong learner</div>
-          <div className="mt-6 text-[15px] md:text-base leading-[1.8] text-[rgba(250,249,246,0.7)] flex flex-col gap-4">
+          <div className="mt-6 text-base font-extralight leading-[1.85] text-primary-text-color flex flex-col gap-4">
             <p className="m-0">
               I've designed my blog to be like a business card: a quick introduction to me and my work. It contains findings and information I encounter during my hobby projects or work.
             </p>

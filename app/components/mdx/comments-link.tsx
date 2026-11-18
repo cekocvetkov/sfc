@@ -7,13 +7,13 @@ export default function CommentsLink() {
   return (
     <Link
       href="#comments-section"
-      className=""
+      className="not-prose text-primary-text-color hover:text-secondary-text-color transition-colors"
       onClick={(e) => {
         e.preventDefault();
         document.getElementById("comments-section")?.scrollIntoView({ behavior: "smooth" });
       }}
     >
-      <FaComments size={24} className="hover:text-secondary-text-color" />
+      <FaComments size={24} />
     </Link>
   );
 }

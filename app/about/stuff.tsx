@@ -14,7 +14,7 @@ function Detail({ label, children, wide = false }: { label: string; children: Re
   return (
     <div className={`min-w-0 ${wide ? "col-span-2 smm:col-span-1" : ""}`}>
       <dt className="label-caps text-muted-text-color mb-2">{label}</dt>
-      <dd className="m-0 text-[15px] text-secondary-text-color break-words">{children}</dd>
+      <dd className="m-0 text-base font-extralight text-primary-text-color break-words">{children}</dd>
     </div>
   );
 }
@@ -27,7 +27,7 @@ function Stuff() {
       <Detail label="languages">Bulgarian, English, German</Detail>
       <Detail label="lives in">Vienna, Austria</Detail>
       <Detail label="e-mail" wide>
-        <a href="mailto:c.y.cvetkov@gmail.com" className="hover:underline">
+        <a href="mailto:c.y.cvetkov@gmail.com" className="hover:text-secondary-text-color transition-colors">
           c.y.cvetkov@gmail.com
         </a>
       </Detail>
