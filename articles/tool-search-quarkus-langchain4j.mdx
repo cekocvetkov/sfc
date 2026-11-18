@@ -1,0 +1,261 @@
+---
+title: "Anthropic’s Tool Search Tool simplified with Quarkus LangChain4j: Fewer tokens and better accuracy"
+date: "2026-06-08"
+tags: ["quarkus", "java", "langchain4j", "ai", "claude"]
+image: "tool-search-quarkus-langchain4j/main.webp"
+published: true
+---
+
+# Anthropic’s Tool Search Tool simplified with Quarkus LangChain4j: Fewer tokens and better accuracy
+
+<Image
+  placeholder="blur"
+  blurDataURL="data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAQAgCdASoQAAsAA4BaJbACdAD0ief6B6AAAP7tHrvqjdSw2wZh28AImF+iputl+TT5ZZ5Q02aZhW21aohE8WErhMNYKYjMnY7+Po0sSt2+i47oZAAPHgxyMAA="
+  alt="Anthropic’s Tool Search Tool with Quarkus LangChain4j"
+  src={"/images/tool-search-quarkus-langchain4j/main.webp"}
+  width={0}
+  height={0}
+  sizes="100vw"
+  style={{ width: "1400px", height: "335px", objectFit: "cover" }}
+/>
+<small className="w-full h-2 flex justify-center" style={{ marginTop: "-2rem" }}>
+  you can also read this article in Medium -> click [here](https://medium.com/itnext/anthropics-tool-search-tool-simplified-with-quarkus-langchain4j-fewer-tokens-and-better-accuracy-bbf9d6ee3277)
+</small>
+<br />
+
+When we’re building an AI Agent that uses many tools, every single tool definition gets loaded into Claude’s context window on **_every_** request. With 50+ tools, we’re just burning tokens way before the user’s question is even processed. It also pollutes the context.
+
+Anthropic’s solution to this was introduced in November 2025 and is really simple — a server-side tool that searches for the right tool on demand, rather than loading them upfront.
+
+Here’s how it works (I’m just quoting the [docs](https://www.anthropic.com/engineering/advanced-tool-use) here):
+
+> _The Tool Search Tool lets Claude dynamically discover tools instead of loading all definitions upfront. You provide all your tool definitions to the API, but mark tools with_ `defer_loading: true` _to make them discoverable on-demand. Deferred tools aren't loaded into Claude's context initially. Claude only sees the Tool Search Tool itself plus any tools with_ `defer_loading: false` _(your most critical, frequently-used tools)._
+
+To enable this, we need the following three things:
+
+- Add the `advanced-tool-use-2025-11-20` Beta header to our requests
+- Include the Tool Search Tool in our tools list
+- Mark our tools with `defer_loading: true`
+
+In my article [here](https://medium.com/stackademic/dynamic-tool-discovery-with-langchain4j-claudes-tool-search-tool-with-defer-loading-a7e16796d476), you can see how to do this with plain [**Langchain4j**](https://docs.langchain4j.dev/) in Java.
+
+In short, we first define the search tool, which will help Claude to find exactly the tool that’s needed to answer the question, and then pass it to the `AnhtropicChatModel` builder with `.serverTools(toolSearchTool)`. We also add the beta header through `.beta(“advanced-tool-use-2025–11–20”)` and then add support for the `defer_loading` metadata.
+
+It’s fairly straightforward, but [**Quarkus Langchain4j**](https://github.com/quarkiverse/quarkus-langchain4j) **really goes a step further and simplifies the process even more** — just add **_one single simple_** property to enable this functionality, and it just works out of the box! This was added in Quarkus Langchain4j version [1.9.0.CR1](https://github.com/quarkiverse/quarkus-langchain4j/releases/tag/1.9.0.CR1), so in order to enjoy this, you’ll need a Quarkus Version ≥ 3.35.2
+
+### To enable this feature, we must only set the following property:
+
+```properties
+quarkus.langchain4j.anthropic.chat-model.tool-search.enabled=true
+```
+
+**That’s it!** Under the hood, it sets up all three things we mentioned above.
+
+We can now focus on our code, which Quarkus, again, makes extremely simple and easy to understand. First, let’s complete our `application.properties` file:
+
+```properties
+quarkus.langchain4j.anthropic.api-key=${ANTHROPIC_API_KEY}
+quarkus.langchain4j.anthropic.chat-model.model-name=claude-haiku-4-5
+quarkus.langchain4j.anthropic.chat-model.tool-search.enabled=true
+
+quarkus.langchain4j.anthropic.log-requests=true
+quarkus.langchain4j.anthropic.log-responses=true
+```
+
+The last two properties, we’ll need to see the effect of the Tool Search functionality in our logs.
+
+OK, now let’s define our `Assistant` interface, where we define the prompt to our chat model:
+
+```java
+@RegisterAiService
+@ApplicationScoped
+public interface Assistent {
+    @SystemMessage("""
+            You are a helpful assistant with access to tools.
+            Answer questions clearly and use tools when needed.
+            Convert tool responses into natural, human-readable answers.
+            Ask for clarification if questions are unclear.
+        """
+    )
+    @ToolBox(OrderTools.class)
+    String chat(@UserMessage String question);
+}
+```
+
+It references the OrderTools, so let’s create this class too. Here are a couple of the methods ChatGPT generated for me — they answer questions about orders — a very typical scenario, for example, in an E-Commerce application. I have added like 50 Tools in order for us to easily observe the effects of this functionality and how it can save us tokens:
+
+```java
+@ApplicationScoped
+public class OrderTools {
+
+    static final boolean DEFER_LOADING = true;
+
+    @Tool(value = "Get the estimated delivery date for a shipped order by its order ID",
+            metadata = "{\"defer_loading\": " + DEFER_LOADING + "}")
+    public String getDeliveryDate(String orderId) {
+        Map<String, String> dates = Map.of(
+                "1002", "2026-03-28",
+                "1003", "2026-03-20"
+        );
+        String date = dates.get(orderId);
+        return date != null
+                ? "Order " + orderId + " estimated delivery: " + date
+                : "No delivery date available for order " + orderId;
+    }
+
+...
+
+    @Tool(value = "Get the list of items in an order by its order ID",
+            metadata = "{\"defer_loading\": " + DEFER_LOADING + "}")
+    public String getOrderItems(String orderId) {
+        Map<String, String> items = Map.of(
+                "1001", "2x Laptop Stand, 1x USB Hub",
+                "1002", "3x Mechanical Keyboard",
+                "1003", "1x Monitor, 2x HDMI Cable",
+                "1004", "1x Webcam"
+        );
+        String result = items.get(orderId);
+        return result != null
+                ? "Order " + orderId + " contains: " + result
+                : "No items found for order " + orderId;
+    }
+
+    @Tool(value = "Get the shipping carrier and tracking number for a shipped or delivered order",
+            metadata = "{\"defer_loading\": " + DEFER_LOADING + "}")
+    public String getTrackingInfo(String orderId) {
+        Map<String, String> tracking = Map.of(
+                "1002", "DHL | Tracking: DHL-9284710293",
+                "1003", "FedEx | Tracking: FDX-3847201938"
+        );
+        String info = tracking.get(orderId);
+        return info != null
+                ? "Order " + orderId + " tracking: " + info
+                : "No tracking info available for order " + orderId;
+    }
+}
+```
+
+Notice the most important thing here — all of them are annotated with `metadata = “{\”defer_loading\”: “ + DEFER_LOADING + “}”`
+
+We’ll also create an endpoint to query our application about the status of an order:
+
+```java
+@Path("/api/ai")
+public class AIResource {
+
+    @Inject
+    Assistent aiService;
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String checkOrderStatus() {
+        return aiService.chat("""
+                    I ordered a monitor and some cables.
+                    My order ID is 1003. Where is it, when will it arrive, 
+                    and is everything normal?
+                """);
+    }
+}
+```
+
+Now we only need to wire up our producer, which creates a CDI-managed AI assistant bean that automatically connects your `Assistent` interface to the configured LLM (`ChatModel`):
+
+```java
+@ApplicationScoped
+public class AssistantProducer {
+
+    @Inject
+    ChatModel chatModel;
+    @Inject
+    OrderTools orderTools;
+
+    @Produces
+    @ApplicationScoped
+    public Assistent aiService() {
+        return AiServices.builder(Assistent.class)
+            .chatModel(chatModel)
+            .tools(orderTools)
+            .build();
+    }
+}
+```
+
+This automatically wires up the LLM defined in your Quarkus properties.
+
+Here are also the dependencies we need to get this going (I use Gradle in my project, but you’ll easily add this in your `pom.xml` if you’re using Maven too):
+
+```groovy
+implementation 'io.quarkus:quarkus-rest'
+implementation 'io.quarkiverse.langchain4j:quarkus-langchain4j-anthropic'
+```
+
+### Experiments
+
+Alright, let’s see how this affects our LLM calls and token consumption.
+
+#### 1. Without Tool Search Tool
+
+Let’s for the sake of the experiment, first run this without the Tool Search Tool functionality. Set this in our `OrderTools`:<br />
+`static final boolean DEFER_LOADING = false;`
+
+Alright, now run `quarkusDev` and send a GET request to `http://localhost:8080/api/ai`
+
+(remember the question we send: “**_I ordered a monitor and some cables. My order ID is 1003. Where is it, when will it arrive, and is everything normal?_**”)
+
+here the final answer from the LLM:
+
+> Here’s a full update on your order **#1003** (Monitor + Cables):
+>
+> — -
+>
+> 📦 **Shipping Carrier:** FedEx<br />
+> 🔢 **Tracking Number:** FDX-3847201938
+>
+> — -
+>
+> 🗺️ **Tracking History:**<br />
+> \| Date & Time \| Status \|<br />
+> \| — -\| — -\|<br />
+> \| Mar 23, 09:00 \| Picked up \|<br />
+> \| Mar 24, 14:30 \| In transit — Vienna Hub \|<br />
+> \| Mar 25, 08:00 \| **Out for delivery** \|
+>
+> — -
+>
+> 📅 **Estimated Delivery Date:** March 20, 2026
+>
+> — -
+>
+> ✅ **Is everything normal?**<br />
+> Everything looks to be progressing smoothly! Your package was picked up, moved through the Vienna hub, and is currently **out for delivery** — meaning it could arrive at your door very soon today! 🎉
+>
+> ⚠️ **Minor note:** The estimated delivery date (Mar 20) appears to be _before_ the tracking events (starting Mar 23), which may just be a system display quirk. Since the package is already **out for delivery**, you should expect it imminently — so no need to worry!
+>
+> Let me know if you need anything else! 😊
+
+**Let’s observe the logs here (yours might defer a bit, but it’ll be similar):**
+
+Without `defer_loading` Claude receives the full schema of 50+ Tools **on every single request**. What happened:
+
+- The first call already costs ~4000 tokens — it passes **all** the tool definitions. Claude then jumps straight to the tools execution and wants to call `getTrackingInfo`, `getDeliveryDate`, and `getOrderItems`
+- It then makes a second pass and decides it also needs `getTrackingEvents` to answer “_…is everything normal?_” — this again costs ~4000 tokens
+- To wrap it all up it makes another call that takes ~4300 tokens
+
+**_Three API calls, 12,994 tokens total._**
+
+#### 2. With Tool Search Tool
+
+Now, let’s switch back to `DEFER_LOADING = true;` and run it again
+
+- The first request now costs only ~2000 tokens — Claude searches for the right tools and gets back **a small** list of relevant tools. It decides it wants to call `getTrackingInfo` and `getDeliveryDate`
+- It makes a second pass and decides also to call `getTrackingEvents` which itself now only costs ~2500 tokens, because we’re not passing the whole tool definitions schema
+- To wrap it all up it makes another call that takes ~1200 tokens
+
+**_Three API calls, 5,935 tokens total._**
+
+### Conclusion
+
+It really doesn’t make sense to dump all the tool definitions to the LLM on every request if you have more than 10–20 Tools, except if you’re after speed — it’s worth noting that the Tool Search Tool does add an extra search step. Still, there are plenty of scenarios where this can be extremely helpful and of course, very efficient too, you saw for yourself how much it can save us in token consumption.
+
+Hope you enjoyed this one.<br />
+**Thanks for reading.**
