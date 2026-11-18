@@ -7,7 +7,8 @@ interface RGB {
 // export const colorScheme = ["#8C684E", "#E58C4C", "#8E562C", "#CC8F63", "#D49F78"]; // Example colors
 // export const colorScheme = [ "#e58c4c","#ad2e24"];
 // export const colorScheme = ["#805840", "#E5932E", "#B25A24", "#98704c", "#996335"];
-export const colorScheme = ["#784F35", "#A75000", "#C77336", "#8E562C"]; // Example colors
+// export const colorScheme = ["#784F35", "#A75000", "#C77336", "#8E562C"]; // Original browns
+export const colorScheme = ["#2e4466", "#354d73", "#283c5a", "#3c5680"]; // Coral + ink: tile hover colours
 
 export function isColorTooSimilar(color1: string, color2: string) {
   if (!color1 || !color2) return false;

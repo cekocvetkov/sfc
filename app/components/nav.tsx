@@ -1,37 +1,50 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import useScrollDirection from "../hooks/UseScrollDirection";
 import { usePathname } from "next/navigation";
 import UserAvatar from "./user-avatar-mobile";
+import useScrolledUp from "../hooks/use-scrolled-up";
+
+function NavLinks({ isActive }: { isActive: (href: string) => boolean }) {
+  const linkClass = (href: string) =>
+    `transition-colors hover:text-primary-text-color ${isActive(href) ? "text-primary-text-color" : "text-muted-text-color"}`;
+  return (
+    <div className="label-caps flex gap-7">
+      <Link href="/about" className={linkClass("/about")}>
+        about
+      </Link>
+      <Link href="/search" className={linkClass("/search")}>
+        search
+      </Link>
+    </div>
+  );
+}
 
 function Navigation() {
-  useScrollDirection();
   const pathName = usePathname();
   const isActive = (href: string) => pathName === href;
+  const scrolledUp = useScrolledUp();
 
   return (
-    <nav id="header" className=" sticky top-0 bg-background-color !z-50 min-h-[142px] mt-0 md:mt-10 lg:mt-14 mt flex items-center justify-between transition-transform ease-in-out duration-[0.2s]">
-      <div>
-        <div className="md:hidden flex items-center gap-3">
-          <UserAvatar />
-
+    <>
+      <nav id="header" className="flex justify-between items-baseline pt-14">
+        <div className="flex items-center gap-3">
+          <div className="md:hidden flex items-center">
+            <UserAvatar />
+          </div>
+          <Link href="/" className="text-lg tracking-wide hover:text-secondary-text-color transition-colors">
+            home
+          </Link>
         </div>
-        <Link href="/" className=" hover:text-secondary-text-color">
+        <NavLinks isActive={isActive} />
+      </nav>
+      <div className={`scroll-peek flex justify-between items-baseline ${scrolledUp ? "visible" : ""}`} aria-hidden={!scrolledUp}>
+        <Link href="/" tabIndex={scrolledUp ? 0 : -1} className="tracking-wide hover:text-secondary-text-color transition-colors">
           home
         </Link>
+        <NavLinks isActive={isActive} />
       </div>
-      <div className="flex flex-col ">
-        <Link href="/about" className={`hover:text-secondary-text-color ${isActive("/about") ? "text-secondary-text-color" : ""}`}>
-          about me
-        </Link>
-        <Link href="/search" className={`hover:text-secondary-text-color ${isActive("/search") ? "text-secondary-text-color" : ""}`}>
-          search
-        </Link>
-      </div>
-
-
-    </nav>
+    </>
   );
 }
 

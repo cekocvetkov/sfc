@@ -9,16 +9,25 @@ interface ArticleParams {
     date: string;
     title: string;
     slug: string;
+    number: number;
   };
 }
 function ArticleLink({ params }: ArticleParams) {
   const pathName = usePathname();
-  const color = pathName.startsWith(`/article/${params.slug}`) ? "#445544" : params.color;
+  const isCurrent = pathName.startsWith(`/article/${params.slug}`);
   const slug = params.slug;
   return (
-    <Link key={slug} href={`/article/${slug}`} className={`post-item min-w-[200px] min-h-[151px] flex flex-col justify-end px-2 py-1 md:min-w-[180px]`} style={{ backgroundColor: color }}>
-      <div className="text-sm pb-1 overflow-hidden text-ellipsis line-clamp-6">{params.title}</div>
-      <div className="text-xs flex justify-end">{params.date}</div>
+    <Link
+      key={slug}
+      href={`/article/${slug}`}
+      className={`post-tile ${isCurrent ? "current" : ""}`}
+      style={{ "--tile-hover-color": params.color } as React.CSSProperties}
+    >
+      <div className="post-tile-meta label-caps flex justify-between">
+        <span>{String(params.number).padStart(2, "0")}</span>
+        <span>{params.date}</span>
+      </div>
+      <div className="text-[13px] leading-normal line-clamp-4">{params.title}</div>
     </Link>
   );
 }

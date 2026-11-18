@@ -4,15 +4,27 @@
 
 :root {
   --background-color: #323232;
-  --accent-color: #445544;
-  --accent-color-darker: rgba(68, 85, 68, 0.7);
   --primary-text-color: #faf9f6;
-  --secondary-text-color: #e58c4c;
-  --secondary-text-color2: #f5882c;
-  --tags-color: #d97833;
-  --border-color: rgba(182, 109, 56, 0.5);
+  --muted-text-color: rgba(250, 249, 246, 0.5);
   --code-snippet-background-color: #3c3c3c;
   --transition-duration: 0.2s;
+
+  /* Palette: Coral + ink. Alternatives are kept in the owner's notes. */
+  --secondary-text-color: #ff8f7a;
+  --secondary-text-color2: #ff8f7a;
+  --accent-color: #354d73;
+  --accent-color-darker: rgba(53, 77, 115, 0.7);
+  --tags-color: #354d73;
+  --border-color: rgba(255, 143, 122, 0.22);
+  --active-article-color: #7a3a30;
+
+  /* Article strip: quiet tiles, a shade off the background; palette colour on hover */
+  --tile-color-a: #353535;
+  --tile-color-b: #383838;
+
+  /* Layout: centred column plus a full-height article strip on its right */
+  --group-width: min(1120px, calc(100vw - 32px));
+  --strip-width: 220px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -50,15 +62,6 @@ a.active {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
-}
-
-.post-item {
-  transition: background-color 0.3s ease;
-  /* Added transition for smooth color change */
-}
-
-.post-item:hover {
-  background-color: var(--accent-color-darker) !important;
 }
 
 .about-rectangle {
@@ -123,20 +126,20 @@ a.active {
 .loading div:nth-child(1) {
   left: 8px;
   animation-delay: -0.24s;
-  color: #e58c4c;
+  color: #ff8f7a;
 }
 
 .loading div:nth-child(2) {
   left: 32px;
   animation-delay: -0.12s;
 
-  color: #8c684e;
+  color: #354d73;
 }
 
 .loading div:nth-child(3) {
   left: 56px;
   animation-delay: 0s;
-  color: #8e562c;
+  color: #3c5680;
 }
 
 @keyframes loading {
@@ -153,3 +156,131 @@ a.active {
 }
 
 /* --------------- */
+
+/* Small uppercase labels: nav, tags, dates */
+.label-caps {
+  font-weight: 400;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Centred column, no frame: the page itself scrolls */
+.site-column {
+  margin-left: calc(50% - var(--group-width) / 2);
+  width: calc(var(--group-width) - var(--strip-width));
+  padding: 0 clamp(24px, 7vw, 112px);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Thin bar that slides in when scrolling up */
+.scroll-peek {
+  position: fixed;
+  top: 0;
+  z-index: 20;
+  left: calc(50% - var(--group-width) / 2);
+  width: calc(var(--group-width) - var(--strip-width));
+  padding: 14px clamp(24px, 7vw, 112px);
+  background: var(--background-color);
+  border-bottom: 1px solid var(--border-color);
+  transform: translateY(-101%);
+  transition: transform 0.3s ease;
+}
+
+.scroll-peek.visible {
+  transform: none;
+}
+
+/* Article strip: full window height, hairline edges, scrolls on its own */
+.article-strip {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: calc(50% + var(--group-width) / 2 - var(--strip-width));
+  width: var(--strip-width);
+  overflow-y: auto;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+}
+
+.post-tile {
+  flex: none;
+  height: 168px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.25s ease;
+}
+
+.post-tile:nth-child(odd) {
+  background-color: var(--tile-color-a);
+}
+
+.post-tile:nth-child(even) {
+  background-color: var(--tile-color-b);
+}
+
+.post-tile:hover {
+  background-color: var(--tile-hover-color);
+}
+
+.post-tile.current {
+  background-color: var(--active-article-color);
+}
+
+.post-tile .post-tile-meta {
+  color: var(--muted-text-color);
+}
+
+.post-tile:hover .post-tile-meta,
+.post-tile.current .post-tile-meta {
+  color: rgba(250, 249, 246, 0.75);
+}
+
+/* Short accent dash above article section headings */
+.article-body h2::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--secondary-text-color);
+  margin-bottom: 18px;
+}
+
+/* Below the md breakpoint the strip becomes a band along the bottom edge */
+@media (max-width: 947px) {
+  .site-column,
+  .scroll-peek {
+    margin-left: 0;
+    left: 0;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .site-column {
+    padding-bottom: 150px;
+  }
+
+  .article-strip {
+    top: auto;
+    left: 0;
+    width: 100%;
+    height: 132px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 0;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .post-tile {
+    width: 210px;
+    height: 100%;
+    border-bottom: 0;
+    border-right: 1px solid var(--border-color);
+  }
+}

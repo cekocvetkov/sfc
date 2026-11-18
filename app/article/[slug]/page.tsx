@@ -40,7 +40,7 @@ async function Article({ params }: ArticlePageProps) {
   if (!article) return notFound();
 
   return (
-    <article className="min-w-full prose text-primary-text-color text-base prose-invert overflow-auto overflow-x-hidden scrollbar-hide transition-transform ease-in-out duration-[0.2s]">
+    <article className="article-body min-w-full prose prose-invert text-primary-text-color text-base leading-[1.85] mt-[14vh] prose-headings:font-normal prose-h1:font-extralight prose-h1:leading-tight prose-strong:font-normal prose-a:text-secondary-text-color">
       <Tags tags={article.metadata.tags}></Tags>
 
       {/* @ts-expect-error: Should expect string */}

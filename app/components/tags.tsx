@@ -25,12 +25,12 @@ function Tags({ tags }: { tags: string[] }) {
   }
 
   return (
-    <div className="hidden md:block md:absolute text-sm mt-2 -ml-24 lg:-ml-32 ">
+    <div className="not-prose label-caps flex flex-wrap gap-x-5 gap-y-1 mb-5">
       {tags && tags.length == 0 ? (
         <></>
       ) : (
         tags?.map((tag) => (
-          <a onClick={() => onClick(tag)} className={`cursor-pointer hover:bg-accent-color no-underline p-1 mb-1 bg-tags-color table ${isActive(tag) ? "active" : ""}`} key={tag}>
+          <a onClick={() => onClick(tag)} className={`cursor-pointer transition-colors hover:text-primary-text-color ${isActive(tag) ? "text-primary-text-color underline underline-offset-4" : "text-secondary-text-color"}`} key={tag}>
             {tag}
           </a>
         ))
