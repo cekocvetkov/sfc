@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     type: "website", // og:type
     title: "Software Crafting Chronicles", // og:title (optional but good to have)
     description: "Tsvetan Tsvetkov's software crafting journal: A software journal that contains findings and information I encounter during my hobby projects or work.",
-    images: [`${BASE_URL}/images/home-page.png`], // og:image
+    images: [{ url: `${BASE_URL}/images/og-home.png`, width: 1200, height: 630 }], // og:image
   },
 };
 
